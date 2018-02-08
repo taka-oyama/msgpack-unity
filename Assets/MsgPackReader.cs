@@ -242,7 +242,6 @@ namespace UniMsgPack
 			if(format == Format.Nil) {
 				return null;
 			}
-			object obj = FormatterServices.GetUninitializedObject(type);
 			int size = -1;
 			if(format.Between(Format.FixMapMin, Format.FixMapMax)) size = ((int)format & 0xf);
 			if(format == Format.Map16) size = (int)ExtractUInt16();
@@ -250,10 +249,13 @@ namespace UniMsgPack
 			if(size == -1) {
 				throw new FormatException(string.Format("Invalid Map size {0} for {1}", size, type));
 			}
+			object obj = FormatterServices.GetUninitializedObject(type);
 			while(size > 0) {
 				string name = ReadString(GetNextTypeFormat());
-				FieldInfo field = type.GetField(name);
-				field.SetValue(obj, Read(field.FieldType));
+				FieldInfo field = MapResolver.GetField(type, name);
+				if(field != null) {
+					field.SetValue(obj, Read(field.FieldType));
+				}
 				size = size - 1;
 			}
 			return obj;
