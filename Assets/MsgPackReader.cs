@@ -5,13 +5,12 @@ using System.Runtime.Serialization;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Collections;
-using UnityEngine;
 
 namespace UniMsgPack
 {
 	public class MsgPackReader
 	{
-		Stream stream;
+		readonly Stream stream;
 		byte[] staticBuffer = new byte[8];
 		byte[] dynamicBuffer = new byte[64];
 		static DateTime epochTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -28,7 +27,7 @@ namespace UniMsgPack
 
 		public object Read(Type type)
 		{
-			return Read(type, GetNextTypeFormat());
+			return Read(type, GetNextFormat());
 		}
 
 		object Read(Type type, Format format)
@@ -183,15 +182,15 @@ namespace UniMsgPack
 
 		object ReadEnum(Type type, Format format)
 		{
-			if(IsIntTypeFormat(format)) {
-				int value = ReadInt32(GetNextTypeFormat());
+			if(format.IsInt()) {
+				int value = ReadInt32(GetNextFormat());
 				if(Enum.IsDefined(type, value)) {
 					return Enum.ToObject(type, value);
 				}
 				throw new FormatException();
 			}
-			if(IsStringTypeFormat(format)) {
-				return Enum.Parse(type, ReadString(GetNextTypeFormat()), true);
+			if(format.IsString()) {
+				return Enum.Parse(type, ReadString(GetNextFormat()), true);
 			}
 			throw new FormatException();
 		}
@@ -251,7 +250,7 @@ namespace UniMsgPack
 			}
 			object obj = FormatterServices.GetUninitializedObject(type);
 			while(size > 0) {
-				string name = ReadString(GetNextTypeFormat());
+				string name = ReadString(GetNextFormat());
 				FieldInfo field = MapResolver.GetField(type, name);
 				if(field != null) {
 					field.SetValue(obj, Read(field.FieldType));
@@ -371,33 +370,6 @@ namespace UniMsgPack
 			throw new FormatException();
 		}
 
-		Format GetNextTypeFormat()
-		{
-			return (Format)stream.ReadByte();
-		}
-
-		bool IsIntTypeFormat(Format format)
-		{
-			return
-				format.Between(Format.PositiveFixIntMin, Format.PositiveFixIntMax) ||
-			    format.Between(Format.NegativeFixIntMin, Format.NegativeFixIntMax) || 
-				format == Format.Int8 ||
-				format == Format.UInt8 ||
-				format == Format.Int16 ||
-				format == Format.UInt16 ||
-				format == Format.Int32 ||
-				format == Format.UInt32;
-		}
-
-		bool IsStringTypeFormat(Format format)
-		{
-			return
-				format.Between(Format.FixStrMin, Format.FixStrMax) ||
-				format == Format.Str8 ||
-				format == Format.Str16 ||
-				format == Format.Str32;
-		}
-
 		bool IsNullable(Type type)
 		{
 			if(type.IsValueType) {
@@ -407,6 +379,11 @@ namespace UniMsgPack
 				}
 			}
 			return false;
+		}
+
+		Format GetNextFormat()
+		{
+			return (Format)stream.ReadByte();
 		}
 	}
 }

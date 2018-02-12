@@ -44,12 +44,4 @@
 		NegativeFixIntMin = 0xe0,
 		NegativeFixIntMax = 0xff,
 	}
-
-	public static class FormatExtension
-	{
-		public static bool Between(this Format target, Format min, Format max)
-		{
-			return target >= min && target <= max;
-		}
-	}
 }
