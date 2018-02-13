@@ -27,7 +27,7 @@ namespace UniMsgPack
 
 		public object Read(Type type)
 		{
-			return Read(type, GetNextFormat());
+			return Read(type, ExtractNextFormat());
 		}
 
 		object Read(Type type, Format format)
@@ -183,14 +183,14 @@ namespace UniMsgPack
 		object ReadEnum(Type type, Format format)
 		{
 			if(format.IsInt()) {
-				int value = ReadInt32(GetNextFormat());
+				int value = ReadInt32(ExtractNextFormat());
 				if(Enum.IsDefined(type, value)) {
 					return Enum.ToObject(type, value);
 				}
 				throw new FormatException();
 			}
 			if(format.IsString()) {
-				return Enum.Parse(type, ReadString(GetNextFormat()), true);
+				return Enum.Parse(type, ReadString(ExtractNextFormat()), true);
 			}
 			throw new FormatException();
 		}
@@ -250,7 +250,7 @@ namespace UniMsgPack
 			}
 			object obj = FormatterServices.GetUninitializedObject(type);
 			while(size > 0) {
-				string name = ReadString(GetNextFormat());
+				string name = ReadString(ExtractNextFormat());
 				FieldInfo field = MapResolver.GetField(type, name);
 				if(field != null) {
 					field.SetValue(obj, Read(field.FieldType));
@@ -278,6 +278,12 @@ namespace UniMsgPack
 				return epochTime.AddTicks(ExtractUInt32() / 100).AddSeconds(ExtractInt64());
 			}
 			throw new FormatException();
+		}
+
+
+		Format ExtractNextFormat()
+		{
+			return (Format)stream.ReadByte();
 		}
 
 		uint ExtractPositiveFixInt(Format format)
@@ -379,11 +385,6 @@ namespace UniMsgPack
 				}
 			}
 			return false;
-		}
-
-		Format GetNextFormat()
-		{
-			return (Format)stream.ReadByte();
 		}
 	}
 }
