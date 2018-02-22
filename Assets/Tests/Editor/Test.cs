@@ -30,8 +30,23 @@ public class Test
 	public void UnpackFixArrayMax()
 	{
 		byte[] bytes = ReadFile(basePath + "/Arrays/FixArrayMax.mpack");
-		int[] test = MsgPack.Unpack<int[]>(bytes);
+		int[] ints = MsgPack.Unpack<int[]>(bytes);
 
-		Assert.AreEqual(test.Length, 15);
+		Assert.AreEqual(ints.Length, 15);
+		foreach(int i in ints) {
+			Assert.AreEqual(i, ints[i]);
+		}
+	}
+
+	[Test]
+	public void UnpackArray16Min()
+	{
+		byte[] bytes = ReadFile(basePath + "/Arrays/Array16Min.mpack");
+		int[] ints = MsgPack.Unpack<int[]>(bytes);
+
+		Assert.AreEqual(ints.Length, 16);
+		foreach(int i in ints) {
+			Assert.AreEqual(i, ints[i]);
+		}
 	}
 }
