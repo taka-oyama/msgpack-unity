@@ -54,6 +54,7 @@ namespace UniMsgPack
 			if(IsNullable(type)) return ReadNullable(type, format);
 			if(type.IsArray) return ReadArray(type, format);
 			if(type is IList) return ReadList(type, format);
+            if(type is IDictionary) return ReadDictionary(type, format);
 			return ReadMap(type, format);
 		}
 
@@ -229,6 +230,24 @@ namespace UniMsgPack
 			}
 			throw new FormatException(string.Format("Invalid Format {0} for {1}", format, type));
 		}
+
+        object ReadDictionary(Type type, Format format)
+        {
+            if (format == Format.Nil) {
+                return null;
+            }
+            int size = ExtractMapSize(format);
+            if (size == -1) {
+                throw new FormatException(string.Format("Invalid Map size {0} for {1}", size, type));
+            }
+            IDictionary dictionary = (IDictionary)Activator.CreateInstance(type);
+            Type[] types = type.GetGenericArguments();
+            while (size > 0) {
+                dictionary.Add(Read(types[0]), Read(types[1]));
+                size = size - 1;
+            }
+            return dictionary;
+        }
 
 		object ReadMap(Type type, Format format)
 		{
