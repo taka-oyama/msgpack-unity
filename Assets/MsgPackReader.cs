@@ -201,10 +201,7 @@ namespace UniMsgPack
 			if(format == Format.Nil) {
 				return Array.CreateInstance(elementType, 0);
 			}
-			int size = -1;
-			if(format.Between(Format.FixArrayMin, Format.FixArrayMax)) size = ((int)format & 0xf);
-			if(format == Format.Array16) size = (int)ExtractUInt16();
-			if(format == Format.Array32) size = (int)ExtractUInt32();
+            int size = ExtractArraySize(format);
 			if(size >= 0) {
 				Array array = Array.CreateInstance(elementType, size);
 				for(int i = 0; i < size; i++) {
@@ -223,10 +220,7 @@ namespace UniMsgPack
 			if(format == Format.Nil) {
 				return list;
 			}
-			int size = -1;
-			if(format.Between(Format.FixArrayMin, Format.FixArrayMax)) size = ((int)format & 0xf);
-			if(format == Format.Array16) size = (int)ExtractUInt16();
-			if(format == Format.Array32) size = (int)ExtractUInt32();
+            int size = ExtractArraySize(format);
 			if(size >= 0) {
 				for(int i = 0; i < size; i++) {
 					list.Add(Read(elementType));
@@ -241,10 +235,7 @@ namespace UniMsgPack
 			if(format == Format.Nil) {
 				return null;
 			}
-			int size = -1;
-			if(format.Between(Format.FixMapMin, Format.FixMapMax)) size = ((int)format & 0xf);
-			if(format == Format.Map16) size = (int)ExtractUInt16();
-			if(format == Format.Map32) size = (int)ExtractUInt32();
+            int size = ExtractMapSize(format);
 			if(size == -1) {
 				throw new FormatException(string.Format("Invalid Map size {0} for {1}", size, type));
 			}
@@ -279,7 +270,6 @@ namespace UniMsgPack
 			}
 			throw new FormatException();
 		}
-
 
 		Format ExtractNextFormat()
 		{
@@ -375,6 +365,22 @@ namespace UniMsgPack
 			}
 			throw new FormatException();
 		}
+
+        int ExtractArraySize(Format format)
+        {
+			if(format.Between(Format.FixArrayMin, Format.FixArrayMax)) return ((int)format & 0xf);
+			if(format == Format.Array16) return (int)ExtractUInt16();
+			if(format == Format.Array32) return (int)ExtractUInt32();
+            return -1;
+        }
+
+        int ExtractMapSize(Format format)
+        {
+            if(format.Between(Format.FixMapMin, Format.FixMapMax)) return ((int)format & 0xf);
+            if(format == Format.Map16) return (int)ExtractUInt16();
+            if(format == Format.Map32) return (int)ExtractUInt32();
+            return -1;
+        }
 
 		bool IsNullable(Type type)
 		{
