@@ -4,6 +4,12 @@ using NUnit.Framework;
 
 public class ArrayTest : TestBase
 {
+	struct Map
+	{
+		public int a;
+		public int b;
+	}
+
 	[Test]
 	public void UnpackNils()
 	{
@@ -19,7 +25,7 @@ public class ArrayTest : TestBase
 	[Test]
 	public void UnpackArrays()
 	{
-		byte[] bytes = ReadFile(basePath + "/Arrays/ArrayArrays.mpack");
+		byte[] bytes = ReadFile(basePath + "/Arrays/Arrays.mpack");
 		int[][] arrays = MsgPack.Unpack<int[][]>(bytes);
 
 		Assert.AreEqual(2, arrays.Length);
@@ -29,6 +35,19 @@ public class ArrayTest : TestBase
 		Assert.AreEqual(2, arrays[1].Length);
 		Assert.AreEqual(3, arrays[1][0]);
 		Assert.AreEqual(4, arrays[1][1]);
+	}
+
+	[Test]
+	public void UnpackMaps()
+	{
+		byte[] bytes = ReadFile(basePath + "/Arrays/Maps.mpack");
+		Map[] maps = MsgPack.Unpack<Map[]>(bytes);
+
+		Assert.AreEqual(2, maps.Length);
+		Assert.AreEqual(1, maps[0].a);
+		Assert.AreEqual(0, maps[0].b);
+		Assert.AreEqual(0, maps[1].a);
+		Assert.AreEqual(2, maps[1].b);
 	}
 
 	[Test]

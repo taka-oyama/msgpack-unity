@@ -17,7 +17,9 @@ namespace UniMsgPack
 
 		public static FieldInfo GetField(Type type, string field)
 		{
-			cache[type] = cache[type] ?? ResolveType(type);
+			if(!cache.ContainsKey(type)) {
+				cache[type] = ResolveType(type);
+			}
 			if(cache[type].ContainsKey(field)) {
 				return cache[type][field];
 			}
