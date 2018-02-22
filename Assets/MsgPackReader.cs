@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.Reflection;
 using System.Collections.Generic;
 using System.Collections;
+using UnityEngine;
 
 namespace UniMsgPack
 {
@@ -178,6 +179,9 @@ namespace UniMsgPack
 
 		object ReadNullable(Type type, Format format)
 		{
+			if(format == Format.Nil) {
+				return null;
+			}
 			return Read(Nullable.GetUnderlyingType(type), format);
 		}
 
