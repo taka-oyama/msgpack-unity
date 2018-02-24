@@ -116,7 +116,16 @@ namespace UniMsgPack
 		float ReadFloat(Format format)
 		{
 			if(format == Format.Float32) return ExtractFloat();
-			if(format == Format.Float64) return (float)ExtractDouble();
+			if(format == Format.Float64) {
+				double value = ExtractDouble();
+				if(value > float.MaxValue) {
+					throw new InvalidCastException(string.Format("{0} is too big for a float", value));
+				}
+				if(value < float.MinValue) {
+					throw new InvalidCastException(string.Format("{0} is too small for a float", value));
+				}
+				return (float)value;
+			}
 			throw new FormatException();
 		}
 
