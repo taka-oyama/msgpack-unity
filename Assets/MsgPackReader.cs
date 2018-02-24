@@ -116,6 +116,7 @@ namespace UniMsgPack
 		float ReadFloat(Format format)
 		{
 			if(format == Format.Float32) return ExtractFloat();
+			if(format == Format.Float64) return (float)ExtractDouble();
 			throw new FormatException();
 		}
 
