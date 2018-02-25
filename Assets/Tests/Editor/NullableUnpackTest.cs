@@ -34,7 +34,6 @@ namespace UniMsgPack.Tests
 			Assert.AreEqual(MyEnum.Foo, value);
 		}
 
-
 		[Test]
 		public void UnpackNullableEnumAsNull()
 		{
