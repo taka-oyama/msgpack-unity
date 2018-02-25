@@ -348,15 +348,15 @@ namespace UniMsgPack
 			return ((int)format & 0x1f) - 0x20;
 		}
 
-		int ExtractInt8()
+		sbyte ExtractInt8()
 		{
-			return stream.ReadByte();
+			return (sbyte)stream.ReadByte();
 		}
 
-		int ExtractInt16()
+		short ExtractInt16()
 		{
 			if(stream.Read(staticBuffer, 0, 2) == 2) {
-				return (staticBuffer[0] << 8) | staticBuffer[1];
+				return (short)((staticBuffer[0] << 8) | staticBuffer[1]);
 			}
 			throw new FormatException();
 		}
