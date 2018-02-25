@@ -171,14 +171,14 @@ namespace UniMsgPack
 		object ReadEnum(Type type, Format format)
 		{
 			if(format.IsInt()) {
-				int value = ReadInt32(ExtractNextFormat());
+				int value = ReadInt32(format);
 				if(Enum.IsDefined(type, value)) {
 					return Enum.ToObject(type, value);
 				}
 				throw new FormatException();
 			}
 			if(format.IsString()) {
-				return Enum.Parse(type, ReadString(ExtractNextFormat()), true);
+				return Enum.Parse(type, ReadString(format), true);
 			}
 			throw new FormatException();
 		}
