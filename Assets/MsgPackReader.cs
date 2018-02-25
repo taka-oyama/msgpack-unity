@@ -409,13 +409,13 @@ namespace UniMsgPack
             return -1;
         }
 
-        int ExtractMapSize(Format format)
-        {
-            if(format.Between(Format.FixMapMin, Format.FixMapMax)) return ((int)format & 0xf);
-            if(format == Format.Map16) return (int)ExtractUInt16();
-            if(format == Format.Map32) return (int)ExtractUInt32();
-            return -1;
-        }
+		int ExtractMapSize(Format format)
+		{
+			if(format.Between(Format.FixMapMin, Format.FixMapMax)) return ((int)format & 0xf);
+			if(format == Format.Map16) return (int)ExtractUInt16();
+			if(format == Format.Map32) return (int)ExtractUInt32();
+			return -1;
+		}
 
 		bool IsNullable(Type type)
 		{
