@@ -260,19 +260,29 @@ namespace UniMsgPack
 
 		DateTime ReadTimestamp(Format format)
 		{
-			if(stream.ReadByte() != -1) {
-				throw new FormatException("Not a Timestamp extension format!");
-			}
+			
 			if(format == Format.FixExt4) {
+				if(stream.ReadByte() != -1) {
+					throw new FormatException("Not a Timestamp extension format!");
+				}
 				return epochTime.AddSeconds(ExtractUInt32());
 			}
 			if(format == Format.FixExt8) {
+				if(stream.ReadByte() != -1) {
+					throw new FormatException("Not a Timestamp extension format!");
+				}
 				stream.Read(staticBuffer, 0, 8);
 				uint nanoseconds = ((uint)staticBuffer[0] << 22) | ((uint)staticBuffer[1] << 14) | ((uint)staticBuffer[2] << 6) | (uint)staticBuffer[3] >> 2;
 				ulong seconds = ((ulong)(staticBuffer[3] & 0x3) << 32) | ((ulong)staticBuffer[4] << 24) | ((ulong)staticBuffer[5] << 16) | ((ulong)staticBuffer[6] << 8) | (ulong)staticBuffer[7];
 				return epochTime.AddTicks(nanoseconds / 100).AddSeconds(seconds);
 			}
 			if(format == Format.Ext8) {
+				if(stream.ReadByte() != 12) {
+					throw new FormatException("This is not in Timestamp 96 format!");
+				}
+				if(stream.ReadByte() != -1) {
+					throw new FormatException("Not a Timestamp extension format!");
+				}
 				return epochTime.AddTicks(ExtractUInt32() / 100).AddSeconds(ExtractInt64());
 			}
 			throw new FormatException();
