@@ -1,22 +1,24 @@
 ﻿using NUnit.Framework;
-using UniMsgPack;
 using UnityEngine;
 
-public class BoolTest : TestBase
+namespace UniMsgPack.Tests
 {
-	[Test]
-	public void UnpackTrue()
+	public class BoolTest : TestBase
 	{
-		byte[] bytes = ReadFile(basePath + "/Bools/True.mpack");
-		bool boolValue = MsgPack.Unpack<bool>(bytes);
-		Assert.IsTrue(boolValue);
-	}
+		[Test]
+		public void UnpackTrue()
+		{
+			byte[] bytes = ReadFile(basePath + "/Bools/True.mpack");
+			bool boolValue = MsgPack.Unpack<bool>(bytes);
+			Assert.IsTrue(boolValue);
+		}
 
-	[Test]
-	public void UnpackFalse()
-	{
-		byte[] bytes = ReadFile(basePath + "/Bools/False.mpack");
-		bool boolValue = MsgPack.Unpack<bool>(bytes);
-		Assert.IsFalse(boolValue);
+		[Test]
+		public void UnpackFalse()
+		{
+			byte[] bytes = ReadFile(basePath + "/Bools/False.mpack");
+			bool boolValue = MsgPack.Unpack<bool>(bytes);
+			Assert.IsFalse(boolValue);
+		}
 	}
 }

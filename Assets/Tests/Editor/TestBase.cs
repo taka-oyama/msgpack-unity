@@ -1,12 +1,15 @@
 ﻿using System.IO;
 using UnityEngine;
 
-public abstract class TestBase
+namespace UniMsgPack.Tests
 {
-	protected string basePath = Application.dataPath + "/Tests/Files";
-
-	public static byte[] ReadFile(string path)
+	public abstract class TestBase
 	{
-		return File.ReadAllBytes(path);
+		protected string basePath = Application.dataPath + "/Tests/Files";
+
+		public static byte[] ReadFile(string path)
+		{
+			return File.ReadAllBytes(path);
+		}
 	}
 }
