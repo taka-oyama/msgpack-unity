@@ -9,7 +9,7 @@
 		FixArrayMin = 0x90,
 		FixArrayMax = 0x9f,
 		FixStrMin = 0xa0,
-		FixStrMax = 0xaf,
+		FixStrMax = 0xbf,
 		Nil = 0xc0,
 		False = 0xc2,
 		True = 0xc3,
