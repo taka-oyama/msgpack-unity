@@ -92,6 +92,7 @@ namespace UniMsgPack
 				int size = ExtractMapSize(format);
 				while(size > 0) {
 					Skip(ExtractNextFormat());
+					Skip(ExtractNextFormat());
 					size -= 1;
 				}
 				return;
@@ -301,7 +302,7 @@ namespace UniMsgPack
 				if(field != null) {
 					field.SetValue(obj, Read(field.FieldType));
 				} else {
-					Skip(format);
+					Skip(ExtractNextFormat());
 				}
 				size = size - 1;
 			}
