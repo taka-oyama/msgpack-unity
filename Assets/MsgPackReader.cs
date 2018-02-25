@@ -311,7 +311,6 @@ namespace UniMsgPack
 
 		DateTime ReadTimestamp(Format format)
 		{
-			
 			if(format == Format.FixExt4) {
 				if(stream.ReadByte() != -1) {
 					throw new FormatException("Not a Timestamp extension format!");
