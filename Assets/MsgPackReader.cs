@@ -276,8 +276,9 @@ namespace UniMsgPack
 			while(size > 0) {
 				string name = ReadString(ExtractNextFormat());
 				FieldInfo field = MapResolver.GetField(type, name);
+				object value = Read(field.FieldType);
 				if(field != null) {
-					field.SetValue(obj, Read(field.FieldType));
+					field.SetValue(obj, value);
 				}
 				size = size - 1;
 			}
