@@ -28,6 +28,11 @@ namespace UniMsgPack.Tests
 			public int A { get { return a; } }
 		}
 
+		class MixedMap
+		{
+			public StructMap inner;
+		}
+
 		[Test]
 		public void UnpackStruct()
 		{
@@ -56,6 +61,15 @@ namespace UniMsgPack.Tests
 			byte[] bytes = ReadFile(basePath + "/Maps/Struct.mpack");
 			PrivateClassMap map = MsgPack.Unpack<PrivateClassMap>(bytes);
 			Assert.AreEqual(map.A, 1);
+		}
+
+		[Test]
+		public void UnpackMapSkippable()
+		{
+			byte[] bytes = ReadFile(basePath + "/Maps/MapSkippable.mpack");
+			MixedMap map = MsgPack.Unpack<MixedMap>(bytes);
+			Assert.AreEqual(map.inner.a, 1);
+			Assert.AreEqual(map.inner.b, 2);
 		}
 
 		[Test]
