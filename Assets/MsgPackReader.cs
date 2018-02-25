@@ -252,7 +252,7 @@ namespace UniMsgPack
 
 		object ReadList(Type type, Format format)
 		{
-			Type elementType = type.GetElementType();
+			Type elementType = type.GetGenericArguments()[0];
 			Type listType = typeof(List<>).MakeGenericType(new[] { elementType });
 			IList list = (IList)Activator.CreateInstance(listType);
 			if(format == Format.Nil) {
