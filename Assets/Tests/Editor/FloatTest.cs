@@ -10,7 +10,6 @@ public class FloatTest : TestBase
 	{
 		byte[] bytes = ReadFile(basePath + "/Floats/Float64Zero.mpack");
 		double value = MsgPack.Unpack<double>(bytes);
-
 		Assert.AreEqual(0.0, value);
 	}
 
@@ -19,7 +18,6 @@ public class FloatTest : TestBase
 	{
 		byte[] bytes = ReadFile(basePath + "/Floats/Float64Zero.mpack");
 		float value = MsgPack.Unpack<float>(bytes);
-
 		Assert.AreEqual(0f, value);
 	}
 
@@ -28,7 +26,6 @@ public class FloatTest : TestBase
 	{
 		byte[] bytes = ReadFile(basePath + "/Floats/Float64Min.mpack");
 		double value = MsgPack.Unpack<double>(bytes);
-
 		Assert.AreEqual(double.MinValue, value);
 	}
 
@@ -37,7 +34,7 @@ public class FloatTest : TestBase
 	{
 		Assert.Throws<InvalidCastException>(() => {
 			byte[] bytes = ReadFile(basePath + "/Floats/Float64Min.mpack");
-			float value = MsgPack.Unpack<float>(bytes);
+			MsgPack.Unpack<float>(bytes);
 		});
 	}
 
@@ -46,7 +43,6 @@ public class FloatTest : TestBase
 	{
 		byte[] bytes = ReadFile(basePath + "/Floats/Float64Max.mpack");
 		double value = MsgPack.Unpack<double>(bytes);
-
 		Assert.AreEqual(double.MaxValue, value);
 	}
 
@@ -55,7 +51,7 @@ public class FloatTest : TestBase
 	{
 		Assert.Throws<InvalidCastException>(() => {
 			byte[] bytes = ReadFile(basePath + "/Floats/Float64Max.mpack");
-			float value = MsgPack.Unpack<float>(bytes);
+			MsgPack.Unpack<float>(bytes);
 		});
 	}
 }

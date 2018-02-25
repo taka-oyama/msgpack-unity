@@ -9,7 +9,6 @@ public class BoolTest : TestBase
 	{
 		byte[] bytes = ReadFile(basePath + "/Bools/True.mpack");
 		bool boolValue = MsgPack.Unpack<bool>(bytes);
-
 		Assert.IsTrue(boolValue);
 	}
 
@@ -18,7 +17,6 @@ public class BoolTest : TestBase
 	{
 		byte[] bytes = ReadFile(basePath + "/Bools/False.mpack");
 		bool boolValue = MsgPack.Unpack<bool>(bytes);
-
 		Assert.IsFalse(boolValue);
 	}
 }
