@@ -54,8 +54,8 @@ namespace UniMsgPack
 			if(type.IsEnum) return ReadEnum(type, format);
 			if(IsNullable(type)) return ReadNullable(type, format);
 			if(type.IsArray) return ReadArray(type, format);
-			if(type is IList) return ReadList(type, format);
-            if(type is IDictionary) return ReadDictionary(type, format);
+			if(typeof(IList).IsAssignableFrom(type)) return ReadList(type, format);
+			if(typeof(IDictionary).IsAssignableFrom(type)) return ReadDictionary(type, format);
 			return ReadMap(type, format);
 		}
 
