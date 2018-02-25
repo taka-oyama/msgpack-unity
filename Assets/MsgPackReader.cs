@@ -141,22 +141,7 @@ namespace UniMsgPack
 			if(format == Format.Nil) {
 				return null;
 			}
-			int size = 0;
-			if(format.Between(Format.FixStrMin, Format.FixStrMax)) {
-				size = (int)format & 0x1f;
-			}
-			else if(format == Format.Str8) {
-				size = (int)ExtractUInt8();
-			}
-			else if(format == Format.Str16) {
-				size = (int)ExtractUInt16();
-			}
-			else if(format == Format.Str32) {
-				size = (int)ExtractUInt32();
-			}
-			else {
-				throw new FormatException();
-			}
+			int size = ExtractStringSize(format);
 			if(dynamicBuffer.Length < size) {
 				Array.Resize<byte>(ref dynamicBuffer, size);
 			}
@@ -169,19 +154,7 @@ namespace UniMsgPack
 			if(format == Format.Nil) {
 				return null;
 			}
-			int size = 0;
-			if(format == Format.Bin8) {
-				size = (int)ExtractUInt8();
-			}
-			else if(format == Format.Bin16) {
-				size = (int)ExtractUInt16();
-			}
-			else if(format == Format.Bin32) {
-				size = (int)ExtractUInt32();
-			}
-			else {
-				throw new FormatException();
-			}
+			int size = ExtractBinSize(format);
 			byte[] destination = new byte[size];
 			stream.Read(destination, 0, size);
 			return destination;
@@ -397,6 +370,24 @@ namespace UniMsgPack
 				}
 				return BitConverter.ToDouble(staticBuffer, 0);
 			}
+			throw new FormatException();
+		}
+
+		int ExtractStringSize(Format format)
+		{
+			if(format.Between(Format.FixStrMin, Format.FixStrMax)) return ((int)format & 0x1f);
+			if(format == Format.Str8) return (int)ExtractUInt8();
+			if(format == Format.Str16) return (int)ExtractUInt16();
+			if(format == Format.Str32) return (int)ExtractUInt32();
+			throw new FormatException();
+		}
+
+		int ExtractBinSize(Format format)
+		{
+			if(format.Between(Format.FixStrMin, Format.FixStrMax)) return ((int)format & 0x1f);
+			if(format == Format.Bin8) return (int)ExtractUInt8();
+			if(format == Format.Bin16) return (int)ExtractUInt16();
+			if(format == Format.Bin32) return (int)ExtractUInt32();
 			throw new FormatException();
 		}
 
