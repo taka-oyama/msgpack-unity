@@ -28,7 +28,7 @@ namespace UniMsgPack
 
 		static Dictionary<string, FieldInfo> ResolveType(Type type)
 		{
-			FieldInfo[] fields = type.GetFields();
+			FieldInfo[] fields = type.GetFields(flags);
 			Dictionary<string, FieldInfo> infos = new Dictionary<string, FieldInfo>(fields.Length);
 			foreach(FieldInfo info in fields) {
 				infos[info.Name] = info;
