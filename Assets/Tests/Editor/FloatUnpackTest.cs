@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UniMsgPack.Tests
 {
-	public class FloatTest : TestBase
+	public class FloatUnpackTest : TestBase
 	{
 		[Test]
 		public void UnpackFloat64Zero()

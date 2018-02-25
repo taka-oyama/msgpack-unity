@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace UniMsgPack.Tests
 {
-	public class ArrayTest : TestBase
+	public class ArrayUnpackTest : TestBase
 	{
 		struct Map
 		{

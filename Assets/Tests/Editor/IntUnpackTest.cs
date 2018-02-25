@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UniMsgPack.Tests
 {
-	public class IntTest : TestBase
+	public class IntUnpackTest : TestBase
 	{
 		[Test]
 		public void UnpackPositiveFixIntMin()

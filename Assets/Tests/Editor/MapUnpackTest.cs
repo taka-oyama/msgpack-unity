@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UniMsgPack.Tests
 {
-	public class MapTest : TestBase
+	public class MapUnpackTest : TestBase
 	{
 		struct StructMap
 		{
@@ -30,7 +30,7 @@ namespace UniMsgPack.Tests
 
 		class MixedMap
 		{
-			public StructMap inner;
+			public ClassMap inner = null;
 		}
 
 		[Test]

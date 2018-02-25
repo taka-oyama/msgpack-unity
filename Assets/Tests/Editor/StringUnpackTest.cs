@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace UniMsgPack.Tests
 {
-	public class StringTest : TestBase
+	public class StringUnpackTest : TestBase
 	{
 		[Test]
 		public void UnpackNil()

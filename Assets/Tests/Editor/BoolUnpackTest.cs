@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UniMsgPack.Tests
 {
-	public class BoolTest : TestBase
+	public class BoolUnpackTest : TestBase
 	{
 		[Test]
 		public void UnpackTrue()
