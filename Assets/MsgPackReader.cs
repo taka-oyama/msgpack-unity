@@ -143,7 +143,7 @@ namespace UniMsgPack
 			}
 			int size = ExtractStringSize(format);
 			if(dynamicBuffer.Length < size) {
-				Array.Resize<byte>(ref dynamicBuffer, size);
+				Array.Resize(ref dynamicBuffer, size);
 			}
 			stream.Read(dynamicBuffer, 0, size);
 			return Encoding.UTF8.GetString(dynamicBuffer, 0, size);
