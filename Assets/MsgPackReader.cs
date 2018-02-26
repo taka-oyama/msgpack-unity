@@ -330,18 +330,18 @@ namespace UniMsgPack
 			if(format == Format.True) { return; }
 			if(format.Between(Format.PositiveFixIntMin, Format.PositiveFixIntMax)) { return; }
 			if(format.Between(Format.NegativeFixIntMin, Format.NegativeFixIntMax)) { return; }
-			if(format == Format.UInt8  || format == Format.Int8 ) { stream.Position += 1; return; }
-			if(format == Format.UInt16 || format == Format.Int16) { stream.Position += 2; return; }
-			if(format == Format.UInt32 || format == Format.Int32) { stream.Position += 4; return; }
-			if(format == Format.UInt64 || format == Format.Int64) { stream.Position += 8; return; }
-			if(format == Format.Float32) { stream.Position += 4; return; }
-			if(format == Format.Float64) { stream.Position += 8; return; }
+			if(format == Format.UInt8  || format == Format.Int8 ) { FastForward(1); return; }
+			if(format == Format.UInt16 || format == Format.Int16) { FastForward(2); return; }
+			if(format == Format.UInt32 || format == Format.Int32) { FastForward(4); return; }
+			if(format == Format.UInt64 || format == Format.Int64) { FastForward(8); return; }
+			if(format == Format.Float32) { FastForward(4); return; }
+			if(format == Format.Float64) { FastForward(8); return; }
 			if(format.Between(Format.FixStrMin, Format.FixStrMax) || format == Format.Str8 || format == Format.Str16 || format == Format.Str32) {
-				stream.Position += ExtractStringSize(format);
+				FastForward(ExtractStringSize(format));
 				return;
 			}
 			if(format == Format.Bin8 || format == Format.Bin16 || format == Format.Bin32) {
-				stream.Position += ExtractBinSize(format);
+				FastForward(ExtractBinSize(format));
 				return;
 			}
 			if(format.Between(Format.FixArrayMin, Format.FixArrayMax) || format == Format.Array16 || format == Format.Array32) {
@@ -361,14 +361,13 @@ namespace UniMsgPack
 				}
 				return;
 			}
-			if(format == Format.FixExt1) { stream.Position += 2; return; }
-			if(format == Format.FixExt2) { stream.Position += 3; return; }
-			if(format == Format.FixExt4) { stream.Position += 5; return; }
-			if(format == Format.FixExt8) { stream.Position += 9; return; }
-			if(format == Format.FixExt16) { stream.Position += 17; return; }
+			if(format == Format.FixExt1) { FastForward(2); return; }
+			if(format == Format.FixExt2) { FastForward(3); return; }
+			if(format == Format.FixExt4) { FastForward(5); return; }
+			if(format == Format.FixExt8) { FastForward(9); return; }
+			if(format == Format.FixExt16) { FastForward(17); return; }
 			if(format == Format.Ext8 || format == Format.Ext16 || format == Format.Ext32) {
-				int size = (int)ExtractUInt32();
-				stream.Position += size + 1;
+				FastForward(ExtractUInt32() + 1);
 				return;
 			}
 		}
