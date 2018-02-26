@@ -471,34 +471,34 @@ namespace UniMsgPack
 		int ExtractStringSize(Format format)
 		{
 			if(format.Between(Format.FixStrMin, Format.FixStrMax)) return ((int)format & 0x1f);
-			if(format == Format.Str8) return (int)ExtractUInt8();
-			if(format == Format.Str16) return (int)ExtractUInt16();
-			if(format == Format.Str32) return (int)ExtractUInt32();
+			if(format == Format.Str8) return ExtractUInt8();
+			if(format == Format.Str16) return ExtractUInt16();
+			if(format == Format.Str32) return ExtractInt32();
 			throw new FormatException();
 		}
 
 		int ExtractBinSize(Format format)
 		{
 			if(format.Between(Format.FixStrMin, Format.FixStrMax)) return ((int)format & 0x1f);
-			if(format == Format.Bin8) return (int)ExtractUInt8();
-			if(format == Format.Bin16) return (int)ExtractUInt16();
-			if(format == Format.Bin32) return (int)ExtractUInt32();
+			if(format == Format.Bin8) return ExtractUInt8();
+			if(format == Format.Bin16) return ExtractUInt16();
+			if(format == Format.Bin32) return ExtractInt32();
 			throw new FormatException();
 		}
 
         int ExtractArraySize(Format format)
         {
 			if(format.Between(Format.FixArrayMin, Format.FixArrayMax)) return ((int)format & 0xf);
-			if(format == Format.Array16) return (int)ExtractUInt16();
-			if(format == Format.Array32) return (int)ExtractUInt32();
+			if(format == Format.Array16) return ExtractUInt16();
+			if(format == Format.Array32) return ExtractInt32();
             return -1;
         }
 
 		int ExtractMapSize(Format format)
 		{
 			if(format.Between(Format.FixMapMin, Format.FixMapMax)) return ((int)format & 0xf);
-			if(format == Format.Map16) return (int)ExtractUInt16();
-			if(format == Format.Map32) return (int)ExtractUInt32();
+			if(format == Format.Map16) return ExtractUInt16();
+			if(format == Format.Map32) return ExtractInt32();
 			return -1;
 		}
 
