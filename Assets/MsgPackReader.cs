@@ -45,7 +45,6 @@ namespace UniMsgPack
 				if(type == typeof(byte)) return ReadInt32(format);
 				if(type == typeof(short)) return ReadInt32(format);
 				if(type == typeof(ushort)) return ReadUInt32(format);
-				if(type == typeof(char)) return ReadUInt32(format);
 				throw new NotSupportedException(type + " is not a supported primitive type");
 			}
 			if(type == typeof(string)) return ReadString(format);
