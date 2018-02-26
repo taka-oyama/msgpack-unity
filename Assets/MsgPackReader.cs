@@ -100,10 +100,10 @@ namespace UniMsgPack
 		long ReadInt64(Format format)
 		{
 			if(format.Between(Format.PositiveFixIntMin, Format.PositiveFixIntMax)) return (long)ExtractPositiveFixInt(format);
-			if(format == Format.UInt8) return (long)ExtractUInt8();
-			if(format == Format.UInt16) return (long)ExtractUInt16();
-			if(format == Format.UInt32) return (long)ExtractUInt32();
-			if(format == Format.UInt64) return (long)ExtractUInt64();
+			if(format == Format.UInt8) return ExtractUInt8();
+			if(format == Format.UInt16) return ExtractUInt16();
+			if(format == Format.UInt32) return ExtractUInt32();
+			if(format == Format.UInt64) return Convert.ToInt64(ExtractUInt64());
 			if(format.Between(Format.NegativeFixIntMin, Format.NegativeFixIntMax)) return ExtractNegativeFixInt(format);
 			if(format == Format.Int8) return ExtractInt8();
 			if(format == Format.Int16) return ExtractInt16();
