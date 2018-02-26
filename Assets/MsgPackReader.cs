@@ -286,7 +286,7 @@ namespace UniMsgPack
 				if(field != null) {
 					field.SetValue(obj, Read(field.FieldType));
 				} else {
-					Skip(ExtractNextFormat());
+					Skip();
 				}
 				size = size - 1;
 			}
@@ -323,8 +323,9 @@ namespace UniMsgPack
 			throw new FormatException();
 		}
 
-		void Skip(Format format)
+		void Skip()
 		{
+			Format format = ExtractNextFormat();
 			if(format == Format.Nil) { return; }
 			if(format == Format.False) { return; }
 			if(format == Format.True) { return; }
@@ -345,19 +346,15 @@ namespace UniMsgPack
 				return;
 			}
 			if(format.Between(Format.FixArrayMin, Format.FixArrayMax) || format == Format.Array16 || format == Format.Array32) {
-				int size = ExtractArraySize(format);
-				while(size > 0) {
-					Skip(ExtractNextFormat());
-					size -= 1;
+				for(int size = ExtractArraySize(format); size > 0; size--) {
+					Skip();
 				}
 				return;
 			}
 			if(format.Between(Format.FixMapMin, Format.FixMapMax) || format == Format.Map16 || format == Format.Map32) {
-				int size = ExtractMapSize(format);
-				while(size > 0) {
-					Skip(ExtractNextFormat());
-					Skip(ExtractNextFormat());
-					size -= 1;
+				for(int size = ExtractMapSize(format); size > 0; size--) {
+					Skip();
+					Skip();
 				}
 				return;
 			}
