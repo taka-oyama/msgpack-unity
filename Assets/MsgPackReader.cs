@@ -473,7 +473,7 @@ namespace UniMsgPack
 			if(format.Between(Format.FixStrMin, Format.FixStrMax)) return ((int)format & 0x1f);
 			if(format == Format.Str8) return ExtractUInt8();
 			if(format == Format.Str16) return ExtractUInt16();
-			if(format == Format.Str32) return ExtractInt32();
+			if(format == Format.Str32) return Convert.ToInt32(ExtractUInt32());
 			throw new FormatException();
 		}
 
@@ -482,7 +482,7 @@ namespace UniMsgPack
 			if(format.Between(Format.FixStrMin, Format.FixStrMax)) return ((int)format & 0x1f);
 			if(format == Format.Bin8) return ExtractUInt8();
 			if(format == Format.Bin16) return ExtractUInt16();
-			if(format == Format.Bin32) return ExtractInt32();
+			if(format == Format.Bin32) return Convert.ToInt32(ExtractUInt32());
 			throw new FormatException();
 		}
 
@@ -490,7 +490,7 @@ namespace UniMsgPack
         {
 			if(format.Between(Format.FixArrayMin, Format.FixArrayMax)) return ((int)format & 0xf);
 			if(format == Format.Array16) return ExtractUInt16();
-			if(format == Format.Array32) return ExtractInt32();
+			if(format == Format.Array32) return Convert.ToInt32(ExtractUInt32());
             return -1;
         }
 
@@ -498,7 +498,7 @@ namespace UniMsgPack
 		{
 			if(format.Between(Format.FixMapMin, Format.FixMapMax)) return ((int)format & 0xf);
 			if(format == Format.Map16) return ExtractUInt16();
-			if(format == Format.Map32) return ExtractInt32();
+			if(format == Format.Map32) return Convert.ToInt32(ExtractUInt32());
 			return -1;
 		}
 
@@ -511,6 +511,20 @@ namespace UniMsgPack
 				}
 			}
 			return false;
+		}
+
+		void FastForward(long offset)
+		{
+			if(stream.CanSeek) {
+				stream.Seek(offset, SeekOrigin.Current);
+			}
+			else {
+				while(offset > 0) {
+					int size = offset > int.MaxValue ? int.MaxValue : (int)offset; 
+					stream.Read(dynamicBuffer, 0, size);
+					offset -= int.MaxValue;
+				}
+			}
 		}
 	}
 }
