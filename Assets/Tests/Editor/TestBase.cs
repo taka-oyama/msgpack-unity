@@ -7,9 +7,9 @@ namespace UniMsgPack.Tests
 	{
 		protected string basePath = Application.dataPath + "/Tests/Files";
 
-		public static byte[] ReadFile(string path)
+		public byte[] ReadFile(string path)
 		{
-			return File.ReadAllBytes(path);
+			return File.ReadAllBytes(basePath + "/" + path + ".mpack");
 		}
 	}
 }

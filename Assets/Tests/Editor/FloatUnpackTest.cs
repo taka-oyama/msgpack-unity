@@ -7,52 +7,46 @@ namespace UniMsgPack.Tests
 	public class FloatUnpackTest : TestBase
 	{
 		[Test]
-		public void UnpackFloat64Zero()
+		public void Float64Zero()
 		{
-			byte[] bytes = ReadFile(basePath + "/Floats/Float64Zero.mpack");
-			double value = MsgPack.Unpack<double>(bytes);
+			double value = MsgPack.Unpack<double>(ReadFile("Floats/Float64Zero"));
 			Assert.AreEqual(0.0, value);
 		}
 
 		[Test]
-		public void UnpackFloat64ZeroAsFloat()
+		public void Float64ZeroAsFloat()
 		{
-			byte[] bytes = ReadFile(basePath + "/Floats/Float64Zero.mpack");
-			float value = MsgPack.Unpack<float>(bytes);
+			float value = MsgPack.Unpack<float>(ReadFile("Floats/Float64Zero"));
 			Assert.AreEqual(0f, value);
 		}
 
 		[Test]
-		public void UnpackFloat64Min()
+		public void Float64Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Floats/Float64Min.mpack");
-			double value = MsgPack.Unpack<double>(bytes);
+			double value = MsgPack.Unpack<double>(ReadFile("Floats/Float64Min"));
 			Assert.AreEqual(double.MinValue, value);
 		}
 
 		[Test]
-		public void UnpackFloat64MinAsFloat()
+		public void Float64MinAsFloat()
 		{
 			Assert.Throws<InvalidCastException>(() => {
-				byte[] bytes = ReadFile(basePath + "/Floats/Float64Min.mpack");
-				MsgPack.Unpack<float>(bytes);
+				MsgPack.Unpack<float>(ReadFile("Floats/Float64Min"));
 			});
 		}
 
 		[Test]
-		public void UnpackFloat64Max()
+		public void Float64Max()
 		{
-			byte[] bytes = ReadFile(basePath + "/Floats/Float64Max.mpack");
-			double value = MsgPack.Unpack<double>(bytes);
+			double value = MsgPack.Unpack<double>(ReadFile("Floats/Float64Max"));
 			Assert.AreEqual(double.MaxValue, value);
 		}
 
 		[Test]
-		public void UnpackFloat64MaxAsFloat()
+		public void Float64MaxAsFloat()
 		{
 			Assert.Throws<InvalidCastException>(() => {
-				byte[] bytes = ReadFile(basePath + "/Floats/Float64Max.mpack");
-				MsgPack.Unpack<float>(bytes);
+				MsgPack.Unpack<float>(ReadFile("Floats/Float64Max"));
 			});
 		}
 	}

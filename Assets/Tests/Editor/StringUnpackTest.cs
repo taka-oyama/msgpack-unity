@@ -7,70 +7,62 @@ namespace UniMsgPack.Tests
 	public class StringUnpackTest : TestBase
 	{
 		[Test]
-		public void UnpackNil()
+		public void Nil()
 		{
-			byte[] bytes = ReadFile(basePath + "/Strings/Nil.mpack");
-			string value = MsgPack.Unpack<string>(bytes);
+			string value = MsgPack.Unpack<string>(ReadFile("Strings/Nil"));
 			Assert.AreEqual(null, value);
 		}
 
 		[Test]
-		public void UnpackFixStrMin()
+		public void FixStrMin()
 		{
-			byte[] bytes = ReadFile(basePath + "/Strings/FixStrMin.mpack");
-			string value = MsgPack.Unpack<string>(bytes);
+			string value = MsgPack.Unpack<string>(ReadFile("Strings/FixStrMin"));
 			Assert.AreEqual("", value);
 		}
 
 		[Test]
-		public void UnpackFixStrMax()
+		public void FixStrMax()
 		{
-			byte[] bytes = ReadFile(basePath + "/Strings/FixStrMax.mpack");
-			string value = MsgPack.Unpack<string>(bytes);
+			string value = MsgPack.Unpack<string>(ReadFile("Strings/FixStrMax"));
 			Assert.AreEqual(new String('A', 31), value);
 		}
 
 		[Test]
-		public void UnpackStr8Min()
+		public void Str8Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Strings/Str8Min.mpack");
-			string value = MsgPack.Unpack<string>(bytes);
+			string value = MsgPack.Unpack<string>(ReadFile("Strings/Str8Min"));
 			Assert.AreEqual(new String('A', 32), value);
 		}
 
 		[Test]
-		public void UnpackStr8Max()
+		public void Str8Max()
 		{
-			byte[] bytes = ReadFile(basePath + "/Strings/Str8Max.mpack");
-			string value = MsgPack.Unpack<string>(bytes);
+			string value = MsgPack.Unpack<string>(ReadFile("Strings/Str8Max"));
 			Assert.AreEqual(new String('A', byte.MaxValue), value);
 		}
 
 		[Test]
-		public void UnpackStr16Min()
+		public void Str16Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Strings/Str16Min.mpack");
-			string value = MsgPack.Unpack<string>(bytes);
+			string value = MsgPack.Unpack<string>(ReadFile("Strings/Str16Min"));
 			Assert.AreEqual(new String('A', byte.MaxValue + 1), value);
 		}
 
 		[Test]
-		public void UnpackStr16Max()
+		public void Str16Max()
 		{
-			byte[] bytes = ReadFile(basePath + "/Strings/Str16Max.mpack");
-			string value = MsgPack.Unpack<string>(bytes);
+			string value = MsgPack.Unpack<string>(ReadFile("Strings/Str16Max"));
 			Assert.AreEqual(new String('A', ushort.MaxValue), value);
 		}
 
 		[Test]
-		public void UnpackStr32Min()
+		public void Str32Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Strings/Str32Min.mpack");
-			string value = MsgPack.Unpack<string>(bytes);
+			string value = MsgPack.Unpack<string>(ReadFile("Strings/Str32Min"));
 			Assert.AreEqual(new String('A', ushort.MaxValue + 1), value);
 		}
 
-		public void UnpackStr32Max()
+		public void Str32Max()
 		{
 			// Omitted because the filesize is too big
 		}

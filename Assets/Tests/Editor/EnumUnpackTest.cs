@@ -11,18 +11,16 @@ namespace UniMsgPack.Tests
 		}
 
 		[Test]
-		public void UnpackEnumFromInt()
+		public void EnumFromInt()
 		{
-			byte[] bytes = ReadFile(basePath + "/Enums/EnumInt.mpack");
-			MyEnum value = MsgPack.Unpack<MyEnum>(bytes);
+			MyEnum value = MsgPack.Unpack<MyEnum>(ReadFile("Enums/EnumInt"));
 			Assert.AreEqual(MyEnum.Foo, value);
 		}
 
 		[Test]
-		public void UnpackEnumFromString()
+		public void EnumFromString()
 		{
-			byte[] bytes = ReadFile(basePath + "/Enums/EnumString.mpack");
-			MyEnum value = MsgPack.Unpack<MyEnum>(bytes);
+			MyEnum value = MsgPack.Unpack<MyEnum>(ReadFile("Enums/EnumString"));
 			Assert.AreEqual(MyEnum.Foo, value);
 		}
 	}

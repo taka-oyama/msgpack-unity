@@ -11,34 +11,30 @@ namespace UniMsgPack.Tests
 		}
 
 		[Test]
-		public void UnpackNullableInt()
+		public void NullableInt()
 		{
-			byte[] bytes = ReadFile(basePath + "/Nullables/Int.mpack");
-			int? value = MsgPack.Unpack<int?>(bytes);
+			int? value = MsgPack.Unpack<int?>(ReadFile("Nullables/Int"));
 			Assert.AreEqual(1, value);
 		}
 
 		[Test]
-		public void UnpackNullableIntAsNull()
+		public void NullableIntAsNull()
 		{
-			byte[] bytes = ReadFile(basePath + "/Nullables/Nil.mpack");
-			int? value = MsgPack.Unpack<int?>(bytes);
+			int? value = MsgPack.Unpack<int?>(ReadFile("Nullables/Nil"));
 			Assert.AreEqual(null, value);
 		}
 
 		[Test]
-		public void UnpackNullableEnum()
+		public void NullableEnum()
 		{
-			byte[] bytes = ReadFile(basePath + "/Nullables/EnumInt.mpack");
-			MyEnum value = MsgPack.Unpack<MyEnum>(bytes);
+			MyEnum value = MsgPack.Unpack<MyEnum>(ReadFile("Nullables/EnumInt"));
 			Assert.AreEqual(MyEnum.Foo, value);
 		}
 
 		[Test]
-		public void UnpackNullableEnumAsNull()
+		public void NullableEnumAsNull()
 		{
-			byte[] bytes = ReadFile(basePath + "/Nullables/Nil.mpack");
-			MyEnum? value = MsgPack.Unpack<MyEnum?>(bytes);
+			MyEnum? value = MsgPack.Unpack<MyEnum?>(ReadFile("Nullables/Nil"));
 			Assert.AreEqual(null, value);
 		}
 	}

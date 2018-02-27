@@ -6,18 +6,16 @@ namespace UniMsgPack.Tests
 	public class BoolUnpackTest : TestBase
 	{
 		[Test]
-		public void UnpackTrue()
+		public void True()
 		{
-			byte[] bytes = ReadFile(basePath + "/Bools/True.mpack");
-			bool boolValue = MsgPack.Unpack<bool>(bytes);
+			bool boolValue = MsgPack.Unpack<bool>(ReadFile("Bools/True"));
 			Assert.IsTrue(boolValue);
 		}
 
 		[Test]
-		public void UnpackFalse()
+		public void False()
 		{
-			byte[] bytes = ReadFile(basePath + "/Bools/False.mpack");
-			bool boolValue = MsgPack.Unpack<bool>(bytes);
+			bool boolValue = MsgPack.Unpack<bool>(ReadFile("Bools/False"));
 			Assert.IsFalse(boolValue);
 		}
 	}

@@ -12,18 +12,16 @@ namespace UniMsgPack.Tests
 		}
 
 		[Test]
-		public void UnpackNil()
+		public void Nil()
 		{
-			byte[] bytes = ReadFile(basePath + "/Arrays/Nil.mpack");
-			int?[] nil = MsgPack.Unpack<int?[]>(bytes);
+			int?[] nil = MsgPack.Unpack<int?[]>(ReadFile("Arrays/Nil"));
 			Assert.AreEqual(0, nil.Length);
 		}
 
 		[Test]
-		public void UnpackNils()
+		public void Nils()
 		{
-			byte[] bytes = ReadFile(basePath + "/Arrays/Nils.mpack");
-			int?[] nils = MsgPack.Unpack<int?[]>(bytes);
+			int?[] nils = MsgPack.Unpack<int?[]>(ReadFile("Arrays/Nils"));
 			Assert.AreEqual(2, nils.Length);
 			for(int i = 0; i < nils.Length; i++) {
 				Assert.AreEqual(nils[i], null);
@@ -31,10 +29,9 @@ namespace UniMsgPack.Tests
 		}
 
 		[Test]
-		public void UnpackArrays()
+		public void Arrays()
 		{
-			byte[] bytes = ReadFile(basePath + "/Arrays/Arrays.mpack");
-			int[][] arrays = MsgPack.Unpack<int[][]>(bytes);
+			int[][] arrays = MsgPack.Unpack<int[][]>(ReadFile("Arrays/Arrays"));
 			Assert.AreEqual(2, arrays.Length);
 			Assert.AreEqual(2, arrays[0].Length);
 			Assert.AreEqual(1, arrays[0][0]);
@@ -45,10 +42,9 @@ namespace UniMsgPack.Tests
 		}
 
 		[Test]
-		public void UnpackMaps()
+		public void Maps()
 		{
-			byte[] bytes = ReadFile(basePath + "/Arrays/Maps.mpack");
-			Map[] maps = MsgPack.Unpack<Map[]>(bytes);
+			Map[] maps = MsgPack.Unpack<Map[]>(ReadFile("Arrays/Maps"));
 			Assert.AreEqual(2, maps.Length);
 			Assert.AreEqual(1, maps[0].a);
 			Assert.AreEqual(0, maps[0].b);
@@ -57,18 +53,16 @@ namespace UniMsgPack.Tests
 		}
 
 		[Test]
-		public void UnpackFixArrayMin()
+		public void FixArrayMin()
 		{
-			byte[] bytes = ReadFile(basePath + "/Arrays/FixArrayMin.mpack");
-			int[] test = MsgPack.Unpack<int[]>(bytes);
+			int[] test = MsgPack.Unpack<int[]>(ReadFile("Arrays/FixArrayMin"));
 			Assert.AreEqual(0, test.Length);
 		}
 
 		[Test]
-		public void UnpackFixArrayMax()
+		public void FixArrayMax()
 		{
-			byte[] bytes = ReadFile(basePath + "/Arrays/FixArrayMax.mpack");
-			int[] ints = MsgPack.Unpack<int[]>(bytes);
+			int[] ints = MsgPack.Unpack<int[]>(ReadFile("Arrays/FixArrayMax"));
 			Assert.AreEqual(ints.Length, 15);
 			for(int i = 0; i < ints.Length; i++) {
 				Assert.AreEqual(i, ints[i]);
@@ -76,10 +70,9 @@ namespace UniMsgPack.Tests
 		}
 
 		[Test]
-		public void UnpackArray16Min()
+		public void Array16Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Arrays/Array16Min.mpack");
-			int[] ints = MsgPack.Unpack<int[]>(bytes);
+			int[] ints = MsgPack.Unpack<int[]>(ReadFile("Arrays/Array16Min"));
 			Assert.AreEqual(ints.Length, 16);
 			for(int i = 0; i < ints.Length; i++) {
 				Assert.AreEqual(i, ints[i]);
@@ -87,10 +80,9 @@ namespace UniMsgPack.Tests
 		}
 
 		[Test]
-		public void UnpackArray16Max()
+		public void Array16Max()
 		{
-			byte[] bytes = ReadFile(basePath + "/Arrays/Array16Max.mpack");
-			int[] ints = MsgPack.Unpack<int[]>(bytes);
+			int[] ints = MsgPack.Unpack<int[]>(ReadFile("Arrays/Array16Max"));
 			Assert.AreEqual(ints.Length, 65535);
 			for(int i = 0; i < 10; i++) {
 				Assert.AreEqual(i, ints[i]);
@@ -98,10 +90,9 @@ namespace UniMsgPack.Tests
 		}
 
 		[Test]
-		public void UnpackArray32Min()
+		public void Array32Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Arrays/Array32Min.mpack");
-			int[] ints = MsgPack.Unpack<int[]>(bytes);
+			int[] ints = MsgPack.Unpack<int[]>(ReadFile("Arrays/Array32Min"));
 			Assert.AreEqual(ints.Length, 65536);
 			for(int i = 0; i < 10; i++) {
 				Assert.AreEqual(i, ints[i]);

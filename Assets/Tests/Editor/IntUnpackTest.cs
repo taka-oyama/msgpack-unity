@@ -6,82 +6,72 @@ namespace UniMsgPack.Tests
 	public class IntUnpackTest : TestBase
 	{
 		[Test]
-		public void UnpackNegativeFixIntMin()
+		public void NegativeFixIntMin()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/NegativeFixIntMin.mpack");
-			int value = MsgPack.Unpack<int>(bytes);
+			int value = MsgPack.Unpack<int>(ReadFile("Ints/NegativeFixIntMin"));
 			Assert.AreEqual(-32, value);
 		}
 
 		[Test]
-		public void UnpackNegativeFixIntMax()
+		public void NegativeFixIntMax()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/NegativeFixIntMax.mpack");
-			int value = MsgPack.Unpack<int>(bytes);
+			int value = MsgPack.Unpack<int>(ReadFile("Ints/NegativeFixIntMax"));
 			Assert.AreEqual(-1, value);
 		}
 
 		[Test]
-		public void UnpackInt8Min()
+		public void Int8Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/Int8Min.mpack");
-			int value = MsgPack.Unpack<int>(bytes);
+			int value = MsgPack.Unpack<int>(ReadFile("Ints/Int8Min"));
 			Assert.AreEqual(sbyte.MinValue, value);
 		}
 
 		[Test]
-		public void UnpackInt8Max()
+		public void Int8Max()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/Int8Max.mpack");
-			int value = MsgPack.Unpack<int>(bytes);
+			int value = MsgPack.Unpack<int>(ReadFile("Ints/Int8Max"));
 			Assert.AreEqual(-33, value);
 		}
 
 		[Test]
-		public void UnpackInt16Min()
+		public void Int16Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/Int16Min.mpack");
-			int value = MsgPack.Unpack<int>(bytes);
+			int value = MsgPack.Unpack<int>(ReadFile("Ints/Int16Min"));
 			Assert.AreEqual(short.MinValue, value);
 		}
 
 		[Test]
-		public void UnpackInt16Max()
+		public void Int16Max()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/Int16Max.mpack");
-			int value = MsgPack.Unpack<int>(bytes);
+			int value = MsgPack.Unpack<int>(ReadFile("Ints/Int16Max"));
 			Assert.AreEqual(sbyte.MinValue - 1, value);
 		}
 
 		[Test]
-		public void UnpackInt32Min()
+		public void Int32Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/Int32Min.mpack");
-			int value = MsgPack.Unpack<int>(bytes);
+			int value = MsgPack.Unpack<int>(ReadFile("Ints/Int32Min"));
 			Assert.AreEqual(int.MinValue, value);
 		}
 
 		[Test]
-		public void UnpackInt32Max()
+		public void Int32Max()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/Int32Max.mpack");
-			int value = MsgPack.Unpack<int>(bytes);
+			int value = MsgPack.Unpack<int>(ReadFile("Ints/Int32Max"));
 			Assert.AreEqual(short.MinValue - 1, value);
 		}
 
 		[Test]
-		public void UnpackInt64Min()
+		public void Int64Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/Int64Min.mpack");
-			long value = MsgPack.Unpack<long>(bytes);
+			long value = MsgPack.Unpack<long>(ReadFile("Ints/Int64Min"));
 			Assert.AreEqual(long.MinValue, value);
 		}
 
 		[Test]
-		public void UnpackInt64Max()
+		public void Int64Max()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/Int64Max.mpack");
-			long value = MsgPack.Unpack<long>(bytes);
+			long value = MsgPack.Unpack<long>(ReadFile("Ints/Int64Max"));
 			Assert.AreEqual((long)int.MinValue - 1, value);
 		}
 	}

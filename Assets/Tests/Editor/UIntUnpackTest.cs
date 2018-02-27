@@ -1,87 +1,193 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace UniMsgPack.Tests
 {
 	public class UIntUnpackTest : TestBase
 	{
+		#region PositiveFixInt Min
+
 		[Test]
-		public void UnpackPositiveFixIntMin()
+		public void PositiveFixIntMinAsByte()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/PositiveFixIntMin.mpack");
-			uint value = MsgPack.Unpack<uint>(bytes);
+			byte value = MsgPack.Unpack<byte>(ReadFile("Ints/PositiveFixIntMin"));
 			Assert.AreEqual(0, value);
 		}
 
 		[Test]
-		public void UnpackPositiveFixIntMax()
+		public void PositiveFixIntMinAsSByte()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/PositiveFixIntMax.mpack");
-			uint value = MsgPack.Unpack<uint>(bytes);
+			sbyte value = MsgPack.Unpack<sbyte>(ReadFile("Ints/PositiveFixIntMin"));
+			Assert.AreEqual(0, value);
+		}
+
+		[Test]
+		public void PositiveFixIntMinAsShort()
+		{
+			short value = MsgPack.Unpack<short>(ReadFile("Ints/PositiveFixIntMin"));
+			Assert.AreEqual(0, value);
+		}
+
+		[Test]
+		public void PositiveFixIntMinAsUShort()
+		{
+			ushort value = MsgPack.Unpack<ushort>(ReadFile("Ints/PositiveFixIntMin"));
+			Assert.AreEqual(0, value);
+		}
+
+		[Test]
+		public void PositiveFixIntMinAsInt()
+		{
+			int value = MsgPack.Unpack<int>(ReadFile("Ints/PositiveFixIntMin"));
+			Assert.AreEqual(0, value);
+		}
+
+		[Test]
+		public void PositiveFixIntMinAsUInt()
+		{
+			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/PositiveFixIntMin"));
+			Assert.AreEqual(0, value);
+		}
+
+		[Test]
+		public void PositiveFixIntMinAsLong()
+		{
+			long value = MsgPack.Unpack<long>(ReadFile("Ints/PositiveFixIntMin"));
+			Assert.AreEqual(0, value);
+		}
+
+		[Test]
+		public void PositiveFixIntMinAsULong()
+		{
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/PositiveFixIntMin"));
+			Assert.AreEqual(0, value);
+		}
+
+		#endregion
+
+
+		#region PositiveFixInt Max
+
+		[Test]
+		public void PositiveFixIntMaxAsByte()
+		{
+			byte value = MsgPack.Unpack<byte>(ReadFile("Ints/PositiveFixIntMax"));
 			Assert.AreEqual(sbyte.MaxValue, value);
 		}
 
 		[Test]
-		public void UnpackUInt8Min()
+		public void PositiveFixIntMaxAsSByte()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/UInt8Min.mpack");
-			uint value = MsgPack.Unpack<uint>(bytes);
+			sbyte value = MsgPack.Unpack<sbyte>(ReadFile("Ints/PositiveFixIntMax"));
+			Assert.AreEqual(sbyte.MaxValue, value);
+		}
+
+		[Test]
+		public void PositiveFixIntMaxAsShort()
+		{
+			short value = MsgPack.Unpack<short>(ReadFile("Ints/PositiveFixIntMax"));
+			Assert.AreEqual(sbyte.MaxValue, value);
+		}
+
+		[Test]
+		public void PositiveFixIntMaxAsUShort()
+		{
+			ushort value = MsgPack.Unpack<ushort>(ReadFile("Ints/PositiveFixIntMax"));
+			Assert.AreEqual(sbyte.MaxValue, value);
+		}
+
+		[Test]
+		public void PositiveFixIntMaxAsInt()
+		{
+			int value = MsgPack.Unpack<int>(ReadFile("Ints/PositiveFixIntMax"));
+			Assert.AreEqual(sbyte.MaxValue, value);
+		}
+
+		[Test]
+		public void PositiveFixIntMaxAsLong()
+		{
+			long value = MsgPack.Unpack<long>(ReadFile("Ints/PositiveFixIntMax"));
+			Assert.AreEqual(sbyte.MaxValue, value);
+		}
+
+		[Test]
+		public void PositiveFixIntMaxAsULong()
+		{
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/PositiveFixIntMax"));
+			Assert.AreEqual(sbyte.MaxValue, value);
+		}
+
+		#endregion
+
+
+		#region UInt8 Min
+
+		[Test]
+		public void UInt8MinAsSByte()
+		{
+			Assert.Throws<OverflowException>(() => {
+				MsgPack.Unpack<sbyte>(ReadFile("Ints/UInt8Min"));
+			});
+		}
+
+		[Test]
+		public void UInt8MinAsByte()
+		{
+			byte value = MsgPack.Unpack<byte>(ReadFile("Ints/UInt8Min"));
 			Assert.AreEqual(sbyte.MaxValue + 1, value);
 		}
+
+		#endregion
+
+
 
 		[Test]
 		public void UnpackUInt8Max()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/UInt8Max.mpack");
-			uint value = MsgPack.Unpack<uint>(bytes);
+			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/UInt8Max"));
 			Assert.AreEqual(byte.MaxValue, value);
 		}
 
 		[Test]
 		public void UnpackUInt16Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/UInt16Min.mpack");
-			uint value = MsgPack.Unpack<uint>(bytes);
+			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/UInt16Min"));
 			Assert.AreEqual(byte.MaxValue + 1, value);
 		}
 
 		[Test]
 		public void UnpackUInt16Max()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/UInt16Max.mpack");
-			uint value = MsgPack.Unpack<uint>(bytes);
+			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/UInt16Max"));
 			Assert.AreEqual(ushort.MaxValue, value);
 		}
 
 		[Test]
 		public void UnpackUInt32Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/UInt32Min.mpack");
-			uint value = MsgPack.Unpack<uint>(bytes);
+			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/UInt32Min"));
 			Assert.AreEqual(ushort.MaxValue + 1, value);
 		}
 
 		[Test]
 		public void UnpackUInt32Max()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/UInt32Max.mpack");
-			uint value = MsgPack.Unpack<uint>(bytes);
+			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/UInt32Max"));
 			Assert.AreEqual(uint.MaxValue, value);
 		}
 
 		[Test]
 		public void UnpackUInt64Min()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/UInt64Min.mpack");
-			ulong value = MsgPack.Unpack<ulong>(bytes);
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/UInt64Min"));
 			Assert.AreEqual((ulong)uint.MaxValue + 1, value);
 		}
 
 		[Test]
 		public void UnpackUInt64Max()
 		{
-			byte[] bytes = ReadFile(basePath + "/Ints/UInt64Max.mpack");
-			ulong value = MsgPack.Unpack<ulong>(bytes);
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/UInt64Max"));
 			Assert.AreEqual(ulong.MaxValue, value);
 		}
 	}
