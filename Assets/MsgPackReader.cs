@@ -38,13 +38,13 @@ namespace UniMsgPack
 				if(type == typeof(bool)) return ReadBoolean(format);
 				if(type == typeof(float)) return ReadFloat(format);
 				if(type == typeof(double)) return ReadDouble(format);
-				if(type == typeof(long)) return ReadInt64(format);
 				if(type == typeof(uint)) return ReadUInt32(format);
-				if(type == typeof(ulong)) return ReadUInt64(format);
 				if(type == typeof(sbyte)) return ReadInt8(format);
 				if(type == typeof(byte)) return ReadUInt8(format);
 				if(type == typeof(short)) return ReadInt16(format);
 				if(type == typeof(ushort)) return ReadUInt16(format);
+				if(type == typeof(long)) return ReadInt64(format);
+				if(type == typeof(ulong)) return ReadUInt64(format);
 				throw new NotSupportedException(type + " is not a supported primitive type");
 			}
 			if(type == typeof(string)) return ReadString(format);
