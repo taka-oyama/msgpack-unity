@@ -4,74 +4,76 @@ using UnityEngine;
 
 namespace UniMsgPack.Tests
 {
-	public class UIntUnpackTest : TestBase
+	public class ULongUnpackTest : TestBase
 	{
 		[Test]
-		public void PositiveFixIntMinAsUInt()
+		public void PositiveFixIntMinAsULong()
 		{
-			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/PositiveFixIntMin"));
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/PositiveFixIntMin"));
 			Assert.AreEqual(0, value);
 		}
 
 		[Test]
-		public void PositiveFixIntMaxAsUInt()
+		public void PositiveFixIntMaxAsULong()
 		{
-			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/PositiveFixIntMax"));
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/PositiveFixIntMax"));
 			Assert.AreEqual(sbyte.MaxValue, value);
 		}
 
 		[Test]
-		public void UInt8MinAsUInt()
+		public void UInt8MinAsULong()
 		{
-			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/UInt8Min"));
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/UInt8Min"));
 			Assert.AreEqual(sbyte.MaxValue + 1, value);
 		}
 
 		[Test]
-		public void UInt8MaxAsUInt()
+		public void UInt8MaxAsULong()
 		{
-			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/UInt8Max"));
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/UInt8Max"));
 			Assert.AreEqual(byte.MaxValue, value);
 		}
 
 		[Test]
-		public void UInt16MinAsUInt()
+		public void UInt16MinAsULong()
 		{
-			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/UInt16Min"));
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/UInt16Min"));
 			Assert.AreEqual(byte.MaxValue + 1, value);
 		}
 
 		[Test]
-		public void UInt16MaxAsUInt()
+		public void UInt16MaxAsULong()
 		{
-			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/UInt16Max"));
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/UInt16Max"));
 			Assert.AreEqual(ushort.MaxValue, value);
 		}
 
 		[Test]
-		public void UInt32MinAsUInt()
+		public void UInt32MinAsULong()
 		{
-			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/UInt32Min"));
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/UInt32Min"));
 			Assert.AreEqual(ushort.MaxValue + 1, value);
 		}
 
 		[Test]
-		public void UInt32MaxAsUInt()
+		public void UInt32MaxAsULong()
 		{
-			uint value = MsgPack.Unpack<uint>(ReadFile("Ints/UInt32Max"));
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/UInt32Max"));
 			Assert.AreEqual(uint.MaxValue, value);
 		}
 
 		[Test]
-		public void UInt64MinAsUInt()
+		public void UInt64MinAsULong()
 		{
-			Assert.Throws<FormatException>(() => MsgPack.Unpack<uint>(ReadFile("Ints/UInt64Min")));
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/UInt64Min"));
+			Assert.AreEqual((long)uint.MaxValue + 1, value);
 		}
 
 		[Test]
-		public void UInt64MaxAsUInt()
+		public void UInt64MaxAsULong()
 		{
-			Assert.Throws<FormatException>(() => MsgPack.Unpack<uint>(ReadFile("Ints/UInt64Max")));
+			ulong value = MsgPack.Unpack<ulong>(ReadFile("Ints/UInt64Max"));
+			Assert.AreEqual(ulong.MaxValue, value);
 		}
 
 		[Test]
