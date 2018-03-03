@@ -369,6 +369,20 @@ namespace UniMsgPack
 			}
 		}
 
+		void FastForward(long offset)
+		{
+			if(stream.CanSeek) {
+				stream.Seek(offset, SeekOrigin.Current);
+			}
+			else {
+				while(offset > 0) {
+					int size = offset > int.MaxValue ? int.MaxValue : (int)offset;
+					stream.Read(dynamicBuffer, 0, size);
+					offset -= int.MaxValue;
+				}
+			}
+		}
+
 		Format ExtractNextFormat()
 		{
 			return (Format)stream.ReadByte();
@@ -507,20 +521,6 @@ namespace UniMsgPack
 				}
 			}
 			return false;
-		}
-
-		void FastForward(long offset)
-		{
-			if(stream.CanSeek) {
-				stream.Seek(offset, SeekOrigin.Current);
-			}
-			else {
-				while(offset > 0) {
-					int size = offset > int.MaxValue ? int.MaxValue : (int)offset; 
-					stream.Read(dynamicBuffer, 0, size);
-					offset -= int.MaxValue;
-				}
-			}
 		}
 	}
 }
