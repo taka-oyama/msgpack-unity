@@ -38,15 +38,14 @@ namespace UniMsgPack
 			if(type == typeof(float)) return ReadFloat(format);
 			if(type == typeof(double)) return ReadDouble(format);
 			if(type == typeof(uint)) return ReadUInt(format);
-			if(type == typeof(sbyte)) return ReadSbyte(format);
+			if(type == typeof(sbyte)) return ReadSByte(format);
 			if(type == typeof(byte)) return ReadByte(format);
 			if(type == typeof(short)) return ReadShort(format);
 			if(type == typeof(ushort)) return ReadUShort(format);
 			if(type == typeof(long)) return ReadLong(format);
 			if(type == typeof(ulong)) return ReadULong(format);
 			if(type == typeof(string)) return ReadString(format);
-			if(type == typeof(byte[])) return ReadBinary(format);
-			if(resolver.ContainsKey(type)) resolver[type].Invoke(format);
+			if(type == typeof(byte[])) return ReadByteArray(format);
 			if(type == typeof(DateTime)) return ReadDateTime(format);
 			if(type.IsEnum) return ReadEnum(type, format);
 			if(IsNullable(type)) return ReadNullable(type, format);
@@ -97,7 +96,7 @@ namespace UniMsgPack
 			throw new FormatException();
 		}
 
-		sbyte ReadSbyte(Format format)
+		sbyte ReadSByte(Format format)
 		{
 			if(format.IsPositiveFixInt) return (sbyte)ExtractPositiveFixInt(format);
 			if(format.IsUInt8) return Convert.ToSByte(ExtractUInt8());
@@ -181,7 +180,7 @@ namespace UniMsgPack
 			return Encoding.UTF8.GetString(dynamicBuffer, 0, size);
 		}
 
-		byte[] ReadBinary(Format format)
+		byte[] ReadByteArray(Format format)
 		{
 			if(format.IsNil) {
 				return null;
@@ -202,16 +201,8 @@ namespace UniMsgPack
 
 		object ReadEnum(Type type, Format format)
 		{
-			if(format.IsIntGroup) {
-				int value = ReadInt(format);
-				if(Enum.IsDefined(type, value)) {
-					return Enum.ToObject(type, value);
-				}
-				throw new FormatException();
-			}
-			if(format.IsStringGroup) {
-				return Enum.Parse(type, ReadString(format), true);
-			}
+			if(format.IsIntGroup) return Enum.ToObject(type, ReadInt(format));
+			if(format.IsStringGroup) return Enum.Parse(type, ReadString(format), true);
 			throw new FormatException();
 		}
 
