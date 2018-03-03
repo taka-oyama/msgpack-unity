@@ -500,7 +500,6 @@ namespace UniMsgPack
 
 		int ExtractBinSize(Format format)
 		{
-			if(format.Between(Format.FixStrMin, Format.FixStrMax)) return ((int)format & 0x1f);
 			if(format == Format.Bin8) return ExtractUInt8();
 			if(format == Format.Bin16) return ExtractUInt16();
 			if(format == Format.Bin32) return Convert.ToInt32(ExtractUInt32());
