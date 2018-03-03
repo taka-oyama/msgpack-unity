@@ -33,22 +33,20 @@ namespace UniMsgPack
 
 		object Read(Type type, Format format)
 		{
-			if(type.IsPrimitive) {
-				if(type == typeof(int)) return ReadInt(format);
-				if(type == typeof(bool)) return ReadBool(format);
-				if(type == typeof(float)) return ReadFloat(format);
-				if(type == typeof(double)) return ReadDouble(format);
-				if(type == typeof(uint)) return ReadUInt(format);
-				if(type == typeof(sbyte)) return ReadSbyte(format);
-				if(type == typeof(byte)) return ReadByte(format);
-				if(type == typeof(short)) return ReadShort(format);
-				if(type == typeof(ushort)) return ReadUShort(format);
-				if(type == typeof(long)) return ReadLong(format);
-				if(type == typeof(ulong)) return ReadULong(format);
-				throw new NotSupportedException(type + " is not a supported primitive type");
-			}
+			if(type == typeof(int)) return ReadInt(format);
+			if(type == typeof(bool)) return ReadBool(format);
+			if(type == typeof(float)) return ReadFloat(format);
+			if(type == typeof(double)) return ReadDouble(format);
+			if(type == typeof(uint)) return ReadUInt(format);
+			if(type == typeof(sbyte)) return ReadSbyte(format);
+			if(type == typeof(byte)) return ReadByte(format);
+			if(type == typeof(short)) return ReadShort(format);
+			if(type == typeof(ushort)) return ReadUShort(format);
+			if(type == typeof(long)) return ReadLong(format);
+			if(type == typeof(ulong)) return ReadULong(format);
 			if(type == typeof(string)) return ReadString(format);
 			if(type == typeof(byte[])) return ReadBinary(format);
+			if(resolver.ContainsKey(type)) resolver[type].Invoke(format);
 			if(type == typeof(DateTime)) return ReadDateTime(format);
 			if(type.IsEnum) return ReadEnum(type, format);
 			if(IsNullable(type)) return ReadNullable(type, format);
@@ -60,97 +58,97 @@ namespace UniMsgPack
 
 		bool ReadBool(Format format)
 		{
-			if(format == Format.False) return false;
-			if(format == Format.True) return true;
+			if(format.IsFalse) return false;
+			if(format.IsTrue) return true;
 			throw new FormatException();
 		}
 
 		byte ReadByte(Format format)
 		{
-			if(format.Between(Format.PositiveFixIntMin, Format.PositiveFixIntMax)) return ExtractPositiveFixInt(format);
-			if(format == Format.UInt8) return ExtractUInt8();
+			if(format.IsPositiveFixInt) return ExtractPositiveFixInt(format);
+			if(format.IsUInt8) return ExtractUInt8();
 			throw new FormatException();
 		}
 
 		ushort ReadUShort(Format format)
 		{
-			if(format.Between(Format.PositiveFixIntMin, Format.PositiveFixIntMax)) return ExtractPositiveFixInt(format);
-			if(format == Format.UInt8) return ExtractUInt8();
-			if(format == Format.UInt16) return ExtractUInt16();
+			if(format.IsPositiveFixInt) return ExtractPositiveFixInt(format);
+			if(format.IsUInt8) return ExtractUInt8();
+			if(format.IsUInt16) return ExtractUInt16();
 			throw new FormatException();
 		}
 
 		uint ReadUInt(Format format)
 		{
-			if(format.Between(Format.PositiveFixIntMin, Format.PositiveFixIntMax)) return ExtractPositiveFixInt(format);
-			if(format == Format.UInt8) return ExtractUInt8();
-			if(format == Format.UInt16) return ExtractUInt16();
-			if(format == Format.UInt32) return ExtractUInt32();
+			if(format.IsPositiveFixInt) return ExtractPositiveFixInt(format);
+			if(format.IsUInt8) return ExtractUInt8();
+			if(format.IsUInt16) return ExtractUInt16();
+			if(format.IsUInt32) return ExtractUInt32();
 			throw new FormatException();
 		}
 
 		ulong ReadULong(Format format)
 		{
-			if(format.Between(Format.PositiveFixIntMin, Format.PositiveFixIntMax)) return ExtractPositiveFixInt(format);
-			if(format == Format.UInt8) return ExtractUInt8();
-			if(format == Format.UInt16) return ExtractUInt16();
-			if(format == Format.UInt32) return ExtractUInt32();
-			if(format == Format.UInt64) return ExtractUInt64();
+			if(format.IsPositiveFixInt) return ExtractPositiveFixInt(format);
+			if(format.IsUInt8) return ExtractUInt8();
+			if(format.IsUInt16) return ExtractUInt16();
+			if(format.IsUInt32) return ExtractUInt32();
+			if(format.IsUInt64) return ExtractUInt64();
 			throw new FormatException();
 		}
 
 		sbyte ReadSbyte(Format format)
 		{
-			if(format.Between(Format.PositiveFixIntMin, Format.PositiveFixIntMax)) return (sbyte)ExtractPositiveFixInt(format);
-			if(format == Format.UInt8) return Convert.ToSByte(ExtractUInt8());
-			if(format.Between(Format.NegativeFixIntMin, Format.NegativeFixIntMax)) return ExtractNegativeFixInt(format);
-			if(format == Format.Int8) return ExtractInt8();
+			if(format.IsPositiveFixInt) return (sbyte)ExtractPositiveFixInt(format);
+			if(format.IsUInt8) return Convert.ToSByte(ExtractUInt8());
+			if(format.IsNegativeFixInt) return ExtractNegativeFixInt(format);
+			if(format.IsInt8) return ExtractInt8();
 			throw new FormatException();
 		}
 
 		short ReadShort(Format format)
 		{
-			if(format.Between(Format.PositiveFixIntMin, Format.PositiveFixIntMax)) return ExtractPositiveFixInt(format);
-			if(format == Format.UInt8) return ExtractUInt8();
-			if(format == Format.UInt16) return Convert.ToInt16(ExtractUInt16());
-			if(format.Between(Format.NegativeFixIntMin, Format.NegativeFixIntMax)) return ExtractNegativeFixInt(format);
-			if(format == Format.Int8) return ExtractInt8();
-			if(format == Format.Int16) return ExtractInt16();
+			if(format.IsPositiveFixInt) return ExtractPositiveFixInt(format);
+			if(format.IsUInt8) return ExtractUInt8();
+			if(format.IsUInt16) return Convert.ToInt16(ExtractUInt16());
+			if(format.IsNegativeFixInt) return ExtractNegativeFixInt(format);
+			if(format.IsInt8) return ExtractInt8();
+			if(format.IsInt16) return ExtractInt16();
 			throw new FormatException();
 		}
 
 		int ReadInt(Format format)
 		{
-			if(format.Between(Format.PositiveFixIntMin, Format.PositiveFixIntMax)) return ExtractPositiveFixInt(format);
-			if(format == Format.UInt8) return ExtractUInt8();
-			if(format == Format.UInt16) return ExtractUInt16();
-			if(format == Format.UInt32) return Convert.ToInt32(ExtractUInt32());
-			if(format.Between(Format.NegativeFixIntMin, Format.NegativeFixIntMax)) return ExtractNegativeFixInt(format);
-			if(format == Format.Int8) return ExtractInt8();
-			if(format == Format.Int16) return ExtractInt16();
-			if(format == Format.Int32) return ExtractInt32();
+			if(format.IsPositiveFixInt) return ExtractPositiveFixInt(format);
+			if(format.IsUInt8) return ExtractUInt8();
+			if(format.IsUInt16) return ExtractUInt16();
+			if(format.IsUInt32) return Convert.ToInt32(ExtractUInt32());
+			if(format.IsNegativeFixInt) return ExtractNegativeFixInt(format);
+			if(format.IsInt8) return ExtractInt8();
+			if(format.IsInt16) return ExtractInt16();
+			if(format.IsInt32) return ExtractInt32();
 			throw new FormatException();
 		}
 
 		long ReadLong(Format format)
 		{
-			if(format.Between(Format.PositiveFixIntMin, Format.PositiveFixIntMax)) return ExtractPositiveFixInt(format);
-			if(format == Format.UInt8) return ExtractUInt8();
-			if(format == Format.UInt16) return ExtractUInt16();
-			if(format == Format.UInt32) return ExtractUInt32();
-			if(format == Format.UInt64) return Convert.ToInt64(ExtractUInt64());
-			if(format.Between(Format.NegativeFixIntMin, Format.NegativeFixIntMax)) return ExtractNegativeFixInt(format);
-			if(format == Format.Int8) return ExtractInt8();
-			if(format == Format.Int16) return ExtractInt16();
-			if(format == Format.Int32) return ExtractInt32();
-			if(format == Format.Int64) return ExtractInt64();
+			if(format.IsPositiveFixInt) return ExtractPositiveFixInt(format);
+			if(format.IsUInt8) return ExtractUInt8();
+			if(format.IsUInt16) return ExtractUInt16();
+			if(format.IsUInt32) return ExtractUInt32();
+			if(format.IsUInt64) return Convert.ToInt64(ExtractUInt64());
+			if(format.IsNegativeFixInt) return ExtractNegativeFixInt(format);
+			if(format.IsInt8) return ExtractInt8();
+			if(format.IsInt16) return ExtractInt16();
+			if(format.IsInt32) return ExtractInt32();
+			if(format.IsInt64) return ExtractInt64();
 			throw new FormatException();
 		}
 
 		float ReadFloat(Format format)
 		{
-			if(format == Format.Float32) return ExtractFloat32();
-			if(format == Format.Float64) {
+			if(format.IsFloat32) return ExtractFloat32();
+			if(format.IsFloat64) {
 				double value = ExtractFloat64();
 				if(value > float.MaxValue) {
 					throw new InvalidCastException(string.Format("{0} is too big for a float", value));
@@ -165,14 +163,14 @@ namespace UniMsgPack
 
 		double ReadDouble(Format format)
 		{
-			if(format == Format.Float32) return ExtractFloat32();
-			if(format == Format.Float64) return ExtractFloat64();
+			if(format.IsFloat32) return ExtractFloat32();
+			if(format.IsFloat64) return ExtractFloat64();
 			throw new FormatException();
 		}
 
 		string ReadString(Format format)
 		{
-			if(format == Format.Nil) {
+			if(format.IsNil) {
 				return null;
 			}
 			int size = ExtractStringSize(format);
@@ -185,7 +183,7 @@ namespace UniMsgPack
 
 		byte[] ReadBinary(Format format)
 		{
-			if(format == Format.Nil) {
+			if(format.IsNil) {
 				return null;
 			}
 			int size = ExtractBinSize(format);
@@ -196,7 +194,7 @@ namespace UniMsgPack
 
 		object ReadNullable(Type type, Format format)
 		{
-			if(format == Format.Nil) {
+			if(format.IsNil) {
 				return null;
 			}
 			return Read(Nullable.GetUnderlyingType(type), format);
@@ -204,14 +202,14 @@ namespace UniMsgPack
 
 		object ReadEnum(Type type, Format format)
 		{
-			if(format.IsInt()) {
+			if(format.IsIntGroup) {
 				int value = ReadInt(format);
 				if(Enum.IsDefined(type, value)) {
 					return Enum.ToObject(type, value);
 				}
 				throw new FormatException();
 			}
-			if(format.IsString()) {
+			if(format.IsStringGroup) {
 				return Enum.Parse(type, ReadString(format), true);
 			}
 			throw new FormatException();
@@ -220,7 +218,7 @@ namespace UniMsgPack
 		object ReadArray(Type type, Format format)
 		{
 			Type elementType = type.GetElementType();
-			if(format == Format.Nil) {
+			if(format.IsNil) {
 				return Array.CreateInstance(elementType, 0);
 			}
 			int size = ExtractArraySize(format);
@@ -239,7 +237,7 @@ namespace UniMsgPack
 			Type elementType = type.GetGenericArguments()[0];
 			Type listType = typeof(List<>).MakeGenericType(new[] { elementType });
 			IList list = (IList)Activator.CreateInstance(listType);
-			if(format == Format.Nil) {
+			if(format.IsNil) {
 				return list;
 			}
 			int size = ExtractArraySize(format);
@@ -254,7 +252,7 @@ namespace UniMsgPack
 
 		object ReadDictionary(Type type, Format format)
 		{
-			if(format == Format.Nil) {
+			if(format.IsNil) {
 				return null;
 			}
 			int size = ExtractMapSize(format);
@@ -272,7 +270,7 @@ namespace UniMsgPack
 
 		object ReadClassOrStruct(Type type, Format format)
 		{
-			if(format == Format.Nil) {
+			if(format.IsNil) {
 				return null;
 			}
 			int size = ExtractMapSize(format);
@@ -296,17 +294,17 @@ namespace UniMsgPack
 
 		DateTime ReadDateTime(Format format)
 		{
-			if(format == Format.FixExt4) {
+			if(format.IsFixExt4) {
 				if(stream.ReadByte() == -1) {
 					return ExtractTimestamp32();
 				}
 			}
-			if(format == Format.FixExt8) {
+			if(format.IsFixExt8) {
 				if(stream.ReadByte() == -1) {
 					return ExtractTimestamp64();
 				}
 			}
-			if(format == Format.Ext8) {
+			if(format.IsExt8) {
 				if(stream.ReadByte() == 12) {
 					if(stream.ReadByte() == -1) {
 						return ExtractTimestamp96();
@@ -319,47 +317,38 @@ namespace UniMsgPack
 		void Skip()
 		{
 			Format format = ExtractNextFormat();
-			if(format == Format.Nil) { return; }
-			if(format == Format.False) { return; }
-			if(format == Format.True) { return; }
-			if(format.Between(Format.PositiveFixIntMin, Format.PositiveFixIntMax)) { return; }
-			if(format.Between(Format.NegativeFixIntMin, Format.NegativeFixIntMax)) { return; }
-			if(format == Format.UInt8 || format == Format.Int8) { FastForward(1); return; }
-			if(format == Format.UInt16 || format == Format.Int16) { FastForward(2); return; }
-			if(format == Format.UInt32 || format == Format.Int32) { FastForward(4); return; }
-			if(format == Format.UInt64 || format == Format.Int64) { FastForward(8); return; }
-			if(format == Format.Float32) { FastForward(4); return; }
-			if(format == Format.Float64) { FastForward(8); return; }
-			if(format.Between(Format.FixStrMin, Format.FixStrMax) || format == Format.Str8 || format == Format.Str16 || format == Format.Str32) {
-				FastForward(ExtractStringSize(format));
-				return;
-			}
-			if(format == Format.Bin8 || format == Format.Bin16 || format == Format.Bin32) {
-				FastForward(ExtractBinSize(format));
-				return;
-			}
-			if(format.Between(Format.FixArrayMin, Format.FixArrayMax) || format == Format.Array16 || format == Format.Array32) {
+			if(format.IsNil) { return; }
+			if(format.IsFalse) { return; }
+			if(format.IsTrue) { return; }
+			if(format.IsPositiveFixInt) { return; }
+			if(format.IsNegativeFixInt) { return; }
+			if(format.IsUInt8 || format.IsInt8) { FastForward(1); return; }
+			if(format.IsUInt16 || format.IsInt16) { FastForward(2); return; }
+			if(format.IsUInt32 || format.IsInt32) { FastForward(4); return; }
+			if(format.IsUInt64 || format.IsInt64) { FastForward(8); return; }
+			if(format.IsFloat32) { FastForward(4); return; }
+			if(format.IsFloat64) { FastForward(8); return; }
+			if(format.IsStringGroup) { FastForward(ExtractStringSize(format)); return; }
+			if(format.IsBinaryGroup) { FastForward(ExtractBinSize(format)); return; }
+			if(format.IsArrayGroup) {
 				for(int size = ExtractArraySize(format); size > 0; size--) {
 					Skip();
 				}
 				return;
 			}
-			if(format.Between(Format.FixMapMin, Format.FixMapMax) || format == Format.Map16 || format == Format.Map32) {
+			if(format.IsMapGroup) {
 				for(int size = ExtractMapSize(format); size > 0; size--) {
 					Skip();
 					Skip();
 				}
 				return;
 			}
-			if(format == Format.FixExt1) { FastForward(2); return; }
-			if(format == Format.FixExt2) { FastForward(3); return; }
-			if(format == Format.FixExt4) { FastForward(5); return; }
-			if(format == Format.FixExt8) { FastForward(9); return; }
-			if(format == Format.FixExt16) { FastForward(17); return; }
-			if(format == Format.Ext8 || format == Format.Ext16 || format == Format.Ext32) {
-				FastForward(ExtractUInt32() + 1);
-				return;
-			}
+			if(format.IsFixExt1) { FastForward(2); return; }
+			if(format.IsFixExt2) { FastForward(3); return; }
+			if(format.IsFixExt4) { FastForward(5); return; }
+			if(format.IsFixExt8) { FastForward(9); return; }
+			if(format.IsFixExt16) { FastForward(17); return; }
+			if(format.IsExt8 || format.IsExt16 || format.IsExt32) { FastForward(ExtractUInt32() + 1); return; }
 		}
 
 		void FastForward(long offset)
@@ -378,12 +367,12 @@ namespace UniMsgPack
 
 		Format ExtractNextFormat()
 		{
-			return (Format)stream.ReadByte();
+			return new Format((byte)stream.ReadByte());
 		}
 
 		byte ExtractPositiveFixInt(Format format)
 		{
-			return (byte)((int)format & 0x7f);
+			return format & 0x7f;
 		}
 
 		byte ExtractUInt8()
@@ -417,7 +406,7 @@ namespace UniMsgPack
 
 		sbyte ExtractNegativeFixInt(Format format)
 		{
-			return (sbyte)(((int)format & 0x1f) - 0x20);
+			return (sbyte)((format & 0x1f) - 0x20);
 		}
 
 		sbyte ExtractInt8()
@@ -491,34 +480,34 @@ namespace UniMsgPack
 
 		int ExtractStringSize(Format format)
 		{
-			if(format.Between(Format.FixStrMin, Format.FixStrMax)) return ((int)format & 0x1f);
-			if(format == Format.Str8) return ExtractUInt8();
-			if(format == Format.Str16) return ExtractUInt16();
-			if(format == Format.Str32) return Convert.ToInt32(ExtractUInt32());
+			if(format.IsFixStr) return format & 0x1f;
+			if(format.IsStr8) return ExtractUInt8();
+			if(format.IsStr16) return ExtractUInt16();
+			if(format.IsStr32) return Convert.ToInt32(ExtractUInt32());
 			throw new FormatException();
 		}
 
 		int ExtractBinSize(Format format)
 		{
-			if(format == Format.Bin8) return ExtractUInt8();
-			if(format == Format.Bin16) return ExtractUInt16();
-			if(format == Format.Bin32) return Convert.ToInt32(ExtractUInt32());
+			if(format.IsBin8) return ExtractUInt8();
+			if(format.IsBin16) return ExtractUInt16();
+			if(format.IsBin32) return Convert.ToInt32(ExtractUInt32());
 			throw new FormatException();
 		}
 
 		int ExtractArraySize(Format format)
 		{
-			if(format.Between(Format.FixArrayMin, Format.FixArrayMax)) return ((int)format & 0xf);
-			if(format == Format.Array16) return ExtractUInt16();
-			if(format == Format.Array32) return Convert.ToInt32(ExtractUInt32());
+			if(format.IsFixArray) return format & 0xf;
+			if(format.IsArray16) return ExtractUInt16();
+			if(format.IsArray32) return Convert.ToInt32(ExtractUInt32());
 			return -1;
 		}
 
 		int ExtractMapSize(Format format)
 		{
-			if(format.Between(Format.FixMapMin, Format.FixMapMax)) return ((int)format & 0xf);
-			if(format == Format.Map16) return ExtractUInt16();
-			if(format == Format.Map32) return Convert.ToInt32(ExtractUInt32());
+			if(format.IsFixMap) return format & 0xf;
+			if(format.IsMap16) return ExtractUInt16();
+			if(format.IsMap32) return Convert.ToInt32(ExtractUInt32());
 			return -1;
 		}
 
