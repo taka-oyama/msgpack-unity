@@ -206,7 +206,7 @@ namespace UniMsgPack
 			throw new FormatException();
 		}
 
-		object ReadArray(Type type, Format format)
+		Array ReadArray(Type type, Format format)
 		{
 			Type elementType = type.GetElementType();
 			if(format.IsNil) {
@@ -223,7 +223,7 @@ namespace UniMsgPack
 			throw new FormatException(string.Format("Invalid Format {0} for {1}", format, type));
 		}
 
-		object ReadList(Type type, Format format)
+		IList ReadList(Type type, Format format)
 		{
 			Type elementType = type.GetGenericArguments()[0];
 			Type listType = typeof(List<>).MakeGenericType(new[] { elementType });
@@ -241,7 +241,7 @@ namespace UniMsgPack
 			throw new FormatException(string.Format("Invalid Format {0} for {1}", format, type));
 		}
 
-		object ReadDictionary(Type type, Format format)
+		IDictionary ReadDictionary(Type type, Format format)
 		{
 			if(format.IsNil) {
 				return null;
