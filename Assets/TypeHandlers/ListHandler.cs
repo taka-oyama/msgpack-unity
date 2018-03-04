@@ -1,14 +1,16 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UniMsgPack
 {
-	public class ArrayHandler : ITypeHandler
+	public class ListHandler : ITypeHandler
 	{
 		readonly Type elementType;
 		readonly ITypeHandler handler;
 
-		public ArrayHandler(Type elementType)
+		public ListHandler(Type elementType)
 		{
 			this.elementType = elementType;
 			this.handler = TypeDefinition.Get(elementType);
@@ -16,14 +18,13 @@ namespace UniMsgPack
 
 		public object Read(Format format, FormatReader reader)
 		{
+			Type listType = typeof(List<>).MakeGenericType(new[] { elementType });
+			IList list = (IList)Activator.CreateInstance(listType);
 			int size = reader.ReadArraySize(format);
-			Array array = Array.CreateInstance(elementType, size);
-
 			for(int i = 0; i < size; i++) {
-				object value = handler.Read(reader.ReadFormat(), reader);
-				array.SetValue(value, i);
+				list.Add(handler.Read(reader.ReadFormat(), reader));
 			}
-			return array;
+			return list;
 		}
 	}
 }
