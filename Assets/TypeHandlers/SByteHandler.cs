@@ -1,0 +1,18 @@
+﻿using System;
+using System.IO;
+using UnityEngine;
+
+namespace UniMsgPack
+{
+	public class SByteHandler : ITypeHandler
+	{
+		public object Read(Format format, FormatReader reader)
+		{
+			if(format.IsPositiveFixInt) return (sbyte)reader.ReadPositiveFixInt(format);
+			if(format.IsUInt8) return Convert.ToSByte(reader.ReadUInt8());
+			if(format.IsNegativeFixInt) return reader.ReadNegativeFixInt(format);
+			if(format.IsInt8) return reader.ReadInt8();
+			throw new FormatException();
+		}
+	}
+}

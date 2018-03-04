@@ -15,6 +15,18 @@ namespace UniMsgPack
 			cache = new Dictionary<Type, Dictionary<string, FieldInfo>>();
 		}
 
+		public static Dictionary<string, Type> GetFieldTypes(Type type)
+		{
+			if(!cache.ContainsKey(type)) {
+				cache[type] = ResolveType(type);
+			}
+			Dictionary<string, Type> types = new Dictionary<string, Type>();
+			foreach(KeyValuePair<string, FieldInfo> kv in cache[type]) {
+				types.Add(kv.Key, kv.Value.FieldType);
+			}
+			return types;
+		}
+
 		public static FieldInfo GetField(Type type, string field)
 		{
 			if(!cache.ContainsKey(type)) {
