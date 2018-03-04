@@ -13,8 +13,8 @@ namespace UniMsgPack
 		public DictionaryHandler(Type type, Type keyType, Type valueType)
 		{
 			this.type = type;
-			this.keyHandler = TypeDefinition.Get(keyType);
-			this.valueHandler = TypeDefinition.Get(valueType);
+			this.keyHandler = TypeHandlers.Get(keyType);
+			this.valueHandler = TypeHandlers.Get(valueType);
 		}
 
 		public object Read(Format format, FormatReader reader)

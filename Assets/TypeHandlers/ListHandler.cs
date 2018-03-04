@@ -13,7 +13,7 @@ namespace UniMsgPack
 		public ListHandler(Type elementType)
 		{
 			this.elementType = elementType;
-			this.handler = TypeDefinition.Get(elementType);
+			this.handler = TypeHandlers.Get(elementType);
 		}
 
 		public object Read(Format format, FormatReader reader)

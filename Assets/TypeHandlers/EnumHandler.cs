@@ -12,8 +12,8 @@ namespace UniMsgPack
 		public EnumHandler(Type type)
 		{
 			this.type = type;
-			this.intHandler = TypeDefinition.Get<int>();
-			this.stringHandler = TypeDefinition.Get<string>();
+			this.intHandler = TypeHandlers.Get<int>();
+			this.stringHandler = TypeHandlers.Get<string>();
 		}
 
 		public object Read(Format format, FormatReader reader)

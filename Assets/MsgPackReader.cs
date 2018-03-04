@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 
 namespace UniMsgPack
@@ -34,10 +32,8 @@ namespace UniMsgPack
 
 		object Read(Type type, Format format)
 		{
-			if(TypeDefinition.Undefined(type)) {
-				TypeDefinition.Define(type);
-			}
-			return TypeDefinition.Get(type).Read(format, formatReader);
+			TypeHandlers.DefineIfUndefined(type);
+			return TypeHandlers.Get(type).Read(format, formatReader);
 		}
 	}
 }

@@ -23,11 +23,11 @@ namespace UniMsgPack
 		public MapHandler(Type type)
 		{
 			this.type = type;
-			this.nameHandler = TypeDefinition.Get<string>();
+			this.nameHandler = TypeHandlers.Get<string>();
 			this.fieldHandlers = new Dictionary<Type, ITypeHandler>();
 			foreach(Type fieldType in GetFieldTypes(type)) {
 				if(!fieldHandlers.ContainsKey(fieldType)) {
-					fieldHandlers.Add(fieldType, TypeDefinition.Get(fieldType));
+					fieldHandlers.Add(fieldType, TypeHandlers.Get(fieldType));
 				}
 			}
 		}

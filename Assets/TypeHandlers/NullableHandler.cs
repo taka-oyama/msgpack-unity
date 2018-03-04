@@ -15,7 +15,7 @@ namespace UniMsgPack
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsNil) return null;
-			return TypeDefinition.Get(underlyingType).Read(format, reader);
+			return TypeHandlers.Get(underlyingType).Read(format, reader);
 		}
 	}
 }
