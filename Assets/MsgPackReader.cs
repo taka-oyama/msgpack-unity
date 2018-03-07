@@ -32,8 +32,7 @@ namespace UniMsgPack
 
 		object Read(Type type, Format format)
 		{
-			TypeHandlers.DefineIfUndefined(type);
-			return TypeHandlers.Get(type).Read(format, formatReader);
+			return TypeHandlers.Resolve(type).Read(format, formatReader);
 		}
 	}
 }

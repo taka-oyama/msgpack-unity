@@ -8,10 +8,13 @@ namespace UniMsgPack
 	public static class TypeHandlers
 	{
 		static readonly Dictionary<Type, ITypeHandler> handlers;
+		static readonly Dictionary<int, ExtTypeHandler> extHandlers;
 
 		static TypeHandlers()
 		{
 			handlers = new Dictionary<Type, ITypeHandler>();
+			extHandlers = new Dictionary<int, ExtTypeHandler>();
+
 			handlers.Add(typeof(bool), new BoolHandler());
 			handlers.Add(typeof(sbyte), new SByteHandler());
 			handlers.Add(typeof(byte), new ByteHandler());
@@ -25,6 +28,7 @@ namespace UniMsgPack
 			handlers.Add(typeof(double), new DoubleHandler());
 			handlers.Add(typeof(string), new StringHandler());
 			handlers.Add(typeof(byte[]), new ByteArrayHandler());
+			handlers.Add(typeof(object), new ObjectHandler());
 			handlers.Add(typeof(DateTime), new DateTimeHandler());
 		}
 
@@ -38,19 +42,25 @@ namespace UniMsgPack
 			return handlers[type];
 		}
 
-		public static bool IsDefined(Type type)
+		internal static ExtTypeHandler GetExt(sbyte extType)
 		{
-			return handlers.ContainsKey(type);
+			return extHandlers[extType];
 		}
 
-		public static void Define(Type type, ITypeHandler handler)
+		internal static ITypeHandler Resolve<T>()
 		{
-			handlers.Add(type, handler);
+			return Resolve(typeof(T));
 		}
 
-		public static void DefineIfUndefined(Type type)
+		internal static ITypeHandler Resolve(Type type)
 		{
-			if(IsDefined(type)) {
+			DefineIfUndefined(type);
+			return Get(type);
+		}
+
+		static void DefineIfUndefined(Type type)
+		{
+			if(handlers.ContainsKey(type)) {
 				return;
 			}
 
@@ -98,12 +108,18 @@ namespace UniMsgPack
 			throw new FormatException("No Type definition found for " + type);
 		}
 
-		public static void DefineIfUndefined(Type type, ITypeHandler handler)
+		static void DefineIfUndefined(Type type, ITypeHandler handler)
 		{
-			if(IsDefined(type)) {
-				return;
+			if(!handlers.ContainsKey(type)) {
+				handlers.Add(type, handler);
+
+				if(handler is ExtTypeHandler) {
+					ExtTypeHandler extHandler = (ExtTypeHandler)handler;
+					if(!extHandlers.ContainsKey(extHandler.ExtType)) {
+						extHandlers.Add(extHandler.ExtType, extHandler);
+					}
+				}
 			}
-			Define(type, handler);
 		}
 	}
 }

@@ -163,6 +163,28 @@ namespace UniMsgPack
 			throw new FormatException();
 		}
 
+		public uint ReadExtSize(Format format)
+		{
+			if(format.IsFixExt1) return 1;
+			if(format.IsFixExt2) return 2;
+			if(format.IsFixExt4) return 4;
+			if(format.IsFixExt8) return 8;
+			if(format.IsFixExt16) return 16;
+			if(format.IsExt8) return ReadUInt8();
+			if(format.IsExt16) return ReadUInt16();
+			if(format.IsExt32) return ReadUInt32();
+			throw new FormatException();
+		}
+
+		public sbyte ReadExtType(Format format)
+		{
+			if(format.IsPositiveFixInt) return (sbyte)ReadPositiveFixInt(format);
+			if(format.IsUInt8) return Convert.ToSByte(ReadUInt8());
+			if(format.IsNegativeFixInt) return ReadNegativeFixInt(format);
+			if(format.IsInt8) return ReadInt8();
+			throw new FormatException();
+		}
+
 		public void Skip()
 		{
 			Format format = ReadFormat();
