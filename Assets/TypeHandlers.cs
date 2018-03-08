@@ -8,12 +8,10 @@ namespace UniMsgPack
 	public static class TypeHandlers
 	{
 		static readonly Dictionary<Type, ITypeHandler> handlers;
-		static readonly Dictionary<sbyte, ExtTypeHandler> extHandlers;
 
 		static TypeHandlers()
 		{
 			handlers = new Dictionary<Type, ITypeHandler>();
-
 			handlers.Add(typeof(bool), new BoolHandler());
 			handlers.Add(typeof(sbyte), new SByteHandler());
 			handlers.Add(typeof(byte), new ByteHandler());
