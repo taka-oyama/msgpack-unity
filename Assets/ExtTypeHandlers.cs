@@ -16,13 +16,17 @@ namespace UniMsgPack
 
 		internal static ExtTypeHandler Get(sbyte extType)
 		{
-			return handlers[extType];
+			lock(handlers) {
+				return handlers[extType];
+			}
 		}
 
 		internal static void AddIfNotExist(ExtTypeHandler handler)
 		{
-			if(!handlers.ContainsKey(handler.ExtType)) {
-				handlers.Add(handler.ExtType, handler);
+			lock(handlers) {
+				if(!handlers.ContainsKey(handler.ExtType)) {
+					handlers.Add(handler.ExtType, handler);
+				}
 			}
 		}
 	}

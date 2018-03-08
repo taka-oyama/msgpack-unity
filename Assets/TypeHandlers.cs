@@ -33,13 +33,17 @@ namespace UniMsgPack
 
 		public static ITypeHandler Get(Type type)
 		{
-			return handlers[type];
+			lock(handlers) {
+				return handlers[type];
+			}
 		}
 
 		internal static ITypeHandler Resolve(Type type)
 		{
-			AddIfNotExist(type);
-			return Get(type);
+			lock(handlers) {
+				AddIfNotExist(type);
+				return Get(type);
+			}
 		}
 
 		static void AddIfNotExist(Type type)
