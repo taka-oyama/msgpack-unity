@@ -23,7 +23,7 @@ namespace UniMsgPack
 		public MapHandler(Type type)
 		{
 			this.type = type;
-			this.nameHandler = TypeHandlers.Get<string>();
+			this.nameHandler = TypeHandlers.Get(typeof(string));
 			this.fieldHandlers = new Dictionary<Type, ITypeHandler>();
 			foreach(Type fieldType in GetFieldTypes(type)) {
 				if(!fieldHandlers.ContainsKey(fieldType)) {

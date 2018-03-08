@@ -8,12 +8,11 @@ namespace UniMsgPack
 	public static class TypeHandlers
 	{
 		static readonly Dictionary<Type, ITypeHandler> handlers;
-		static readonly Dictionary<int, ExtTypeHandler> extHandlers;
+		static readonly Dictionary<sbyte, ExtTypeHandler> extHandlers;
 
 		static TypeHandlers()
 		{
 			handlers = new Dictionary<Type, ITypeHandler>();
-			extHandlers = new Dictionary<int, ExtTypeHandler>();
 
 			handlers.Add(typeof(bool), new BoolHandler());
 			handlers.Add(typeof(sbyte), new SByteHandler());
@@ -32,92 +31,74 @@ namespace UniMsgPack
 			handlers.Add(typeof(DateTime), new DateTimeHandler());
 		}
 
-		public static ITypeHandler Get<T>()
-		{
-			return Get(typeof(T));
-		}
-
 		public static ITypeHandler Get(Type type)
 		{
 			return handlers[type];
 		}
 
-		internal static ExtTypeHandler GetExt(sbyte extType)
-		{
-			return extHandlers[extType];
-		}
-
-		internal static ITypeHandler Resolve<T>()
-		{
-			return Resolve(typeof(T));
-		}
-
 		internal static ITypeHandler Resolve(Type type)
 		{
-			DefineIfUndefined(type);
+			AddIfNotExist(type);
 			return Get(type);
 		}
 
-		static void DefineIfUndefined(Type type)
+		static void AddIfNotExist(Type type)
 		{
 			if(handlers.ContainsKey(type)) {
 				return;
 			}
 
 			if(type.IsEnum) {
-				DefineIfUndefined(type, new EnumHandler(type));
+				AddIfNotExist(type, new EnumHandler(type));
 				return;
 			}
 
 			if(type.IsNullable()) {
 				Type underlyingType = Nullable.GetUnderlyingType(type);
-				DefineIfUndefined(type, new NullableHandler(underlyingType));
+				AddIfNotExist(type, new NullableHandler(underlyingType));
 				return;
 			}
 
 			if(type.IsArray) {
 				Type elementType = type.GetElementType();
-				DefineIfUndefined(elementType);
-				DefineIfUndefined(type, new ArrayHandler(elementType));
+				AddIfNotExist(elementType);
+				AddIfNotExist(type, new ArrayHandler(elementType));
 				return;
 			}
 
 			if(typeof(IList).IsAssignableFrom(type)) {
 				Type innerType = type.GetGenericArguments()[0];
-				DefineIfUndefined(innerType);
-				DefineIfUndefined(type, new ListHandler(innerType));
+				AddIfNotExist(innerType);
+				AddIfNotExist(type, new ListHandler(innerType));
 				return;
 			}
 
 			if(typeof(IDictionary).IsAssignableFrom(type)) {
 				Type[] innerTypes = type.GetGenericArguments();
-				DefineIfUndefined(innerTypes[0]);
-				DefineIfUndefined(innerTypes[1]);
-				DefineIfUndefined(type, new DictionaryHandler(type, innerTypes[0], innerTypes[1]));
+				AddIfNotExist(innerTypes[0]);
+				AddIfNotExist(innerTypes[1]);
+				AddIfNotExist(type, new DictionaryHandler(type, innerTypes[0], innerTypes[1]));
 				return;
 			}
 
 			if(type.IsClass || type.IsValueType) {
 				foreach(Type fieldType in MapHandler.GetFieldTypes(type)) {
-					DefineIfUndefined(fieldType);
+					AddIfNotExist(fieldType);
 				}
-				DefineIfUndefined(type, new MapHandler(type));
+				AddIfNotExist(type, new MapHandler(type));
 				return;
 			}
 
 			throw new FormatException("No Type definition found for " + type);
 		}
 
-		static void DefineIfUndefined(Type type, ITypeHandler handler)
+		static void AddIfNotExist(Type type, ITypeHandler handler)
 		{
 			if(!handlers.ContainsKey(type)) {
 				handlers.Add(type, handler);
 
 				if(handler is ExtTypeHandler) {
-					ExtTypeHandler extHandler = (ExtTypeHandler)handler;
-					if(!extHandlers.ContainsKey(extHandler.ExtType)) {
-						extHandlers.Add(extHandler.ExtType, extHandler);
-					}
+					ExtTypeHandlers.AddIfNotExist((ExtTypeHandler)handler);
 				}
 			}
 		}

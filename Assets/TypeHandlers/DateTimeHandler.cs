@@ -12,7 +12,7 @@ namespace UniMsgPack
 			get { return -1; }
 		}
 
-		protected override object Read(uint length, FormatReader reader)
+		public override object Read(uint length, FormatReader reader)
 		{
 			// Timestamp 32
 			if(length == 4) {

@@ -48,19 +48,19 @@ namespace UniMsgPack
 
 		object HandleArray(Format format, FormatReader reader)
 		{
-			return TypeHandlers.Resolve<List<object>>().Read(format, reader);
+			return TypeHandlers.Resolve(typeof(List<object>)).Read(format, reader);
 		}
 
 		object HandleMap(Format format, FormatReader reader)
 		{
-			return TypeHandlers.Resolve<Dictionary<object, object>>().Read(format, reader);
+			return TypeHandlers.Resolve(typeof(Dictionary<object, object>)).Read(format, reader);
 		}
 
 		object HandleExt(Format format, FormatReader reader)
 		{
 			uint size = reader.ReadExtSize(format);
 			sbyte extType = reader.ReadExtType(format);
-			return TypeHandlers.GetExt(extType).Read(size, reader);
+			return ExtTypeHandlers.Get(extType).Read(size, reader);
 		}
 	}
 }
