@@ -11,23 +11,26 @@ namespace UniMsgPack
 
 		static TypeHandlers()
 		{
-			handlers = new Dictionary<Type, ITypeHandler>();
-			handlers.Add(typeof(bool), new BoolHandler());
-			handlers.Add(typeof(sbyte), new SByteHandler());
-			handlers.Add(typeof(byte), new ByteHandler());
-			handlers.Add(typeof(short), new ShortHandler());
-			handlers.Add(typeof(ushort), new UShortHandler());
-			handlers.Add(typeof(int), new IntHandler());
-			handlers.Add(typeof(uint), new UIntHandler());
-			handlers.Add(typeof(long), new LongHandler());
-			handlers.Add(typeof(ulong), new ULongHandler());
-			handlers.Add(typeof(float), new FloatHandler());
-			handlers.Add(typeof(double), new DoubleHandler());
-			handlers.Add(typeof(string), new StringHandler());
-			handlers.Add(typeof(byte[]), new ByteArrayHandler());
-			handlers.Add(typeof(char), new CharHandler());
-			handlers.Add(typeof(object), new ObjectHandler());
-			handlers.Add(typeof(DateTime), new DateTimeHandler());
+			handlers = new Dictionary<Type, ITypeHandler> {
+				{ typeof(bool), new BoolHandler() },
+				{ typeof(sbyte), new SByteHandler() },
+				{ typeof(byte), new ByteHandler() },
+				{ typeof(short), new ShortHandler() },
+				{ typeof(ushort), new UShortHandler() },
+				{ typeof(int), new IntHandler() },
+				{ typeof(uint), new UIntHandler() },
+				{ typeof(long), new LongHandler() },
+				{ typeof(ulong), new ULongHandler() },
+				{ typeof(float), new FloatHandler() },
+				{ typeof(double), new DoubleHandler() },
+				{ typeof(string), new StringHandler() },
+				{ typeof(byte[]), new ByteArrayHandler() },
+				{ typeof(char), new CharHandler() },
+				{ typeof(object), new ObjectHandler() },
+				{ typeof(Uri), new UriHandler() },
+				{ typeof(DateTime), new DateTimeHandler() },
+				{ typeof(DateTimeOffset), new DateTimeOffsetHandler() },
+			};
 		}
 
 		public static ITypeHandler Get(Type type)
