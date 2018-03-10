@@ -25,6 +25,7 @@ namespace UniMsgPack
 			handlers.Add(typeof(double), new DoubleHandler());
 			handlers.Add(typeof(string), new StringHandler());
 			handlers.Add(typeof(byte[]), new ByteArrayHandler());
+			handlers.Add(typeof(char), new CharHandler());
 			handlers.Add(typeof(object), new ObjectHandler());
 			handlers.Add(typeof(DateTime), new DateTimeHandler());
 		}
