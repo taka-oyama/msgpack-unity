@@ -11,5 +11,14 @@ namespace UniMsgPack
 			if(format.IsTrue) return true;
 			throw new FormatException();
 		}
+
+		public void Write(object obj, FormatWriter writer)
+		{
+			if((bool)obj) {
+				writer.WriteTrue();
+			} else {
+				writer.WriteFalse();
+			}
+		}
 	}
 }

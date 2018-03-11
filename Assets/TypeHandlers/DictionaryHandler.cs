@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace UniMsgPack
@@ -31,6 +32,20 @@ namespace UniMsgPack
 				size = size - 1;
 			}
 			return dictionary;
+		}
+
+		public void Write(object obj, FormatWriter writer)
+		{
+			if(obj == null) {
+				writer.WriteNil();
+				return;
+			}
+			IDictionary dictionary = (IDictionary)obj;
+			int size = dictionary.Count;
+			foreach(DictionaryEntry kv in dictionary) {
+				keyHandler.Write(kv.Key, writer);
+				valueHandler.Write(kv.Value, writer);
+			}
 		}
 	}
 }

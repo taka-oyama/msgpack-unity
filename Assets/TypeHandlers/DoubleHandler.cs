@@ -11,5 +11,10 @@ namespace UniMsgPack
 			if(format.IsFloat64) return reader.ReadFloat64();
 			throw new FormatException();
 		}
+
+		public void Write(object obj, FormatWriter writer)
+		{
+			writer.WriteFloat64((double)obj);
+		}
 	}
 }

@@ -26,5 +26,10 @@ namespace UniMsgPack
 			}
 			throw new FormatException();
 		}
+
+		public void Write(object obj, FormatWriter writer)
+		{
+			intHandler.Write(obj, writer);
+		}
 	}
 }

@@ -34,5 +34,15 @@ namespace UniMsgPack
 
 			throw new FormatException();
 		}
+
+		public void Write(object obj, FormatWriter writer)
+		{
+			DateTime value = (DateTime)obj;
+			TimeSpan diff = value.ToUniversalTime() - epoch;
+			writer.WriteFormat(Format.Ext8);
+			writer.WriteExtType(12, ExtType);
+			writer.WriteUInt32((uint)value.Ticks % 10000000);
+			writer.WriteUInt64((ulong)diff.TotalSeconds);
+		}
 	}
 }

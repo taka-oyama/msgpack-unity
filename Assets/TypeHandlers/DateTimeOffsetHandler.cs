@@ -5,17 +5,22 @@ namespace UniMsgPack
 {
 	public class DateTimeOffsetHandler : ITypeHandler
 	{
-		DateTimeHandler baseHandler;
+		ITypeHandler baseHandler;
 
 		public object Read(Format format, FormatReader reader)
 		{
-			return new DateTimeOffset(ReadDateTime(format, reader));
+			DateTime time = (DateTime)LoadDateTimeHandler().Read(format, reader);
+			return new DateTimeOffset(time);
 		}
 
-		DateTime ReadDateTime(Format format, FormatReader reader)
+		public void Write(object obj, FormatWriter writer)
 		{
-			this.baseHandler = baseHandler ?? TypeHandlers.Get(typeof(DateTime)) as DateTimeHandler;
-			return (DateTime)baseHandler.Read(format, reader);
+			LoadDateTimeHandler().Write(obj, writer);
+		}
+
+		ITypeHandler LoadDateTimeHandler()
+		{
+			return baseHandler = baseHandler ?? TypeHandlers.Get(typeof(DateTime));
 		}
 	}
 }

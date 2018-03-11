@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.IO;
 using UnityEngine;
 
@@ -17,6 +18,12 @@ namespace UniMsgPack
 
 		public void Start()
 		{
+			var time = DateTime.Now;
+			UnityEngine.Debug.Log(time.ToString("o"));
+			UnityEngine.Debug.Log(time.Ticks);
+			UnityEngine.Debug.Log(time.Ticks % 10000000);
+
+
 			double average = 0.0;
 			byte[] bytes = File.ReadAllBytes(Application.dataPath + "/Tests/Files/Arrays/Maps.mpack");
 			MsgPackReader reader = new MsgPackReader(new MemoryStream(bytes));

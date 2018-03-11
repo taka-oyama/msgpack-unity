@@ -11,5 +11,18 @@ namespace UniMsgPack
 			if(format.IsUInt8) return reader.ReadUInt8();
 			throw new FormatException();
 		}
+
+		public void Write(object obj, FormatWriter writer)
+		{
+			byte value = Convert.ToByte(obj);
+			if(value <= sbyte.MaxValue) {
+				writer.WritePositiveFixInt(value);
+			}
+			else if(value <= byte.MaxValue) {
+				writer.WriteFormat(Format.UInt8);
+				writer.WriteUInt8(value);
+			}
+			throw new FormatException();
+		}
 	}
 }

@@ -13,5 +13,22 @@ namespace UniMsgPack
 			if(format.IsUInt16) return Convert.ToChar(reader.ReadUInt16());
 			throw new FormatException();
 		}
+
+		public void Write(object obj, FormatWriter writer)
+		{
+			ushort value = Convert.ToUInt16(obj);
+			if(value <= sbyte.MaxValue) {
+				writer.WritePositiveFixInt((byte)value);
+			}
+			else if(value <= byte.MaxValue) {
+				writer.WriteFormat(Format.UInt8);
+				writer.WriteUInt8((byte)value);
+			}
+			else if(value <= ushort.MaxValue) {
+				writer.WriteFormat(Format.UInt16);
+				writer.WriteUInt16(value);
+			}
+			throw new FormatException();
+		}
 	}
 }
