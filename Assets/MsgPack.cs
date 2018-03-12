@@ -12,7 +12,7 @@ namespace UniMsgPack
 			return stream.ToArray();
 		}
 
-		public static Stream Pack<T>(Stream stream, T obj)
+		public static Stream Pack<T>(T obj, Stream stream)
 		{
 			new MsgPackWriter(stream).Write(obj);
 			return stream;
