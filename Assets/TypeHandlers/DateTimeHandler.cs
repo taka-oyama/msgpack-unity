@@ -20,7 +20,7 @@ namespace UniMsgPack
 			}
 			// Timestamp 64
 			if(length == 8) {
-				byte[] buffer = reader.ReadBytesOfSize(8);
+				byte[] buffer = reader.ReadBytesOfLength(8);
 				uint nanoseconds = ((uint)buffer[0] << 22) | ((uint)buffer[1] << 14) | ((uint)buffer[2] << 6) | (uint)buffer[3] >> 2;
 				ulong seconds = ((ulong)(buffer[3] & 0x3) << 32) | ((ulong)buffer[4] << 24) | ((ulong)buffer[5] << 16) | ((ulong)buffer[6] << 8) | (ulong)buffer[7];
 				return epoch.AddTicks(nanoseconds / 100).AddSeconds(seconds);

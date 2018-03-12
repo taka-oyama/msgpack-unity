@@ -113,37 +113,37 @@ namespace UniMsgPack
 
 		public string ReadFixStr(Format format)
 		{
-			return ReadStringOfSize(format & 0x1f);
+			return ReadStringOfLength(format & 0x1f);
 		}
 
 		public string ReadStr8()
 		{
-			return ReadStringOfSize(ReadUInt8());
+			return ReadStringOfLength(ReadUInt8());
 		}
 
 		public string ReadStr16()
 		{
-			return ReadStringOfSize(ReadUInt16());
+			return ReadStringOfLength(ReadUInt16());
 		}
 
 		public string ReadStr32()
 		{
-			return ReadStringOfSize(Convert.ToInt32(ReadUInt32()));
+			return ReadStringOfLength(Convert.ToInt32(ReadUInt32()));
 		}
 
 		public byte[] ReadBin8()
 		{
-			return ReadBytesOfSize(ReadUInt8());
+			return ReadBytesOfLength(ReadUInt8());
 		}
 
 		public byte[] ReadBin16()
 		{
-			return ReadBytesOfSize(ReadUInt16());
+			return ReadBytesOfLength(ReadUInt16());
 		}
 
 		public byte[] ReadBin32()
 		{
-			return ReadBytesOfSize(Convert.ToInt32(ReadUInt32()));
+			return ReadBytesOfLength(Convert.ToInt32(ReadUInt32()));
 		}
 
 		public int ReadArrayLength(Format format)
@@ -207,13 +207,13 @@ namespace UniMsgPack
 			if(format.IsBin16) { FastForward(ReadUInt16()); return; }
 			if(format.IsBin32) { FastForward(ReadUInt32()); return; }
 			if(format.IsArrayGroup) {
-				for(int size = ReadArrayLength(format); size > 0; size--) {
+				for(int length = ReadArrayLength(format); length > 0; length--) {
 					Skip();
 				}
 				return;
 			}
 			if(format.IsMapGroup) {
-				for(int size = ReadMapLength(format); size > 0; size--) {
+				for(int length = ReadMapLength(format); length > 0; length--) {
 					Skip();
 					Skip();
 				}
@@ -236,26 +236,26 @@ namespace UniMsgPack
 			}
 			else {
 				while(offset > 0) {
-					int size = offset > int.MaxValue ? int.MaxValue : (int)offset;
-					stream.Read(dynamicBuffer, 0, size);
+					int length = offset > int.MaxValue ? int.MaxValue : (int)offset;
+					stream.Read(dynamicBuffer, 0, length);
 					offset -= int.MaxValue;
 				}
 			}
 		}
 
-		string ReadStringOfSize(int size)
+		string ReadStringOfLength(int length)
 		{
-			if(dynamicBuffer.Length < size) {
-				Array.Resize(ref dynamicBuffer, size);
+			if(dynamicBuffer.Length < length) {
+				Array.Resize(ref dynamicBuffer, length);
 			}
-			stream.Read(dynamicBuffer, 0, size);
-			return Encoding.UTF8.GetString(dynamicBuffer, 0, size);
+			stream.Read(dynamicBuffer, 0, length);
+			return Encoding.UTF8.GetString(dynamicBuffer, 0, length);
 		}
 
-		internal byte[] ReadBytesOfSize(int size)
+		internal byte[] ReadBytesOfLength(int length)
 		{
-			byte[] buffer = new byte[size];
-			stream.Read(buffer, 0, size);
+			byte[] buffer = new byte[length];
+			stream.Read(buffer, 0, length);
 			return buffer;
 		}
 	}
