@@ -17,5 +17,14 @@ namespace UniMsgPack
 			if(format.IsNil) return null;
 			return TypeHandlers.Get(underlyingType).Read(format, reader);
 		}
+
+		public void Write(object obj, FormatWriter writer)
+		{
+			if(obj == null) {
+				writer.WriteNil();
+				return;
+			}
+			TypeHandlers.Get(underlyingType).Write(obj, writer);
+		}
 	}
 }

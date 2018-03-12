@@ -14,5 +14,18 @@ namespace UniMsgPack
 			if(format.IsUInt64) return reader.ReadUInt64();
 			throw new FormatException();
 		}
+
+		public void Write(object obj, FormatWriter writer)
+		{
+			ulong value = Convert.ToUInt64(obj);
+			Format format = writer.GetFormatForInt(value);
+			writer.WriteFormat(format);
+			if(format.IsPositiveFixInt) writer.WritePositiveFixInt((byte)value);
+			if(format.IsUInt8) writer.WriteUInt8((byte)value);
+			if(format.IsUInt16) writer.WriteUInt16((ushort)value);
+			if(format.IsUInt32) writer.WriteUInt32((uint)value);
+			if(format.IsUInt64) writer.WriteUInt64(value);
+			throw new FormatException();
+		}
 	}
 }

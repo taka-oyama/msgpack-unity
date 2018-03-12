@@ -53,6 +53,21 @@ namespace UniMsgPack
 			return obj;
 		}
 
+		public void Write(object obj, FormatWriter writer)
+		{
+			if(obj == null) {
+				writer.WriteNil();
+				return;
+			}
+			foreach(KeyValuePair<string, FieldInfo> kv in cache[type]) {
+				object value = kv.Value.GetValue(obj);
+				if(value != null) {
+					nameHandler.Write(kv.Key, writer);
+					fieldHandlers[type].Write(value, writer);
+				}
+			}
+		}
+
 		FieldInfo GetFieldInfo(string field)
 		{
 			if(!cache.ContainsKey(type)) {

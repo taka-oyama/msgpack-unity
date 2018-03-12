@@ -18,7 +18,6 @@ namespace UniMsgPack
 			if(length == 4) {
 				return epoch.AddSeconds(reader.ReadUInt32());
 			}
-
 			// Timestamp 64
 			if(length == 8) {
 				byte[] buffer = reader.ReadBytesOfSize(8);
@@ -26,21 +25,19 @@ namespace UniMsgPack
 				ulong seconds = ((ulong)(buffer[3] & 0x3) << 32) | ((ulong)buffer[4] << 24) | ((ulong)buffer[5] << 16) | ((ulong)buffer[6] << 8) | (ulong)buffer[7];
 				return epoch.AddTicks(nanoseconds / 100).AddSeconds(seconds);
 			}
-
 			// Timestamp 96
 			if(length == 12) {
 				return epoch.AddTicks(reader.ReadUInt32() / 100).AddSeconds(reader.ReadInt64());
 			}
-
 			throw new FormatException();
 		}
 
-		public void Write(object obj, FormatWriter writer)
+		public override void Write(object obj, FormatWriter writer)
 		{
 			DateTime value = (DateTime)obj;
 			TimeSpan diff = value.ToUniversalTime() - epoch;
 			writer.WriteFormat(Format.Ext8);
-			writer.WriteExtType(12, ExtType);
+			writer.WriteExtHeader(12, ExtType);
 			writer.WriteUInt32((uint)value.Ticks % 10000000);
 			writer.WriteUInt64((ulong)diff.TotalSeconds);
 		}

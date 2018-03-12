@@ -26,5 +26,14 @@ namespace UniMsgPack
 			}
 			return list;
 		}
+
+		public void Write(object obj, FormatWriter writer)
+		{
+			IList values = (IList)obj;
+			writer.WriteArrayLength(values.Count);
+			foreach(object value in values) {
+				handler.Write(value, writer);
+			}
+		}
 	}
 }

@@ -14,6 +14,7 @@ namespace UniMsgPack
 
 		public void Write(object obj, FormatWriter writer)
 		{
+			writer.WriteFormat(Format.Float32);
 			writer.WriteFloat64((double)obj);
 		}
 	}

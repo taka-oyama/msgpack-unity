@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace UniMsgPack
+﻿namespace UniMsgPack
 {
 	public interface ITypeHandler
 	{

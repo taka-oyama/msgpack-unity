@@ -6,8 +6,6 @@ namespace UniMsgPack
 	{
 		public abstract sbyte ExtType { get; }
 
-		public abstract object Read(uint length, FormatReader reader);
-
 		public object Read(Format format, FormatReader reader)
 		{
 			uint length = reader.ReadExtLength(format);
@@ -16,5 +14,9 @@ namespace UniMsgPack
 			}
 			throw new FormatException();
 		}
+
+		public abstract object Read(uint length, FormatReader reader);
+
+		public abstract void Write(object obj, FormatWriter writer);
 	}
 }

@@ -17,17 +17,11 @@ namespace UniMsgPack
 		public void Write(object obj, FormatWriter writer)
 		{
 			ushort value = Convert.ToUInt16(obj);
-			if(value <= sbyte.MaxValue) {
-				writer.WritePositiveFixInt((byte)value);
-			}
-			else if(value <= byte.MaxValue) {
-				writer.WriteFormat(Format.UInt8);
-				writer.WriteUInt8((byte)value);
-			}
-			else if(value <= ushort.MaxValue) {
-				writer.WriteFormat(Format.UInt16);
-				writer.WriteUInt16(value);
-			}
+			Format format = writer.GetFormatForInt(value);
+			writer.WriteFormat(format);
+			if(format.IsPositiveFixInt) writer.WritePositiveFixInt((byte)value);
+			if(format.IsUInt8) writer.WriteUInt8((byte)value);
+			if(format.IsUInt16) writer.WriteUInt16(value);
 			throw new FormatException();
 		}
 	}

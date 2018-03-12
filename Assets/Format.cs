@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace UniMsgPack
 {
 	public struct Format
 	{
-		readonly byte value;
+		readonly internal byte value;
 
 		public Format(byte value)
 		{
@@ -134,5 +135,4 @@ namespace UniMsgPack
 			return f1.value != f2.value;
 		}
 	}
-
 }

@@ -5,18 +5,27 @@ namespace UniMsgPack
 {
 	public class UriHandler : ITypeHandler
 	{
-		public object Read(Format format, FormatReader reader)
+		ITypeHandler stringHandler;
+
+		ITypeHandler GetStringHandler()
 		{
-			return new Uri(ReadString(format, reader));
+			return stringHandler = stringHandler ?? TypeHandlers.Get(typeof(string));
 		}
 
-		string ReadString(Format format, FormatReader reader)
+		public object Read(Format format, FormatReader reader)
 		{
-			if(format.IsFixStr) return reader.ReadFixStr(format);
-			if(format.IsStr8) return reader.ReadStr8();
-			if(format.IsStr16) return reader.ReadStr16();
-			if(format.IsStr32) return reader.ReadStr32();
-			throw new FormatException();
+			if(format.IsNil) return null;
+			return new Uri((string)GetStringHandler().Read(format, reader));
+		}
+
+		public void Write(object obj, FormatWriter writer)
+		{
+			if(obj == null) {
+				writer.WriteNil();
+				return;
+			}
+			string value = ((Uri)obj).ToString();
+			GetStringHandler().Write(value, writer);
 		}
 	}
 }

@@ -30,33 +30,38 @@ namespace UniMsgPack
 			if(format.IsBin8) return reader.ReadBin8();
 			if(format.IsBin16) return reader.ReadBin16();
 			if(format.IsBin32) return reader.ReadBin32();
-			if(format.IsFixArray) return HandleArray(format, reader);
-			if(format.IsArray16) return HandleArray(format, reader);
-			if(format.IsArray32) return HandleArray(format, reader);
-			if(format.IsFixMap) return HandleMap(format, reader);
-			if(format.IsMap16) return HandleMap(format, reader);
-			if(format.IsMap32) return HandleMap(format, reader);
-			if(format.IsFixExt1) return HandleExt(format, reader);
-			if(format.IsFixExt2) return HandleExt(format, reader);
-			if(format.IsFixExt4) return HandleExt(format, reader);
-			if(format.IsFixExt8) return HandleExt(format, reader);
-			if(format.IsExt8) return HandleExt(format, reader);
-			if(format.IsExt16) return HandleExt(format, reader);
-			if(format.IsExt32) return HandleExt(format, reader);
+			if(format.IsFixArray) return ReadArray(format, reader);
+			if(format.IsArray16) return ReadArray(format, reader);
+			if(format.IsArray32) return ReadArray(format, reader);
+			if(format.IsFixMap) return ReadMap(format, reader);
+			if(format.IsMap16) return ReadMap(format, reader);
+			if(format.IsMap32) return ReadMap(format, reader);
+			if(format.IsFixExt1) return ReadExt(format, reader);
+			if(format.IsFixExt2) return ReadExt(format, reader);
+			if(format.IsFixExt4) return ReadExt(format, reader);
+			if(format.IsFixExt8) return ReadExt(format, reader);
+			if(format.IsExt8) return ReadExt(format, reader);
+			if(format.IsExt16) return ReadExt(format, reader);
+			if(format.IsExt32) return ReadExt(format, reader);
 			throw new FormatException();
 		}
 
-		object HandleArray(Format format, FormatReader reader)
+		public void Write(object obj, FormatWriter writer)
+		{
+			TypeHandlers.Resolve(obj.GetType()).Write(obj, writer);
+		}
+
+		object ReadArray(Format format, FormatReader reader)
 		{
 			return TypeHandlers.Resolve(typeof(List<object>)).Read(format, reader);
 		}
 
-		object HandleMap(Format format, FormatReader reader)
+		object ReadMap(Format format, FormatReader reader)
 		{
 			return TypeHandlers.Resolve(typeof(Dictionary<object, object>)).Read(format, reader);
 		}
 
-		object HandleExt(Format format, FormatReader reader)
+		object ReadExt(Format format, FormatReader reader)
 		{
 			uint length = reader.ReadExtLength(format);
 			sbyte extType = reader.ReadExtType(format);

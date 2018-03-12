@@ -20,5 +20,11 @@ namespace UniMsgPack
 			}
 			throw new FormatException();
 		}
+
+		public void Write(object obj, FormatWriter writer)
+		{
+			writer.WriteFormat(Format.Float32);
+			writer.WriteFloat32((float)obj);
+		}
 	}
 }

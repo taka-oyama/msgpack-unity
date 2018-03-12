@@ -22,18 +22,10 @@ namespace UniMsgPack
 				return;
 			}
 			byte[] value = (byte[])obj;
-			if(value.Length <= byte.MaxValue) {
-				writer.WriteFormat(Format.Bin8);
-				writer.WriteBin8(value);
-			}
-			else if(value.Length <= ushort.MaxValue) {
-				writer.WriteFormat(Format.Bin16);
-				writer.WriteBin16(value);
-			}
-			else if(value.LongLength <= uint.MaxValue) {
-				writer.WriteFormat(Format.Bin32);
-				writer.WriteBin32(value);
-			}
+			Format format = writer.GetFormatForBinary(value);
+			if(format.IsBin8) writer.WriteBin8(value);
+			else if(format.IsBin16) writer.WriteBin16(value);
+			else if(format.IsBin32) writer.WriteBin32(value);
 			throw new FormatException();
 		}
 	}
