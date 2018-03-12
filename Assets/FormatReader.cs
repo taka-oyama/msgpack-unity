@@ -146,7 +146,7 @@ namespace UniMsgPack
 			return ReadBytesOfSize(Convert.ToInt32(ReadUInt32()));
 		}
 
-		public int ReadArraySize(Format format)
+		public int ReadArrayLength(Format format)
 		{
 			if(format.IsNil) return 0;
 			if(format.IsFixArray) return format & 0xf;
@@ -155,7 +155,7 @@ namespace UniMsgPack
 			throw new FormatException();
 		}
 
-		public int ReadMapSize(Format format)
+		public int ReadMapLength(Format format)
 		{
 			if(format.IsFixMap) return format & 0xf;
 			if(format.IsMap16) return ReadUInt16();
@@ -163,7 +163,7 @@ namespace UniMsgPack
 			throw new FormatException();
 		}
 
-		public uint ReadExtSize(Format format)
+		public uint ReadExtLength(Format format)
 		{
 			if(format.IsFixExt1) return 1;
 			if(format.IsFixExt2) return 2;
@@ -207,13 +207,13 @@ namespace UniMsgPack
 			if(format.IsBin16) { FastForward(ReadUInt16()); return; }
 			if(format.IsBin32) { FastForward(ReadUInt32()); return; }
 			if(format.IsArrayGroup) {
-				for(int size = ReadArraySize(format); size > 0; size--) {
+				for(int size = ReadArrayLength(format); size > 0; size--) {
 					Skip();
 				}
 				return;
 			}
 			if(format.IsMapGroup) {
-				for(int size = ReadMapSize(format); size > 0; size--) {
+				for(int size = ReadMapLength(format); size > 0; size--) {
 					Skip();
 					Skip();
 				}

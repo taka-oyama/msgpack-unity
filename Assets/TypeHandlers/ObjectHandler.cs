@@ -58,9 +58,9 @@ namespace UniMsgPack
 
 		object HandleExt(Format format, FormatReader reader)
 		{
-			uint size = reader.ReadExtSize(format);
+			uint length = reader.ReadExtLength(format);
 			sbyte extType = reader.ReadExtType(format);
-			return ExtTypeHandlers.Get(extType).Read(size, reader);
+			return ExtTypeHandlers.Get(extType).Read(length, reader);
 		}
 	}
 }

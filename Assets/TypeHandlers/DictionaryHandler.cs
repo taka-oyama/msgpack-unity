@@ -24,7 +24,7 @@ namespace UniMsgPack
 				return null;
 			}
 			IDictionary dictionary = (IDictionary)Activator.CreateInstance(type);
-			int size = reader.ReadMapSize(format);
+			int size = reader.ReadMapLength(format);
 			while(size > 0) {
 				object key = keyHandler.Read(reader.ReadFormat(), reader);
 				object value = valueHandler.Read(reader.ReadFormat(), reader);

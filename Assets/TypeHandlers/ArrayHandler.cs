@@ -16,7 +16,7 @@ namespace UniMsgPack
 
 		public object Read(Format format, FormatReader reader)
 		{
-			int size = reader.ReadArraySize(format);
+			int size = reader.ReadArrayLength(format);
 			Array array = Array.CreateInstance(elementType, size);
 
 			for(int i = 0; i < size; i++) {

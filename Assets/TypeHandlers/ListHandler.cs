@@ -20,7 +20,7 @@ namespace UniMsgPack
 		{
 			Type listType = typeof(List<>).MakeGenericType(new[] { elementType });
 			IList list = (IList)Activator.CreateInstance(listType);
-			int size = reader.ReadArraySize(format);
+			int size = reader.ReadArrayLength(format);
 			for(int i = 0; i < size; i++) {
 				list.Add(handler.Read(reader.ReadFormat(), reader));
 			}

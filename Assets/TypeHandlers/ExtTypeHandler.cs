@@ -10,9 +10,9 @@ namespace UniMsgPack
 
 		public object Read(Format format, FormatReader reader)
 		{
-			uint size = reader.ReadExtSize(format);
+			uint length = reader.ReadExtLength(format);
 			if(ExtType == reader.ReadExtType(format)) {
-				return Read(size, reader);
+				return Read(length, reader);
 			}
 			throw new FormatException();
 		}

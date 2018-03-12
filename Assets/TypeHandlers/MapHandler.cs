@@ -36,7 +36,7 @@ namespace UniMsgPack
 		{
 			if(format.IsNil) return null;
 			object obj = FormatterServices.GetUninitializedObject(type);
-			int size = reader.ReadMapSize(format);
+			int size = reader.ReadMapLength(format);
 
 			while(size > 0) {
 				string name = (string)nameHandler.Read(reader.ReadFormat(), reader);
