@@ -17,22 +17,9 @@ namespace UniMsgPack
 
 		public T Read<T>()
 		{
-			return Read<T>(formatReader.ReadFormat());
-		}
-
-		T Read<T>(Format format)
-		{
-			return (T)Read(typeof(T), format);
-		}
-
-		object Read(Type type)
-		{
-			return Read(type, formatReader.ReadFormat());
-		}
-
-		object Read(Type type, Format format)
-		{
-			return TypeHandlers.Resolve(type).Read(format, formatReader);
+			Type type = typeof(T);
+			Format format = formatReader.ReadFormat();
+			return (T)TypeHandlers.Resolve(type).Read(format, formatReader);
 		}
 	}
 }

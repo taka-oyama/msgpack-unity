@@ -17,11 +17,7 @@ namespace UniMsgPack
 
 		public void Write<T>(T obj)
 		{
-			Write(typeof(T), obj);
-		}
-
-		public void Write(Type type, object obj)
-		{
+			Type type = typeof(T);
 			TypeHandlers.Resolve(type).Write(obj, formatWriter);
 		}
 	}
