@@ -5,14 +5,17 @@ namespace UniMsgPack
 {
 	public static class MsgPack
 	{
-		public static void Pack<T>(byte[] data)
+		public static byte[] Pack<T>(T obj)
 		{
-			Pack<T>(new MemoryStream(data));
+			MemoryStream stream = new MemoryStream();
+			Pack(stream, obj);
+			return stream.ToArray();
 		}
 
-		public static void Pack<T>(Stream stream)
+		public static Stream Pack<T>(Stream stream, T obj)
 		{
-			new MsgPackWriter(stream).Write(typeof(T));
+			new MsgPackWriter(stream).Write(obj);
+			return stream;
 		}
 
 		public static T Unpack<T>(byte[] data)
