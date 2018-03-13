@@ -31,7 +31,7 @@ namespace UniMsgPack
 				var s1 = Stopwatch.StartNew();
 				for(int i = 0; i < counter; i++) {
 					reader.stream.Position = 0;
-					reader.Read<Map[]>();
+					reader.Read(typeof(Map[]));
 				}
 				s1.Stop();
 				average += s1.Elapsed.TotalMilliseconds;

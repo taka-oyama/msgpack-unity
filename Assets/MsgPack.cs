@@ -8,7 +8,7 @@ namespace UniMsgPack
 		public static byte[] Pack<T>(T obj)
 		{
 			MemoryStream stream = new MemoryStream();
-			Pack(stream, obj);
+			Pack(obj, stream);
 			return stream.ToArray();
 		}
 
@@ -25,7 +25,7 @@ namespace UniMsgPack
 
 		public static T Unpack<T>(Stream stream)
 		{
-			return new MsgPackReader(stream).Read<T>();
+			return (T)(new MsgPackReader(stream)).Read(typeof(T));
 		}
 	}
 }

@@ -7,18 +7,17 @@ namespace UniMsgPack
 	public class MsgPackWriter
 	{
 		public Stream stream;
-		readonly FormatWriter formatWriter;
+		readonly FormatWriter writer;
 
 		public MsgPackWriter(Stream stream)
 		{
 			this.stream = stream;
-			this.formatWriter = new FormatWriter(stream);
+			this.writer = new FormatWriter(stream);
 		}
 
-		public void Write<T>(T obj)
+		public void Write(object obj)
 		{
-			Type type = typeof(T);
-			TypeHandlers.Resolve(type).Write(obj, formatWriter);
+			TypeHandlers.Resolve(obj.GetType()).Write(obj, writer);
 		}
 	}
 }

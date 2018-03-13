@@ -7,19 +7,17 @@ namespace UniMsgPack
 	public class MsgPackReader
 	{
 		public Stream stream;
-		readonly FormatReader formatReader;
+		readonly FormatReader reader;
 
 		public MsgPackReader(Stream stream)
 		{
 			this.stream = stream;
-			this.formatReader = new FormatReader(stream);
+			this.reader = new FormatReader(stream);
 		}
 
-		public T Read<T>()
+		public object Read(Type type)
 		{
-			Type type = typeof(T);
-			Format format = formatReader.ReadFormat();
-			return (T)TypeHandlers.Resolve(type).Read(format, formatReader);
+			return TypeHandlers.Resolve(type).Read(reader.ReadFormat(), reader);
 		}
 	}
 }
