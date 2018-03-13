@@ -17,7 +17,8 @@ namespace UniMsgPack.Tests
 		[Test]
 		public void Nil()
 		{
-			Assert.Throws<FormatException>(() => MsgPack.Unpack<Uri>(ReadFile("Strings/Nil")));
+			Uri value = MsgPack.Unpack<Uri>(ReadFile("Strings/Nil"));
+			Assert.AreEqual(null, value);
 		}
 
 		[Test]
