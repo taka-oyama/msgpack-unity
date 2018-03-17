@@ -20,10 +20,10 @@ namespace UniMsgPack
 
 		public object Read(Format format, FormatReader reader)
 		{
-			if(format.IsNil) {
-				return null;
-			}
 			IDictionary dictionary = (IDictionary)Activator.CreateInstance(type);
+			if(format.IsNil) {
+				return dictionary;
+			}
 			int size = reader.ReadMapLength(format);
 			while(size > 0) {
 				object key = keyHandler.Read(reader.ReadFormat(), reader);

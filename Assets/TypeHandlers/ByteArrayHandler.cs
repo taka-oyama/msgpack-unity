@@ -8,7 +8,7 @@ namespace UniMsgPack
 	{
 		public object Read(Format format, FormatReader reader)
 		{
-			if(format.IsNil) return null;
+			if(format.IsNil) return new byte[0];
 			if(format.IsBin8) return reader.ReadBin8();
 			if(format.IsBin16) return reader.ReadBin16();
 			if(format.IsBin32) return reader.ReadBin32();
