@@ -20,9 +20,9 @@ namespace UniMsgPack
 			sbyte value = Convert.ToSByte(obj);
 			Format format = writer.GetFormatForInt(value);
 			writer.WriteFormat(format);
-			if(format.IsPositiveFixInt) writer.WritePositiveFixInt((byte)value);
+			if(format.IsPositiveFixInt) { /* already written as format */ }
 			else if(format.IsUInt8) writer.WriteUInt8((byte)value);
-			else if(format.IsNegativeFixInt) writer.WriteNegativeFixInt(value);
+			else if(format.IsNegativeFixInt) { /* already written as format */ }
 			else if(format.IsInt8) writer.WriteInt8(value);
 			else throw new FormatException();
 		}

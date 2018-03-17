@@ -19,7 +19,7 @@ namespace UniMsgPack
 			ushort value = Convert.ToUInt16(obj);
 			Format format = writer.GetFormatForInt(value);
 			writer.WriteFormat(format);
-			if(format.IsPositiveFixInt) writer.WritePositiveFixInt((byte)value);
+			if(format.IsPositiveFixInt) { /* already written as format */ }
 			else if(format.IsUInt8) writer.WriteUInt8((byte)value);
 			else if(format.IsUInt16) writer.WriteUInt16(value);
 			else throw new FormatException();

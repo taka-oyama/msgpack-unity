@@ -16,15 +16,11 @@ namespace UniMsgPack
 		public void Write(object obj, FormatWriter writer)
 		{
 			byte value = Convert.ToByte(obj);
-			if(value <= sbyte.MaxValue) {
-				writer.WritePositiveFixInt(value);
-			}
-			else if(value <= byte.MaxValue) {
-				writer.WriteFormat(Format.UInt8);
-				writer.WriteUInt8(value);
-			} else {
-				throw new FormatException();
-			}
+			Format format = writer.GetFormatForInt(value);
+			writer.WriteFormat(format);
+			if(format.IsPositiveFixInt) { /* already written as format */ }
+			else if(format.IsUInt8) writer.WriteUInt8(value);
+			else throw new FormatException();
 		}
 	}
 }
