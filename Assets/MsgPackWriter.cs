@@ -21,6 +21,11 @@ namespace UniMsgPack
 			// see https://stackoverflow.com/a/13874286/232195 more more details.
 			Type type = (obj != null) ? obj.GetType() : typeof(T);
 
+			Write(type, obj);
+		}
+		
+		public void Write(Type type, object obj)
+		{
 			TypeHandlers.Resolve(type).Write(obj, writer);
 		}
 	}
