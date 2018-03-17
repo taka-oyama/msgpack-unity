@@ -21,11 +21,11 @@ namespace UniMsgPack
 			Format format = writer.GetFormatForInt(value);
 			writer.WriteFormat(format);
 			if(format.IsPositiveFixInt) writer.WritePositiveFixInt((byte)value);
-			if(format.IsUInt8) writer.WriteUInt8((byte)value);
-			if(format.IsUInt16) writer.WriteUInt16((ushort)value);
-			if(format.IsUInt32) writer.WriteUInt32((uint)value);
-			if(format.IsUInt64) writer.WriteUInt64(value);
-			throw new FormatException();
+			else if(format.IsUInt8) writer.WriteUInt8((byte)value);
+			else if(format.IsUInt16) writer.WriteUInt16((ushort)value);
+			else if(format.IsUInt32) writer.WriteUInt32((uint)value);
+			else if(format.IsUInt64) writer.WriteUInt64(value);
+			else throw new FormatException();
 		}
 	}
 }

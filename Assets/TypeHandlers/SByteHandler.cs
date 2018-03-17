@@ -20,10 +20,10 @@ namespace UniMsgPack
 			Format format = writer.GetFormatForInt(value);
 			writer.WriteFormat(format);
 			if(format.IsPositiveFixInt) writer.WritePositiveFixInt((byte)value);
-			if(format.IsUInt8) writer.WriteUInt8((byte)value);
-			if(format.IsNegativeFixInt) writer.WriteNegativeFixInt(value);
-			if(format.IsInt8) writer.WriteInt8(value);
-			throw new FormatException();
+			else if(format.IsUInt8) writer.WriteUInt8((byte)value);
+			else if(format.IsNegativeFixInt) writer.WriteNegativeFixInt(value);
+			else if(format.IsInt8) writer.WriteInt8(value);
+			else throw new FormatException();
 		}
 	}
 }

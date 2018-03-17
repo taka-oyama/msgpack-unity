@@ -20,9 +20,9 @@ namespace UniMsgPack
 			Format format = writer.GetFormatForInt(value);
 			writer.WriteFormat(format);
 			if(format.IsPositiveFixInt) writer.WritePositiveFixInt((byte)value);
-			if(format.IsUInt8) writer.WriteUInt8((byte)value);
-			if(format.IsUInt16) writer.WriteUInt16(value);
-			throw new FormatException();
+			else if(format.IsUInt8) writer.WriteUInt8((byte)value);
+			else if(format.IsUInt16) writer.WriteUInt16(value);
+			else throw new FormatException();
 		}
 	}
 }

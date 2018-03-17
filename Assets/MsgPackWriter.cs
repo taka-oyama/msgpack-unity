@@ -15,9 +15,13 @@ namespace UniMsgPack
 			this.writer = new FormatWriter(stream);
 		}
 
-		public void Write(object obj)
+		public void Write<T>(T obj)
 		{
-			TypeHandlers.Resolve(obj.GetType()).Write(obj, writer);
+			// Type is handled this way because GetType() throws an error if obj is null.
+			// see https://stackoverflow.com/a/13874286/232195 more more details.
+			Type type = (obj != null) ? obj.GetType() : typeof(T);
+
+			TypeHandlers.Resolve(type).Write(obj, writer);
 		}
 	}
 }

@@ -26,7 +26,7 @@ namespace UniMsgPack
 			if(format.IsBin8) writer.WriteBin8(value);
 			else if(format.IsBin16) writer.WriteBin16(value);
 			else if(format.IsBin32) writer.WriteBin32(value);
-			throw new FormatException();
+			else throw new FormatException();
 		}
 	}
 }

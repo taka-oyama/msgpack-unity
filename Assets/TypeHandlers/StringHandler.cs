@@ -27,7 +27,7 @@ namespace UniMsgPack
 			else if(format.IsStr8) writer.WriteStr8(value);
 			else if(format.IsStr16) writer.WriteStr16(value);
 			else if(format.IsStr32) writer.WriteStr32(value);
-			throw new FormatException();
+			else throw new FormatException();
 		}
 	}
 }

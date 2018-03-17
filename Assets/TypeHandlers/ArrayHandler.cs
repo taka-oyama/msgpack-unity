@@ -28,6 +28,11 @@ namespace UniMsgPack
 
 		public void Write(object obj, FormatWriter writer)
 		{
+			if(obj == null) {
+				writer.WriteNil();
+				return;
+			}
+
 			Array values = (Array)obj;
 			writer.WriteArrayLength(values.Length);
 			foreach(object value in values) {
