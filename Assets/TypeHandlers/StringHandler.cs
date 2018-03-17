@@ -21,13 +21,7 @@ namespace UniMsgPack
 				writer.WriteNil();
 				return;
 			}
-			string value = (string)obj;
-			Format format = writer.GetFormatForString(value);
-			if(format.IsFixStr) writer.WriteFixStr(value);
-			else if(format.IsStr8) writer.WriteStr8(value);
-			else if(format.IsStr16) writer.WriteStr16(value);
-			else if(format.IsStr32) writer.WriteStr32(value);
-			else throw new FormatException();
+			writer.WriteString((string)obj);
 		}
 	}
 }

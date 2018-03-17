@@ -142,42 +142,34 @@ namespace UniMsgPack
 			stream.Write(bytes, 0, 8);
 		}
 
-		public void WriteFixStr(string s)
+		public void WriteString(string s)
 		{
 			if(s.Length <= 31) {
-				WriteString((byte)(Format.FixStrMin | (byte)s.Length), s);
+				WriteFormat((byte)(Format.FixStrMin | (byte)s.Length));
 			}
-			throw new OverflowException(s.Length + " is out of range for FixStr");
+			else if(s.Length <= byte.MaxValue) {
+				WriteFormat(Format.UInt8);
+				WriteUInt8((byte)s.Length);
+			}
+			else if(s.Length <= ushort.MaxValue) {
+				WriteFormat(Format.UInt16);
+				WriteUInt16((ushort)s.Length);
+			}
+			else {
+				WriteFormat(Format.UInt32);
+				WriteUInt32((uint)s.Length);
+			}
+
+			byte[] stringAsBytes = Encoding.UTF8.GetBytes(s);
+			stream.Write(stringAsBytes, 0, stringAsBytes.Length);
 		}
 
-		public void WriteStr8(string s)
+		public void WriteBinary(byte[] bytes)
 		{
-			WriteString(Format.Str8, s);
-		}
-
-		public void WriteStr16(string s)
-		{
-			WriteString(Format.Str16, s);
-		}
-
-		public void WriteStr32(string s)
-		{
-			WriteString(Format.Str32, s);
-		}
-
-		public void WriteBin8(byte[] bytes)
-		{
-			WriteBinary(Format.Bin8, bytes);
-		}
-
-		public void WriteBin16(byte[] bytes)
-		{
-			WriteBinary(Format.Bin16, bytes);
-		}
-
-		public void WriteBin32(byte[] bytes)
-		{
-			WriteBinary(Format.Bin32, bytes);
+			if(bytes.Length <= byte.MaxValue) stream.WriteByte(Format.Bin8);
+			else if(bytes.Length <= ushort.MaxValue) stream.WriteByte(Format.Bin16);
+			else stream.WriteByte(Format.Bin32);
+			stream.Write(bytes, 0, bytes.Length);
 		}
 
 		public void WriteArrayLength(int length)
@@ -210,21 +202,6 @@ namespace UniMsgPack
 				stream.WriteByte((byte)length);
 			}
 			stream.WriteByte((byte)extType);
-		}
-
-		void WriteString(byte lengthFormat, string s)
-		{
-			byte[] lengthAsBytes = BitConverter.GetBytes(s.Length);
-			byte[] stringAsBytes = Encoding.UTF8.GetBytes(s);
-			stream.WriteByte(lengthFormat);
-			stream.Write(lengthAsBytes, 0, lengthAsBytes.Length);
-			stream.Write(stringAsBytes, 0, stringAsBytes.Length);
-		}
-
-		void WriteBinary(byte lengthFormat, byte[] bytes)
-		{
-			stream.WriteByte(lengthFormat);
-			stream.Write(bytes, 0, bytes.Length);
 		}
 
 		public Format GetFormatForInt(byte value)
@@ -260,7 +237,7 @@ namespace UniMsgPack
 		public Format GetFormatForInt(sbyte value)
 		{
 			if(value > sbyte.MaxValue) return new Format(Format.UInt8);
-			if(value > 0) return new Format((byte)((byte)value | Format.PositiveFixIntMin));
+			if(value >= 0) return new Format((byte)((byte)value | Format.PositiveFixIntMin));
 			if(value >= -32) return new Format((byte)((byte)value | Format.NegativeFixIntMin));
 			return new Format(Format.Int8);
 		}
@@ -269,7 +246,7 @@ namespace UniMsgPack
 		{
 			if(value > byte.MaxValue) return new Format(Format.UInt16);
 			if(value > sbyte.MaxValue) return new Format(Format.UInt8);
-			if(value > 0) return new Format((byte)(value | Format.PositiveFixIntMin));
+			if(value >= 0) return new Format((byte)(value | Format.PositiveFixIntMin));
 			if(value >= -32) return new Format((byte)(value | Format.NegativeFixIntMin));
 			if(value >= sbyte.MinValue) return new Format(Format.Int8);
 			return new Format(Format.Int16);
@@ -280,7 +257,7 @@ namespace UniMsgPack
 			if(value > ushort.MaxValue) return new Format(Format.UInt32);
 			if(value > byte.MaxValue) return new Format(Format.UInt16);
 			if(value > sbyte.MaxValue) return new Format(Format.UInt8);
-			if(value > 0) return new Format((byte)(value | Format.PositiveFixIntMin));
+			if(value >= 0) return new Format((byte)(value | Format.PositiveFixIntMin));
 			if(value >= -32) return new Format((byte)(value | Format.NegativeFixIntMin));
 			if(value >= sbyte.MinValue) return new Format(Format.Int8);
 			if(value >= short.MinValue) return new Format(Format.Int16);
@@ -293,29 +270,12 @@ namespace UniMsgPack
 			if(value > ushort.MaxValue) return new Format(Format.UInt32);
 			if(value > byte.MaxValue) return new Format(Format.UInt16);
 			if(value > sbyte.MaxValue) return new Format(Format.UInt8);
-			if(value > 0) return new Format((byte)(value | Format.PositiveFixIntMin));
+			if(value >= 0) return new Format((byte)(value | Format.PositiveFixIntMin));
 			if(value >= -32) return new Format((byte)(value | Format.NegativeFixIntMin));
 			if(value >= sbyte.MinValue) return new Format(Format.Int8);
 			if(value >= short.MinValue) return new Format(Format.Int16);
 			if(value >= int.MinValue) return new Format(Format.Int32);
 			return new Format(Format.Int64);
-		}
-
-		public Format GetFormatForString(string value)
-		{
-			if(value.Length <= 31) return new Format((byte)(value.Length | Format.FixStrMin));
-			if(value.Length <= byte.MaxValue) return new Format(Format.Str8);
-			if(value.Length <= ushort.MaxValue) return new Format(Format.Str16);
-			if(value.Length <= int.MaxValue) return new Format(Format.Str32);
-			throw new FormatException();
-		}
-
-		public Format GetFormatForBinary(byte[] value)
-		{
-			if(value.Length <= byte.MaxValue) return new Format(Format.Bin8);
-			if(value.Length <= ushort.MaxValue) return new Format(Format.Bin16);
-			if(value.Length <= int.MaxValue) return new Format(Format.Bin32);
-			throw new FormatException();
 		}
 	}
 }

@@ -63,12 +63,11 @@ namespace UniMsgPack
 				writer.WriteNil();
 				return;
 			}
+			writer.WriteMapLength(cache[type].Count);
 			foreach(KeyValuePair<string, FieldInfo> kv in cache[type]) {
 				object value = kv.Value.GetValue(obj);
-				if(value != null) {
-					nameHandler.Write(kv.Key, writer);
-					fieldHandlers[type].Write(value, writer);
-				}
+				nameHandler.Write(kv.Key, writer);
+				fieldHandlers[kv.Value.FieldType].Write(value, writer);
 			}
 		}
 

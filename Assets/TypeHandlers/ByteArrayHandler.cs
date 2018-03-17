@@ -21,12 +21,7 @@ namespace UniMsgPack
 				writer.WriteNil();
 				return;
 			}
-			byte[] value = (byte[])obj;
-			Format format = writer.GetFormatForBinary(value);
-			if(format.IsBin8) writer.WriteBin8(value);
-			else if(format.IsBin16) writer.WriteBin16(value);
-			else if(format.IsBin32) writer.WriteBin32(value);
-			else throw new FormatException();
+			writer.WriteBinary((byte[])obj);
 		}
 	}
 }
