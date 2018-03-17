@@ -22,8 +22,9 @@ namespace UniMsgPack
 			else if(value <= byte.MaxValue) {
 				writer.WriteFormat(Format.UInt8);
 				writer.WriteUInt8(value);
+			} else {
+				throw new FormatException();
 			}
-			throw new FormatException();
 		}
 	}
 }
