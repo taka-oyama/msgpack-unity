@@ -18,6 +18,7 @@ namespace UniMsgPack
 				}
 				return (float)value;
 			}
+			if(format.IsNil) return default(float);
 			throw new FormatException();
 		}
 

@@ -9,6 +9,7 @@ namespace UniMsgPack
 		{
 			if(format.IsPositiveFixInt) return reader.ReadPositiveFixInt(format);
 			if(format.IsUInt8) return reader.ReadUInt8();
+			if(format.IsNil) return default(byte);
 			throw new FormatException();
 		}
 

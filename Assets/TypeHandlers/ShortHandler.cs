@@ -13,6 +13,7 @@ namespace UniMsgPack
 			if(format.IsNegativeFixInt) return(short) reader.ReadNegativeFixInt(format);
 			if(format.IsInt8) return (short)reader.ReadInt8();
 			if(format.IsInt16) return reader.ReadInt16();
+			if(format.IsNil) return default(short);
 			throw new FormatException();
 		}
 

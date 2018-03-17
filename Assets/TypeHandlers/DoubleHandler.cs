@@ -9,6 +9,7 @@ namespace UniMsgPack
 		{
 			if(format.IsFloat32) return (double)reader.ReadFloat32();
 			if(format.IsFloat64) return reader.ReadFloat64();
+			if(format.IsNil) return default(double);
 			throw new FormatException();
 		}
 
