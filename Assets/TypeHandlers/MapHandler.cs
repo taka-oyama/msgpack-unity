@@ -51,11 +51,9 @@ namespace UniMsgPack
 				}
 				return obj;
 			}
-
 			if(format.IsNil) {
 				return null;
 			}
-
 			throw new FormatException();
 		}
 

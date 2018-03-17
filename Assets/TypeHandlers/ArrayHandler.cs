@@ -19,18 +19,15 @@ namespace UniMsgPack
 			if(format.IsArrayGroup) {
 				int size = reader.ReadArrayLength(format);
 				Array array = Array.CreateInstance(elementType, size);
-
 				for(int i = 0; i < size; i++) {
 					object value = handler.Read(reader.ReadFormat(), reader);
 					array.SetValue(value, i);
 				}
 				return array;
 			}
-
 			if(format.IsNil) {
 				return Array.CreateInstance(elementType, 0);
 			}
-
 			throw new FormatException();
 		}
 
@@ -40,7 +37,6 @@ namespace UniMsgPack
 				writer.WriteNil();
 				return;
 			}
-
 			Array values = (Array)obj;
 			writer.WriteArrayLength(values.Length);
 			foreach(object value in values) {

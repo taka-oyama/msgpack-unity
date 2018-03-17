@@ -28,11 +28,9 @@ namespace UniMsgPack
 				}
 				return list;
 			}
-
 			if(format.IsNil) {
 				return list;
 			}
-
 			throw new FormatException();
 		}
 
