@@ -11,5 +11,10 @@ namespace UniMsgPack.Tests
 		{
 			return File.ReadAllBytes(basePath + "/" + path + ".mpack");
 		}
+
+		public void WriteFile(string path, byte[] bytes)
+		{
+			File.WriteAllBytes(basePath + "/" + path + ".mpack", bytes);
+		}
 	}
 }
