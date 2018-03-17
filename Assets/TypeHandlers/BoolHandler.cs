@@ -15,11 +15,7 @@ namespace UniMsgPack
 
 		public void Write(object obj, FormatWriter writer)
 		{
-			if((bool)obj) {
-				writer.WriteTrue();
-			} else {
-				writer.WriteFalse();
-			}
+			writer.Write((bool)obj);
 		}
 	}
 }

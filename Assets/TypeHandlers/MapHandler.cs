@@ -63,7 +63,7 @@ namespace UniMsgPack
 				writer.WriteNil();
 				return;
 			}
-			writer.WriteMapLength(cache[type].Count);
+			writer.WriteMapHeader(cache[type].Count);
 			foreach(KeyValuePair<string, FieldInfo> kv in cache[type]) {
 				object value = kv.Value.GetValue(obj);
 				nameHandler.Write(kv.Key, writer);

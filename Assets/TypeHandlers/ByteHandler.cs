@@ -15,12 +15,7 @@ namespace UniMsgPack
 
 		public void Write(object obj, FormatWriter writer)
 		{
-			byte value = Convert.ToByte(obj);
-			Format format = writer.GetFormatForInt(value);
-			writer.WriteFormat(format);
-			if(format.IsPositiveFixInt) { /* already written as format */ }
-			else if(format.IsUInt8) writer.WriteUInt8(value);
-			else throw new FormatException();
+			writer.Write(Convert.ToByte(obj));
 		}
 	}
 }

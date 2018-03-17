@@ -41,7 +41,7 @@ namespace UniMsgPack
 				return;
 			}
 			IDictionary dictionary = (IDictionary)obj;
-			writer.WriteMapLength(dictionary.Count);
+			writer.WriteMapHeader(dictionary.Count);
 			foreach(DictionaryEntry kv in dictionary) {
 				keyHandler.Write(kv.Key, writer);
 				valueHandler.Write(kv.Value, writer);

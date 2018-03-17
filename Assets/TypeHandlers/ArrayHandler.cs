@@ -38,7 +38,7 @@ namespace UniMsgPack
 				return;
 			}
 			Array values = (Array)obj;
-			writer.WriteArrayLength(values.Length);
+			writer.WriteArrayHeader(values.Length);
 			foreach(object value in values) {
 				handler.Write(value, writer);
 			}

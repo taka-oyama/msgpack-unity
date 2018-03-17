@@ -17,11 +17,7 @@ namespace UniMsgPack
 
 		public void Write(object obj, FormatWriter writer)
 		{
-			if(obj == null) {
-				writer.WriteNil();
-				return;
-			}
-			writer.WriteBinary((byte[])obj);
+			writer.Write((byte[])obj);
 		}
 	}
 }

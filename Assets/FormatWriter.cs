@@ -20,32 +20,258 @@ namespace UniMsgPack
 			stream.WriteByte(formatValue);
 		}
 
-		public void WriteFormat(Format format)
-		{
-			stream.WriteByte(format.value);
-		}
-
 		public void WriteNil()
 		{
 			stream.WriteByte(Format.Nil);
 		}
 
-		public void WriteTrue()
+		public void Write(bool value)
 		{
-			stream.WriteByte(Format.True);
+			stream.WriteByte(value ? Format.True : Format.False);
 		}
 
-		public void WriteFalse()
+		public void Write(byte value)
 		{
-			stream.WriteByte(Format.False);
+			if(value <= sbyte.MaxValue) {
+				WritePositiveFixInt(value);
+			}
+			else {
+				WriteFormat(Format.UInt8);
+				WriteUInt8((byte)value);
+			}
+		}
+
+		public void Write(ushort value)
+		{
+			if(value <= byte.MaxValue) {
+				Write((byte)value);
+			}
+			else {
+				WriteFormat(Format.UInt16);
+				WriteUInt16(value);				
+			}
+		}
+
+		public void Write(uint value)
+		{
+			if(value <= ushort.MaxValue) {
+				Write((ushort)value);
+			}
+			else {
+				WriteFormat(Format.UInt32);
+				WriteUInt32(value);
+			}
+		}
+
+		public void Write(ulong value)
+		{
+			if(value <= uint.MaxValue) {
+				Write((ulong)value);
+			}
+			else {
+				WriteFormat(Format.UInt64);
+				WriteUInt64(value);
+			}
+		}
+
+		public void Write(sbyte value)
+		{
+			if(value >= 0) {
+				Write((byte)value);
+			}
+			else if(value >= -32) {
+				WriteNegativeFixInt(value);
+			}
+			else {
+				WriteFormat(Format.Int8);
+				WriteInt8(value);
+			}
+		}
+
+		public void Write(short value)
+		{
+			if(value >= 0) {
+				Write((ushort)value);
+			}
+			else if(value > short.MinValue) {
+				Write((sbyte)value);
+			}
+			else {
+				WriteFormat(Format.Int16);
+				WriteInt16(value);
+			}
+		}
+
+		public void Write(int value)
+		{
+			if(value >= 0) {
+				Write((uint)value);
+			}
+			else if(value > int.MinValue) {
+				Write((short)value);
+			}
+			else {
+				WriteFormat(Format.Int32);
+				WriteInt32(value);
+			}
+		}
+
+		public void Write(long value)
+		{
+			if(value >= 0) {
+				Write((uint)value);
+			}
+			else if(value > long.MinValue) {
+				Write((int)value);
+			}
+			else {
+				WriteFormat(Format.Int64);
+				WriteInt64(value);
+			}
+		}
+
+		public void Write(float f)
+		{
+			byte[] bytes = BitConverter.GetBytes(f);
+			if(BitConverter.IsLittleEndian) {
+				Array.Reverse(bytes);
+			}
+			WriteFormat(Format.Float32);
+			stream.Write(bytes, 0, 4);
+		}
+
+		public void Write(double f)
+		{
+			byte[] bytes = BitConverter.GetBytes(f);
+			if(BitConverter.IsLittleEndian) {
+				Array.Reverse(bytes);
+			}
+			WriteFormat(Format.Float64);
+			stream.Write(bytes, 0, 8);
+		}
+
+		public void Write(string str)
+		{
+			if(str == null) {
+				WriteNil();
+				return;
+			}
+			
+			if(str.Length <= 31) {
+				WriteFormat((byte)(Format.FixStrMin | (byte)str.Length));
+			}
+			else if(str.Length <= byte.MaxValue) {
+				WriteFormat(Format.Str8);
+				WriteUInt8((byte)str.Length);
+			}
+			else if(str.Length <= ushort.MaxValue) {
+				WriteFormat(Format.Str16);
+				WriteUInt16((ushort)str.Length);
+			}
+			else {
+				WriteFormat(Format.Str32);
+				WriteUInt32((uint)str.Length);
+			}
+
+			byte[] stringAsBytes = Encoding.UTF8.GetBytes(str);
+			stream.Write(stringAsBytes, 0, stringAsBytes.Length);
+		}
+
+		public void Write(byte[] bytes)
+		{
+			if(bytes == null) {
+				WriteNil();
+				return;
+			}
+
+			if(bytes.Length <= byte.MaxValue) {
+				WriteFormat(Format.Bin8);
+				WriteUInt8((byte)bytes.Length);
+			}
+			else if(bytes.Length <= ushort.MaxValue) {
+				WriteFormat(Format.Bin16);
+				WriteUInt16((ushort)bytes.Length);
+			}
+			else {
+				WriteFormat(Format.Bin32);
+				WriteUInt32((uint)bytes.Length);				
+			}
+			stream.Write(bytes, 0, bytes.Length);
+		}
+
+		public void WriteArrayHeader(int length)
+		{
+			if(length <= 15) {
+				WriteFormat((byte)(length | Format.FixArrayMin));
+			}
+			else if(length <= ushort.MaxValue) {
+				WriteFormat(Format.Array16);
+				WriteUInt16((ushort)length);
+			}
+			else {
+				WriteFormat(Format.Array32);
+				WriteUInt32((uint)length);
+			}
+		}
+
+		public void WriteMapHeader(int length)
+		{
+			if(length <= 15) {
+				WriteFormat((byte)(length | Format.FixMapMin));
+			}
+			else if(length <= ushort.MaxValue) {
+				WriteFormat(Format.Map16);
+				WriteUInt16((ushort)length);
+			}
+			else {
+				WriteFormat(Format.Map32);
+				WriteUInt32((uint)length);
+			}
+		}
+
+		public void WriteExtHeader(byte format, uint length, sbyte extType)
+		{
+			if(length == 1) {
+				WriteFormat(Format.FixExt1);
+			}
+			else if(length == 2) {
+				WriteFormat(Format.FixExt2);
+			}
+			else if(length == 4) {
+				WriteFormat(Format.FixExt4);
+			}
+			else if(length == 8) {
+				WriteFormat(Format.FixExt8);
+			}
+			else if(length == 16) {
+				WriteFormat(Format.FixExt16);
+			}
+			else if(length <= byte.MaxValue) {
+				WriteFormat(Format.Ext8);
+				WriteUInt8((byte)length);
+			}
+			else if(length <= ushort.MaxValue) {
+				WriteFormat(Format.Ext16);
+				WriteUInt16((ushort)length);
+			}
+			else if(length <= uint.MaxValue) {
+				WriteFormat(Format.Ext32);
+				WriteUInt32(length);				
+			}
+			else {
+				throw new FormatException();
+			}
+			stream.WriteByte((byte)extType);
 		}
 
 		public void WritePositiveFixInt(byte i)
 		{
 			if(i >= 0 || i <= sbyte.MaxValue) {
-				stream.WriteByte(i);
+				stream.WriteByte((byte)(i | Format.PositiveFixIntMin));
 			}
-			throw new OverflowException(i + " is out of range for PositiveFixInt");
+			else {
+				throw new OverflowException(i + " is out of range for PositiveFixInt");
+			}
 		}
 
 		public void WriteUInt8(byte i)
@@ -85,9 +311,11 @@ namespace UniMsgPack
 		public void WriteNegativeFixInt(sbyte i)
 		{
 			if(i >= -32 && i <= -1) {
-				stream.WriteByte((byte)(Format.NegativeFixIntMin | (byte)i));
+				stream.WriteByte((byte)((byte)i | Format.NegativeFixIntMin));
 			}
-			throw new OverflowException(i + " is out of range for NegativeFixInt");
+			else {
+				throw new OverflowException(i + " is out of range for NegativeFixInt");
+			}
 		}
 
 		public void WriteInt8(sbyte i)
@@ -122,160 +350,6 @@ namespace UniMsgPack
 			staticBuffer[6] = (byte)(i >> 8);
 			staticBuffer[7] = (byte)i;
 			stream.Write(staticBuffer, 0, 8);
-		}
-
-		public void WriteFloat32(float f)
-		{
-			byte[] bytes = BitConverter.GetBytes(f);
-			if(BitConverter.IsLittleEndian) {
-				Array.Reverse(bytes);
-			}
-			stream.Write(bytes, 0, 4);
-		}
-
-		public void WriteFloat64(double f)
-		{
-			byte[] bytes = BitConverter.GetBytes(f);
-			if(BitConverter.IsLittleEndian) {
-				Array.Reverse(bytes);
-			}
-			stream.Write(bytes, 0, 8);
-		}
-
-		public void WriteString(string s)
-		{
-			if(s.Length <= 31) {
-				WriteFormat((byte)(Format.FixStrMin | (byte)s.Length));
-			}
-			else if(s.Length <= byte.MaxValue) {
-				WriteFormat(Format.UInt8);
-				WriteUInt8((byte)s.Length);
-			}
-			else if(s.Length <= ushort.MaxValue) {
-				WriteFormat(Format.UInt16);
-				WriteUInt16((ushort)s.Length);
-			}
-			else {
-				WriteFormat(Format.UInt32);
-				WriteUInt32((uint)s.Length);
-			}
-
-			byte[] stringAsBytes = Encoding.UTF8.GetBytes(s);
-			stream.Write(stringAsBytes, 0, stringAsBytes.Length);
-		}
-
-		public void WriteBinary(byte[] bytes)
-		{
-			if(bytes.Length <= byte.MaxValue) stream.WriteByte(Format.Bin8);
-			else if(bytes.Length <= ushort.MaxValue) stream.WriteByte(Format.Bin16);
-			else stream.WriteByte(Format.Bin32);
-			stream.Write(bytes, 0, bytes.Length);
-		}
-
-		public void WriteArrayLength(int length)
-		{
-			if(length < 16) WriteFormat((byte)(length | Format.FixArrayMin));
-			else if(length <= ushort.MaxValue) WriteFormat(Format.Array16);
-			else WriteFormat(Format.Array32);
-		}
-
-		public void WriteMapLength(int length)
-		{
-			if(length < 16) WriteFormat((byte)(length | Format.FixMapMin));
-			else if(length <= ushort.MaxValue) WriteFormat(Format.Map16);
-			else WriteFormat(Format.Map32);
-		}
-
-		public void WriteExtHeader(uint length, sbyte extType)
-		{
-			if(length == 1) stream.WriteByte(Format.FixExt1);
-			if(length == 2) stream.WriteByte(Format.FixExt2);
-			if(length == 4) stream.WriteByte(Format.FixExt4);
-			if(length == 8) stream.WriteByte(Format.FixExt8);
-			if(length == 16) stream.WriteByte(Format.FixExt16);
-			if(length <= byte.MaxValue) {
-				stream.WriteByte(Format.Ext8);
-				stream.WriteByte((byte)length);
-			}
-			if(length <= byte.MaxValue) {
-				stream.WriteByte(Format.Ext16);
-				stream.WriteByte((byte)length);
-			}
-			stream.WriteByte((byte)extType);
-		}
-
-		public Format GetFormatForInt(byte value)
-		{
-			if(value > sbyte.MaxValue) return new Format(Format.UInt8);
-			return new Format((byte)(value | Format.PositiveFixIntMin));
-		}
-
-		public Format GetFormatForInt(ushort value)
-		{
-			if(value > byte.MaxValue) return new Format(Format.UInt16);
-			if(value > sbyte.MaxValue) return new Format(Format.UInt8);
-			return new Format((byte)(value | Format.PositiveFixIntMin));
-		}
-
-		public Format GetFormatForInt(uint value)
-		{
-			if(value > ushort.MaxValue) return new Format(Format.UInt32);
-			if(value > byte.MaxValue) return new Format(Format.UInt16);
-			if(value > sbyte.MaxValue) return new Format(Format.UInt8);
-			return new Format((byte)(value | Format.PositiveFixIntMin));
-		}
-
-		public Format GetFormatForInt(ulong value)
-		{
-			if(value > uint.MaxValue) return new Format(Format.UInt64);
-			if(value > ushort.MaxValue) return new Format(Format.UInt32);
-			if(value > byte.MaxValue) return new Format(Format.UInt16);
-			if(value > (ulong)sbyte.MaxValue) return new Format(Format.UInt8);
-			return new Format((byte)(value | Format.PositiveFixIntMin));
-		}
-
-		public Format GetFormatForInt(sbyte value)
-		{
-			if(value > sbyte.MaxValue) return new Format(Format.UInt8);
-			if(value >= 0) return new Format((byte)((byte)value | Format.PositiveFixIntMin));
-			if(value >= -32) return new Format((byte)((byte)value | Format.NegativeFixIntMin));
-			return new Format(Format.Int8);
-		}
-
-		public Format GetFormatForInt(short value)
-		{
-			if(value > byte.MaxValue) return new Format(Format.UInt16);
-			if(value > sbyte.MaxValue) return new Format(Format.UInt8);
-			if(value >= 0) return new Format((byte)(value | Format.PositiveFixIntMin));
-			if(value >= -32) return new Format((byte)(value | Format.NegativeFixIntMin));
-			if(value >= sbyte.MinValue) return new Format(Format.Int8);
-			return new Format(Format.Int16);
-		}
-
-		public Format GetFormatForInt(int value)
-		{
-			if(value > ushort.MaxValue) return new Format(Format.UInt32);
-			if(value > byte.MaxValue) return new Format(Format.UInt16);
-			if(value > sbyte.MaxValue) return new Format(Format.UInt8);
-			if(value >= 0) return new Format((byte)(value | Format.PositiveFixIntMin));
-			if(value >= -32) return new Format((byte)(value | Format.NegativeFixIntMin));
-			if(value >= sbyte.MinValue) return new Format(Format.Int8);
-			if(value >= short.MinValue) return new Format(Format.Int16);
-			return new Format(Format.Int32);
-		}
-
-		public Format GetFormatForInt(long value)
-		{
-			if(value > uint.MaxValue) return new Format(Format.UInt64);
-			if(value > ushort.MaxValue) return new Format(Format.UInt32);
-			if(value > byte.MaxValue) return new Format(Format.UInt16);
-			if(value > sbyte.MaxValue) return new Format(Format.UInt8);
-			if(value >= 0) return new Format((byte)(value | Format.PositiveFixIntMin));
-			if(value >= -32) return new Format((byte)(value | Format.NegativeFixIntMin));
-			if(value >= sbyte.MinValue) return new Format(Format.Int8);
-			if(value >= short.MinValue) return new Format(Format.Int16);
-			if(value >= int.MinValue) return new Format(Format.Int32);
-			return new Format(Format.Int64);
 		}
 	}
 }
