@@ -20,11 +20,20 @@ namespace UniMsgPack
 		{
 			Type listType = typeof(List<>).MakeGenericType(new[] { elementType });
 			IList list = (IList)Activator.CreateInstance(listType);
-			int size = reader.ReadArrayLength(format);
-			for(int i = 0; i < size; i++) {
-				list.Add(handler.Read(reader.ReadFormat(), reader));
+
+			if(format.IsArrayGroup) {
+				int size = reader.ReadArrayLength(format);
+				for(int i = 0; i < size; i++) {
+					list.Add(handler.Read(reader.ReadFormat(), reader));
+				}
+				return list;
 			}
-			return list;
+
+			if(format.IsNil) {
+				return list;
+			}
+
+			throw new FormatException();
 		}
 
 		public void Write(object obj, FormatWriter writer)

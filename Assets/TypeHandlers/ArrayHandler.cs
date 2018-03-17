@@ -16,14 +16,22 @@ namespace UniMsgPack
 
 		public object Read(Format format, FormatReader reader)
 		{
-			int size = reader.ReadArrayLength(format);
-			Array array = Array.CreateInstance(elementType, size);
+			if(format.IsArrayGroup) {
+				int size = reader.ReadArrayLength(format);
+				Array array = Array.CreateInstance(elementType, size);
 
-			for(int i = 0; i < size; i++) {
-				object value = handler.Read(reader.ReadFormat(), reader);
-				array.SetValue(value, i);
+				for(int i = 0; i < size; i++) {
+					object value = handler.Read(reader.ReadFormat(), reader);
+					array.SetValue(value, i);
+				}
+				return array;
 			}
-			return array;
+
+			if(format.IsNil) {
+				return Array.CreateInstance(elementType, 0);
+			}
+
+			throw new FormatException();
 		}
 
 		public void Write(object obj, FormatWriter writer)

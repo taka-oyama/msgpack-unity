@@ -34,23 +34,29 @@ namespace UniMsgPack
 
 		public object Read(Format format, FormatReader reader)
 		{
-			if(format.IsNil) return null;
-			object obj = FormatterServices.GetUninitializedObject(type);
-			int size = reader.ReadMapLength(format);
-
-			while(size > 0) {
-				string name = (string)nameHandler.Read(reader.ReadFormat(), reader);
-				FieldInfo field = GetFieldInfo(name);
-				if(field != null) {
-					object value = fieldHandlers[field.FieldType].Read(reader.ReadFormat(), reader);
-					field.SetValue(obj, value);
+			if(format.IsMapGroup) {
+				object obj = FormatterServices.GetUninitializedObject(type);
+				int size = reader.ReadMapLength(format);
+				while(size > 0) {
+					string name = (string)nameHandler.Read(reader.ReadFormat(), reader);
+					FieldInfo field = GetFieldInfo(name);
+					if(field != null) {
+						object value = fieldHandlers[field.FieldType].Read(reader.ReadFormat(), reader);
+						field.SetValue(obj, value);
+					}
+					else {
+						reader.Skip();
+					}
+					size = size - 1;
 				}
-				else {
-					reader.Skip();
-				}
-				size = size - 1;
+				return obj;
 			}
-			return obj;
+
+			if(format.IsNil) {
+				return null;
+			}
+
+			throw new FormatException();
 		}
 
 		public void Write(object obj, FormatWriter writer)
