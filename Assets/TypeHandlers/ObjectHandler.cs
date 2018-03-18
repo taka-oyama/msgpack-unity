@@ -48,6 +48,10 @@ namespace UniMsgPack
 
 		public void Write(object obj, FormatWriter writer)
 		{
+			if(obj == null) {
+				writer.WriteNil();
+				return;
+			}
 			TypeHandlers.Resolve(obj.GetType()).Write(obj, writer);
 		}
 
