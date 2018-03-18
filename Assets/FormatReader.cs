@@ -95,7 +95,7 @@ namespace UniMsgPack
 				if(BitConverter.IsLittleEndian) {
 					Array.Reverse(staticBuffer);
 				}
-				return BitConverter.ToSingle(staticBuffer, 0);
+				return BitConverter.ToSingle(staticBuffer, staticBuffer.Length - 4);
 			}
 			throw new FormatException();
 		}
