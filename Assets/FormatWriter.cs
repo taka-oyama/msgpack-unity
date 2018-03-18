@@ -48,7 +48,7 @@ namespace UniMsgPack
 			}
 			else {
 				WriteFormat(Format.UInt16);
-				WriteUInt16(value);				
+				WriteUInt16(value);
 			}
 		}
 
@@ -119,7 +119,7 @@ namespace UniMsgPack
 		public void Write(long value)
 		{
 			if(value >= 0) {
-				Write((uint)value);
+				Write((ulong)value);
 			}
 			else if(value >= int.MinValue) {
 				Write((int)value);
@@ -156,7 +156,7 @@ namespace UniMsgPack
 				WriteNil();
 				return;
 			}
-			
+
 			if(str.Length <= 31) {
 				WriteFormat((byte)(Format.FixStrMin | (byte)str.Length));
 			}
@@ -194,7 +194,7 @@ namespace UniMsgPack
 			}
 			else {
 				WriteFormat(Format.Bin32);
-				WriteUInt32((uint)bytes.Length);				
+				WriteUInt32((uint)bytes.Length);
 			}
 			stream.Write(bytes, 0, bytes.Length);
 		}
@@ -256,7 +256,7 @@ namespace UniMsgPack
 			}
 			else if(length <= uint.MaxValue) {
 				WriteFormat(Format.Ext32);
-				WriteUInt32(length);				
+				WriteUInt32(length);
 			}
 			else {
 				throw new FormatException();
