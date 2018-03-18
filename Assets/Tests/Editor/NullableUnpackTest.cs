@@ -27,7 +27,7 @@ namespace UniMsgPack.Tests
 		[Test]
 		public void NullableEnum()
 		{
-			MyEnum value = MsgPack.Unpack<MyEnum>(ReadFile("Nullables/EnumInt"));
+			MyEnum? value = MsgPack.Unpack<MyEnum>(ReadFile("Nullables/EnumInt"));
 			Assert.AreEqual(MyEnum.Foo, value);
 		}
 

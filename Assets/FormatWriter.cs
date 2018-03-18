@@ -37,7 +37,7 @@ namespace UniMsgPack
 			}
 			else {
 				WriteFormat(Format.UInt8);
-				WriteUInt8((byte)value);
+				WriteUInt8(value);
 			}
 		}
 
@@ -66,7 +66,7 @@ namespace UniMsgPack
 		public void Write(ulong value)
 		{
 			if(value <= uint.MaxValue) {
-				Write((ulong)value);
+				Write((uint)value);
 			}
 			else {
 				WriteFormat(Format.UInt64);
