@@ -93,7 +93,7 @@ namespace UniMsgPack
 			if(value >= 0) {
 				Write((ushort)value);
 			}
-			else if(value > short.MinValue) {
+			else if(value >= sbyte.MinValue) {
 				Write((sbyte)value);
 			}
 			else {
@@ -107,7 +107,7 @@ namespace UniMsgPack
 			if(value >= 0) {
 				Write((uint)value);
 			}
-			else if(value > int.MinValue) {
+			else if(value >= short.MinValue) {
 				Write((short)value);
 			}
 			else {
@@ -121,7 +121,7 @@ namespace UniMsgPack
 			if(value >= 0) {
 				Write((uint)value);
 			}
-			else if(value > long.MinValue) {
+			else if(value >= int.MinValue) {
 				Write((int)value);
 			}
 			else {
