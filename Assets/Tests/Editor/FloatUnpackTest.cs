@@ -7,10 +7,24 @@ namespace UniMsgPack.Tests
 	public class FloatUnpackTest : TestBase
 	{
 		[Test]
-		public void Float64Zero()
+		public void Float32Zero()
 		{
-			double value = MsgPack.Unpack<double>(ReadFile("Floats/Float64Zero"));
+			float value = MsgPack.Unpack<float>(ReadFile("Floats/Float32Zero"));
 			Assert.AreEqual(0.0, value);
+		}
+
+		[Test]
+		public void Float32Min()
+		{
+			float value = MsgPack.Unpack<float>(ReadFile("Floats/Float32Min"));
+			Assert.AreEqual(float.MinValue, value);
+		}
+
+		[Test]
+		public void Float32Max()
+		{
+			float value = MsgPack.Unpack<float>(ReadFile("Floats/Float32Max"));
+			Assert.AreEqual(float.MaxValue, value);
 		}
 
 		[Test]
@@ -21,25 +35,11 @@ namespace UniMsgPack.Tests
 		}
 
 		[Test]
-		public void Float64Min()
-		{
-			double value = MsgPack.Unpack<double>(ReadFile("Floats/Float64Min"));
-			Assert.AreEqual(double.MinValue, value);
-		}
-
-		[Test]
 		public void Float64MinAsFloat()
 		{
 			Assert.Throws<InvalidCastException>(() => {
 				MsgPack.Unpack<float>(ReadFile("Floats/Float64Min"));
 			});
-		}
-
-		[Test]
-		public void Float64Max()
-		{
-			double value = MsgPack.Unpack<double>(ReadFile("Floats/Float64Max"));
-			Assert.AreEqual(double.MaxValue, value);
 		}
 
 		[Test]

@@ -6,4 +6,4 @@ TODO
 - Add tests for incorrect format reads
 - Add Float32 Tests
 - Add Bin Format Tests
-
+- Allow ints as floats

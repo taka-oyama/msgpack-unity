@@ -13,6 +13,7 @@ namespace UniMsgPack.Tests
 			byte[] data = MsgPack.Pack<byte>(value);
 			byte result = MsgPack.Unpack<byte>(data);
 			Assert.AreEqual(Format.PositiveFixIntMin, data[0]);
+			Assert.AreEqual(1, data.Length);
 			Assert.AreEqual(value, result);
 		}
 
@@ -23,6 +24,7 @@ namespace UniMsgPack.Tests
 			byte[] data = MsgPack.Pack<byte>(value);
 			byte result = MsgPack.Unpack<byte>(data);
 			Assert.AreEqual(Format.PositiveFixIntMax, data[0]);
+			Assert.AreEqual(1, data.Length);
 			Assert.AreEqual(value, result);
 		}
 
@@ -33,6 +35,7 @@ namespace UniMsgPack.Tests
 			byte[] data = MsgPack.Pack<byte>(value);
 			byte result = MsgPack.Unpack<byte>(data);
 			Assert.AreEqual(Format.UInt8, data[0]);
+			Assert.AreEqual(2, data.Length);
 			Assert.AreEqual(value, result);
 		}
 
@@ -43,6 +46,7 @@ namespace UniMsgPack.Tests
 			byte[] data = MsgPack.Pack<byte>(value);
 			byte result = MsgPack.Unpack<byte>(data);
 			Assert.AreEqual(Format.UInt8, data[0]);
+			Assert.AreEqual(2, data.Length);
 			Assert.AreEqual(value, result);
 		}
 	}
