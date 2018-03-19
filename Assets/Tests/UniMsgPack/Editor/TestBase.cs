@@ -5,7 +5,7 @@ namespace UniMsgPack.Tests
 {
 	public abstract class TestBase
 	{
-		protected string basePath = Application.dataPath + "/Tests/Files";
+		protected string basePath = Application.dataPath + "/Tests/UniMsgPack/Files";
 
 		public byte[] ReadFile(string path)
 		{
