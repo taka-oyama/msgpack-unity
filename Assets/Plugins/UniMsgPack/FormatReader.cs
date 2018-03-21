@@ -206,13 +206,13 @@ namespace UniMsgPack
 			if(format.IsBin8) { FastForward(ReadUInt8()); return; }
 			if(format.IsBin16) { FastForward(ReadUInt16()); return; }
 			if(format.IsBin32) { FastForward(ReadUInt32()); return; }
-			if(format.IsArrayGroup) {
+			if(format.IsArrayFamily) {
 				for(int length = ReadArrayLength(format); length > 0; length--) {
 					Skip();
 				}
 				return;
 			}
-			if(format.IsMapGroup) {
+			if(format.IsMapFamily) {
 				for(int length = ReadMapLength(format); length > 0; length--) {
 					Skip();
 					Skip();

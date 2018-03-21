@@ -93,14 +93,14 @@ namespace UniMsgPack
 		public bool IsMap32 { get { return value == Map32; } }
 		public bool IsNegativeFixInt { get { return Between(NegativeFixIntMin, NegativeFixIntMax); } }
 
-		public bool IsIntGroup { get { return IsPositiveFixInt || IsNegativeFixInt || IsInt8 || IsUInt8 || IsInt16 || IsUInt16 || IsInt32 || IsUInt32; } }
-		public bool IsBoolGroup { get { return IsFalse || IsTrue; } }
-		public bool IsFloatGroup { get { return IsFloat32 || IsFloat64; } }
-		public bool IsStringGroup { get { return IsFixStr || IsStr8 || IsStr16 || IsStr32; } }
-		public bool IsBinaryGroup { get { return IsBin8 || IsBin16 || IsBin32; } }
-		public bool IsArrayGroup { get { return IsFixArray || IsArray16 || IsArray32; } }
-		public bool IsMapGroup { get { return IsFixMap || IsMap16 || IsMap32; } }
-		public bool IsExtGroup { get { return IsFixExt1 || IsFixExt2 || IsFixExt4 || IsFixExt8 || IsFixExt16 || IsExt8 || IsExt16 || IsExt32; } }
+		public bool IsIntFamily { get { return IsPositiveFixInt || IsNegativeFixInt || IsInt8 || IsUInt8 || IsInt16 || IsUInt16 || IsInt32 || IsUInt32; } }
+		public bool IsBoolFamily { get { return IsFalse || IsTrue; } }
+		public bool IsFloatFamily { get { return IsFloat32 || IsFloat64; } }
+		public bool IsStringFamily { get { return IsFixStr || IsStr8 || IsStr16 || IsStr32; } }
+		public bool IsBinaryFamily { get { return IsBin8 || IsBin16 || IsBin32; } }
+		public bool IsArrayFamily { get { return IsFixArray || IsArray16 || IsArray32; } }
+		public bool IsMapFamily { get { return IsFixMap || IsMap16 || IsMap32; } }
+		public bool IsExtFamily { get { return IsFixExt1 || IsFixExt2 || IsFixExt4 || IsFixExt8 || IsFixExt16 || IsExt8 || IsExt16 || IsExt32; } }
 
 		bool Between(byte min, byte max)
 		{

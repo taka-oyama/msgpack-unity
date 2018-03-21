@@ -18,8 +18,8 @@ namespace UniMsgPack
 
 		public object Read(Format format, FormatReader reader)
 		{
-			if(format.IsIntGroup) return Enum.ToObject(type, intHandler.Read(format, reader));
-			if(format.IsStringGroup) return Enum.Parse(type, (string)stringHandler.Read(format, reader), true);
+			if(format.IsIntFamily) return Enum.ToObject(type, intHandler.Read(format, reader));
+			if(format.IsStringFamily) return Enum.Parse(type, (string)stringHandler.Read(format, reader), true);
 			if(format.IsNil) return Enum.ToObject(type, 0);
 			throw new FormatException();
 		}

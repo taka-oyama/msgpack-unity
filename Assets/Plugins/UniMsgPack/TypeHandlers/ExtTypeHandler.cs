@@ -8,7 +8,7 @@ namespace UniMsgPack
 
 		public virtual object Read(Format format, FormatReader reader)
 		{
-			if(format.IsExtGroup) {
+			if(format.IsExtFamily) {
 				uint length = reader.ReadExtLength(format);
 				if(ExtType == reader.ReadExtType(format)) {
 					return Read(length, reader);

@@ -34,7 +34,7 @@ namespace UniMsgPack
 
 		public object Read(Format format, FormatReader reader)
 		{
-			if(format.IsMapGroup) {
+			if(format.IsMapFamily) {
 				object obj = FormatterServices.GetUninitializedObject(type);
 				int size = reader.ReadMapLength(format);
 				while(size > 0) {
