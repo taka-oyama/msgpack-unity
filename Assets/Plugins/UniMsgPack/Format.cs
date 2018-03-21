@@ -98,6 +98,7 @@ namespace UniMsgPack
 		public bool IsBinaryGroup { get { return IsBin8 || IsBin16 || IsBin32; } }
 		public bool IsArrayGroup { get { return IsFixArray || IsArray16 || IsArray32; } }
 		public bool IsMapGroup { get { return IsFixMap || IsMap16 || IsMap32; } }
+		public bool IsExtGroup { get { return IsFixExt1 || IsFixExt2 || IsFixExt4 || IsFixExt8 || IsFixExt16 || IsExt8 || IsExt16 || IsExt32; } }
 
 		bool Between(byte min, byte max)
 		{
