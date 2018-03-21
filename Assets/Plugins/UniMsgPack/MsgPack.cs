@@ -12,10 +12,9 @@ namespace UniMsgPack
 			return stream.ToArray();
 		}
 
-		public static Stream Pack<T>(T obj, Stream stream)
+		public static void Pack<T>(T obj, Stream stream)
 		{
-			new MsgPackWriter(stream).Write(obj);
-			return stream;
+			new MsgPackFormatter().Serialize(stream, obj);
 		}
 
 		public static T Unpack<T>(byte[] data)
@@ -25,7 +24,7 @@ namespace UniMsgPack
 
 		public static T Unpack<T>(Stream stream)
 		{
-			return (T)(new MsgPackReader(stream)).Read(typeof(T));
+			return new MsgPackFormatter().Deserialize<T>(stream);
 		}
 	}
 }
