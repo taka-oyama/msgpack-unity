@@ -214,6 +214,22 @@ namespace UniMsgPack
 			}
 		}
 
+		public void WriteBinHeader(int length)
+		{
+			if(length <= byte.MaxValue) {
+				WriteFormat(Format.Bin8);
+				WriteUInt8((byte)length);
+			}
+			else if(length <= ushort.MaxValue) {
+				WriteFormat(Format.Bin16);
+				WriteUInt16((ushort)length);
+			}
+			else {
+				WriteFormat(Format.Bin32);
+				WriteUInt32((uint)length);
+			}
+		}
+
 		public void WriteMapHeader(int length)
 		{
 			if(length <= 15) {
@@ -350,6 +366,11 @@ namespace UniMsgPack
 			staticBuffer[6] = (byte)(i >> 8);
 			staticBuffer[7] = (byte)i;
 			stream.Write(staticBuffer, 0, 8);
+		}
+
+		public void WriteRawByte(byte value)
+		{
+			stream.WriteByte(value);
 		}
 	}
 }
