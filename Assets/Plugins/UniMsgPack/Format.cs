@@ -94,6 +94,8 @@ namespace UniMsgPack
 		public bool IsNegativeFixInt { get { return Between(NegativeFixIntMin, NegativeFixIntMax); } }
 
 		public bool IsIntGroup { get { return IsPositiveFixInt || IsNegativeFixInt || IsInt8 || IsUInt8 || IsInt16 || IsUInt16 || IsInt32 || IsUInt32; } }
+		public bool IsBoolGroup { get { return IsFalse || IsTrue; } }
+		public bool IsFloatGroup { get { return IsFloat32 || IsFloat64; } }
 		public bool IsStringGroup { get { return IsFixStr || IsStr8 || IsStr16 || IsStr32; } }
 		public bool IsBinaryGroup { get { return IsBin8 || IsBin16 || IsBin32; } }
 		public bool IsArrayGroup { get { return IsFixArray || IsArray16 || IsArray32; } }
