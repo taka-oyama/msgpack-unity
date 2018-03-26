@@ -88,9 +88,6 @@ namespace UniMsgPack
 			}
 
 			if(type.IsClass || type.IsValueType) {
-				foreach(Type fieldType in MapHandler.GetFieldTypes(type)) {
-					AddIfNotExist(fieldType);
-				}
 				AddIfNotExist(type, new MapHandler(type));
 				return;
 			}
