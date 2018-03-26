@@ -245,7 +245,7 @@ namespace UniMsgPack
 			}
 		}
 
-		public void WriteExtHeader(byte format, uint length, sbyte extType)
+		public void WriteExtHeader(uint length, sbyte extType)
 		{
 			if(length == 1) {
 				WriteFormat(Format.FixExt1);
