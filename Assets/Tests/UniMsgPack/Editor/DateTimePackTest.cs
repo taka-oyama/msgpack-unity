@@ -16,5 +16,14 @@ namespace UniMsgPack.Tests
 			Assert.AreEqual(-1, (sbyte)data[2]);
 			Assert.AreEqual(15, data.Length);
 		}
+
+		[Test]
+		public void CheckTicks()
+		{
+			DateTime value = DateTime.Parse("2018-01-01 12:00:00.7654321+09:00").ToLocalTime();
+			byte[] data = MsgPack.Pack(value);
+			DateTime result = MsgPack.Unpack<DateTime>(data);
+			Assert.AreEqual(value, result);
+		}
 	}
 }
