@@ -51,7 +51,7 @@ namespace UniMsgPack
 			DateTime value = (DateTime)obj;
 			TimeSpan diff = value.ToUniversalTime() - epoch;
 			writer.WriteExtHeader(12, extType);
-			writer.WriteUInt32((uint)(value.Ticks % 10000000));
+			writer.WriteUInt32((uint)(value.Ticks % 10000000) * 100);
 			writer.WriteUInt64((ulong)diff.TotalSeconds);
 		}
 	}
