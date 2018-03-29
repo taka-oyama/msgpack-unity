@@ -1,42 +1,46 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
+using System.Runtime.Serialization;
 using UnityEngine;
 
 namespace UniMsgPack
 {
 	public class Benchmark : MonoBehaviour
 	{
+		public Color color = new Color(0.5f, 0.5f, 0.5f);
+		public Color32 color32 = new Color(0.5f, 0.5f, 0.5f);
+
 		struct Map
 		{
 			public int a;
 			public int b;
 		}
 
-		const int times = 5;
-		const int counter = 100000;
+		const int times = 50;
+		const int counter = 10000;
 
 		public void Start()
 		{
 			var time = DateTime.Now;
-			UnityEngine.Debug.Log(time.ToString("o"));
-			UnityEngine.Debug.Log(time.Ticks);
-			UnityEngine.Debug.Log(time.Ticks % 10000000);
-
-
 			double average = 0.0;
-			byte[] bytes = File.ReadAllBytes(Application.dataPath + "/Tests/Files/Arrays/Maps.mpack");
-			MsgPackReader reader = new MsgPackReader(new MemoryStream(bytes));
+
+			Map[] maps = new Map[counter];
+			for(int i = 0; i < counter; i++)
+			{
+				maps[i] = new Map() { a = UnityEngine.Random.Range(0, 100), b = UnityEngine.Random.Range(0, 100) };
+			}
+
+			var bytes = MsgPack.Pack(maps);
+			Stream stream = new MemoryStream(bytes);
+			MsgPackFormatter formatter = new MsgPackFormatter();
 			for(int n = 0; n < times; n++) {
-				var s1 = Stopwatch.StartNew();
-				for(int i = 0; i < counter; i++) {
-					reader.stream.Position = 0;
-					reader.Read(typeof(Map[]));
-				}
+				var s1 = System.Diagnostics.Stopwatch.StartNew();
+				stream.Position = 0;
+				formatter.Deserialize(typeof(Map[]), stream);
 				s1.Stop();
 				average += s1.Elapsed.TotalMilliseconds;
 			}
-			UnityEngine.Debug.Log((average / times).ToString("0.00 ms"));
+			Debug.Log((average / times).ToString("0.00 ms"));
 		}
 	}
 }
