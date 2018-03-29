@@ -27,9 +27,8 @@ namespace UniMsgPack
 			}
 			if(format.IsStringFamily) {
 				stringHandler = stringHandler ?? TypeHandlers.Get(typeof(string));
-				string htmlStr = (string)stringHandler.Read(format, reader);
 				Color color;
-				ColorUtility.TryParseHtmlString(htmlStr, out color);
+				ColorUtility.TryParseHtmlString((string)stringHandler.Read(format, reader), out color);
 				return (Color32)color;
 			}
 			if(format.IsMapFamily) {

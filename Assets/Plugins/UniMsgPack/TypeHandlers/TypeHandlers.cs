@@ -29,6 +29,7 @@ namespace UniMsgPack
 				{ typeof(object), new ObjectHandler() },
 				{ typeof(Uri), new UriHandler() },
 				{ typeof(DateTime), new DateTimeHandler() },
+				{ typeof(Color), new ColorHandler() },
 				{ typeof(Color32), new Color32Handler() },
 			};
 		}
