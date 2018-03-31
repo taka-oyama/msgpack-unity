@@ -22,6 +22,7 @@ namespace UniMsgPack
 				{ typeof(long), new LongHandler() },
 				{ typeof(ulong), new ULongHandler() },
 				{ typeof(float), new FloatHandler() },
+				{ typeof(decimal), new DecimalHandler() },
 				{ typeof(double), new DoubleHandler() },
 				{ typeof(string), new StringHandler() },
 				{ typeof(byte[]), new ByteArrayHandler() },
