@@ -31,6 +31,7 @@ namespace UniMsgPack
 				{ typeof(DateTime), new DateTimeHandler() },
 				{ typeof(Color), new ColorHandler() },
 				{ typeof(Color32), new Color32Handler() },
+				{ typeof(Guid), new GuidHandler() },
 				{ typeof(Vector2), new Vector2Handler() },
 				{ typeof(Vector2Int), new Vector2IntHandler() },
 				{ typeof(Vector3), new Vector3Handler() },
