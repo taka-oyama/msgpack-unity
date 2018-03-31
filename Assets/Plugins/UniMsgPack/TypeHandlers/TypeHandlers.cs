@@ -27,18 +27,18 @@ namespace UniMsgPack
 				{ typeof(byte[]), new ByteArrayHandler() },
 				{ typeof(char), new CharHandler() },
 				{ typeof(object), new ObjectHandler() },
-				{ typeof(Uri), new UriHandler() },
 				{ typeof(DateTime), new DateTimeHandler() },
 				{ typeof(Color), new ColorHandler() },
 				{ typeof(Color32), new Color32Handler() },
 				{ typeof(Guid), new GuidHandler() },
+				{ typeof(Quaternion), new QuaternionHandler() },
 				{ typeof(TimeSpan), new TimeSpanHandler() },
+				{ typeof(Uri), new UriHandler() },
 				{ typeof(Vector2), new Vector2Handler() },
 				{ typeof(Vector2Int), new Vector2IntHandler() },
 				{ typeof(Vector3), new Vector3Handler() },
 				{ typeof(Vector3Int), new Vector3IntHandler() },
 				{ typeof(Vector4), new Vector4Handler() },
-				{ typeof(Quaternion), new QuaternionHandler() },
 			};
 		}
 
