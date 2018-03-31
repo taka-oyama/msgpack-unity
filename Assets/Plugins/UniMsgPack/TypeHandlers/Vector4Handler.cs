@@ -10,12 +10,12 @@ namespace UniMsgPack
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsArrayFamily) {
-				floatHandler = floatHandler ?? TypeHandlers.Get(typeof(byte));
+				floatHandler = floatHandler ?? TypeHandlers.Get(typeof(float));
 				Vector4 vector = new Vector4();
-				vector.w = (float)floatHandler.Read(reader.ReadFormat(), reader);
 				vector.x = (float)floatHandler.Read(reader.ReadFormat(), reader);
 				vector.y = (float)floatHandler.Read(reader.ReadFormat(), reader);
 				vector.z = (float)floatHandler.Read(reader.ReadFormat(), reader);
+				vector.w = (float)floatHandler.Read(reader.ReadFormat(), reader);
 				return vector;
 			}
 			throw new FormatException();
@@ -25,10 +25,10 @@ namespace UniMsgPack
 		{
 			Vector4 vector = (Vector4)obj;
 			writer.WriteArrayHeader(4);
-			writer.Write(vector.w);
 			writer.Write(vector.x);
 			writer.Write(vector.y);
 			writer.Write(vector.z);
+			writer.Write(vector.w);
 		}
 	}
 }

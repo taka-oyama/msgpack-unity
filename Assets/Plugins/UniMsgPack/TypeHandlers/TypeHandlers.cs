@@ -31,6 +31,10 @@ namespace UniMsgPack
 				{ typeof(DateTime), new DateTimeHandler() },
 				{ typeof(Color), new ColorHandler() },
 				{ typeof(Color32), new Color32Handler() },
+				{ typeof(Vector2), new Vector2Handler() },
+				{ typeof(Vector3), new Vector3Handler() },
+				{ typeof(Vector4), new Vector4Handler() },
+				{ typeof(Quaternion), new QuaternionHandler() },
 			};
 		}
 

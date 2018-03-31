@@ -10,7 +10,7 @@ namespace UniMsgPack
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsArrayFamily) {
-				floatHandler = floatHandler ?? TypeHandlers.Get(typeof(byte));
+				floatHandler = floatHandler ?? TypeHandlers.Get(typeof(float));
 				Vector3 vector = new Vector3();
 				vector.x = (float)floatHandler.Read(reader.ReadFormat(), reader);
 				vector.y = (float)floatHandler.Read(reader.ReadFormat(), reader);
