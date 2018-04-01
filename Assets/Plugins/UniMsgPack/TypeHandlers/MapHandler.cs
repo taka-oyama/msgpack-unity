@@ -8,20 +8,16 @@ namespace UniMsgPack
 {
 	public class MapHandler : ITypeHandler
 	{
-		static object[] callbackParamsPlaceHolder = new object[0];
-
 		readonly Type type;
 		readonly ITypeHandler nameHandler;
 		readonly Dictionary<string, FieldInfo> fieldInfos;
 		readonly Dictionary<string, ITypeHandler> fieldHandlers;
 		readonly Dictionary<Type, MethodInfo[]> callbacks;
 
-		public MapHandler(Type type, ITypeHandler stringHandler)
+		public MapHandler(SerializationContext context, MapDefinition definition)
 		{
-			MapDefinition definition = MapDefinition.Get(type);
-
-			this.type = type;
-			this.nameHandler = stringHandler;
+			this.type = definition.type;
+			this.nameHandler = context.typeHandlers.Get<string>();
 			this.fieldInfos = definition.fieldInfos;
 			this.fieldHandlers = definition.fieldHandlers;
 			this.callbacks = definition.callbacks;
@@ -74,7 +70,7 @@ namespace UniMsgPack
 			Type attributeType = typeof(T);
 			if(callbacks.ContainsKey(attributeType)) {
 				foreach(MethodInfo methodInfo in callbacks[attributeType]) {
-					methodInfo.Invoke(obj, callbackParamsPlaceHolder);
+					methodInfo.Invoke(obj, new object[0]);
 				}
 			}
 		}

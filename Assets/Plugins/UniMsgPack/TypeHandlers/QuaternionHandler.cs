@@ -5,12 +5,18 @@ namespace UniMsgPack
 {
 	public class QuaternionHandler : ITypeHandler
 	{
+		readonly SerializationContext context;
 		ITypeHandler floatHandler;
+
+		public QuaternionHandler(SerializationContext context)
+		{
+			this.context = context;
+		}
 
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsArrayFamily) {
-				floatHandler = floatHandler ?? TypeHandlers.Get(typeof(float));
+				floatHandler = floatHandler ?? context.typeHandlers.Get<float>();
 				Quaternion quaternion = new Quaternion();
 				quaternion.x = (float)floatHandler.Read(reader.ReadFormat(), reader);
 				quaternion.y = (float)floatHandler.Read(reader.ReadFormat(), reader);

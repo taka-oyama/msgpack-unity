@@ -5,13 +5,18 @@ using UnityEngine;
 
 namespace UniMsgPack
 {
-	public static class TypeHandlers
+	public class TypeHandlers
 	{
-		static readonly Dictionary<Type, ITypeHandler> handlers;
+		readonly SerializationContext context;
+		readonly Dictionary<Type, ITypeHandler> handlers;
+		readonly Dictionary<sbyte, IExtTypeHandler> extHandlers;
+		readonly Dictionary<Type, MapDefinition> mapDefinitions;
 
-		static TypeHandlers()
+		public TypeHandlers(SerializationContext context)
 		{
-			handlers = new Dictionary<Type, ITypeHandler> {
+			this.context = context;
+
+			this.handlers = new Dictionary<Type, ITypeHandler> {
 				{ typeof(bool), new BoolHandler() },
 				{ typeof(sbyte), new SByteHandler() },
 				{ typeof(byte), new ByteHandler() },
@@ -22,93 +27,117 @@ namespace UniMsgPack
 				{ typeof(long), new LongHandler() },
 				{ typeof(ulong), new ULongHandler() },
 				{ typeof(float), new FloatHandler() },
-				{ typeof(decimal), new DecimalHandler() },
 				{ typeof(double), new DoubleHandler() },
 				{ typeof(string), new StringHandler() },
 				{ typeof(byte[]), new ByteArrayHandler() },
 				{ typeof(char), new CharHandler() },
-				{ typeof(object), new ObjectHandler() },
-				{ typeof(DateTime), new DateTimeHandler() },
-				{ typeof(Color), new ColorHandler() },
-				{ typeof(Color32), new Color32Handler() },
-				{ typeof(Guid), new GuidHandler() },
-				{ typeof(Quaternion), new QuaternionHandler() },
-				{ typeof(TimeSpan), new TimeSpanHandler() },
-				{ typeof(Uri), new UriHandler() },
-				{ typeof(Vector2), new Vector2Handler() },
-				{ typeof(Vector2Int), new Vector2IntHandler() },
-				{ typeof(Vector3), new Vector3Handler() },
-				{ typeof(Vector3Int), new Vector3IntHandler() },
-				{ typeof(Vector4), new Vector4Handler() },
+				{ typeof(decimal), new DecimalHandler(context) },
+				{ typeof(object), new ObjectHandler(context) },
+				{ typeof(DateTime), new DateTimeHandler(context) },
+				{ typeof(Color), new ColorHandler(context) },
+				{ typeof(Color32), new Color32Handler(context) },
+				{ typeof(Guid), new GuidHandler(context) },
+				{ typeof(Quaternion), new QuaternionHandler(context) },
+				{ typeof(TimeSpan), new TimeSpanHandler(context) },
+				{ typeof(Uri), new UriHandler(context) },
+				{ typeof(Vector2), new Vector2Handler(context) },
+				{ typeof(Vector2Int), new Vector2IntHandler(context) },
+				{ typeof(Vector3), new Vector3Handler(context) },
+				{ typeof(Vector3Int), new Vector3IntHandler(context) },
+				{ typeof(Vector4), new Vector4Handler(context) },
 			};
+
+			this.extHandlers = new Dictionary<sbyte, IExtTypeHandler>() {
+				{ -1, new DateTimeHandler(context) },
+			};
+
+			this.mapDefinitions = new Dictionary<Type, MapDefinition>();
 		}
 
-		public static ITypeHandler Get(Type type)
+		public ITypeHandler Get<T>()
+		{
+			return Get(typeof(T));
+		}
+
+		public ITypeHandler Get(Type type)
 		{
 			lock(handlers) {
+				AddIfNotExist(type);
 				return handlers[type];
 			}
 		}
 
-		internal static ITypeHandler Resolve(Type type)
+		public IExtTypeHandler GetExt(sbyte extType)
 		{
 			lock(handlers) {
-				AddIfNotExist(type);
-				return Get(type);
+				return extHandlers[extType];
 			}
 		}
 
-		static void AddIfNotExist(Type type)
+		public void SetHandler(Type type, ITypeHandler handler)
+		{
+			lock(handlers) {
+				handlers[type] = handler;
+			}
+
+			if(handler is IExtTypeHandler) {
+				IExtTypeHandler extHandler = (IExtTypeHandler)handler;
+				lock(extHandlers) {
+					extHandlers[extHandler.ExtType] = extHandler;
+				}
+			}
+		}
+
+		void AddIfNotExist(Type type)
 		{
 			if(handlers.ContainsKey(type)) {
 				return;
 			}
 
 			if(type.IsEnum) {
-				AddIfNotExist(type, new EnumHandler(type));
+				AddIfNotExist(type, new EnumHandler(context, type));
 				return;
 			}
 
 			if(type.IsNullable()) {
 				Type underlyingType = Nullable.GetUnderlyingType(type);
-				AddIfNotExist(type, new NullableHandler(Resolve(underlyingType)));
+				AddIfNotExist(type, new NullableHandler(Get(underlyingType)));
 				return;
 			}
 
 			if(type.IsArray) {
 				Type elementType = type.GetElementType();
-				AddIfNotExist(type, new ArrayHandler(elementType, Resolve(elementType)));
+				AddIfNotExist(type, new ArrayHandler(elementType, Get(elementType)));
 				return;
 			}
 
 			if(typeof(IList).IsAssignableFrom(type)) {
 				Type innerType = type.GetGenericArguments()[0];
-				AddIfNotExist(type, new ListHandler(innerType, Resolve(innerType)));
+				AddIfNotExist(type, new ListHandler(innerType, Get(innerType)));
 				return;
 			}
 
 			if(typeof(IDictionary).IsAssignableFrom(type)) {
 				Type[] innerTypes = type.GetGenericArguments();
-				AddIfNotExist(type, new DictionaryHandler(type, Resolve(innerTypes[0]), Resolve(innerTypes[1])));
+				AddIfNotExist(type, new DictionaryHandler(type, Get(innerTypes[0]), Get(innerTypes[1])));
 				return;
 			}
 
 			if(type.IsClass || type.IsValueType) {
-				AddIfNotExist(type, new MapHandler(type, handlers[typeof(string)]));
+				if(!mapDefinitions.ContainsKey(type)) {
+					mapDefinitions[type] = new MapDefinition(type, context.typeHandlers);
+				}
+				AddIfNotExist(type, new MapHandler(context, mapDefinitions[type]));
 				return;
 			}
 
 			throw new FormatException("No Type definition found for " + type);
 		}
 
-		static void AddIfNotExist(Type type, ITypeHandler handler)
+		void AddIfNotExist(Type type, ITypeHandler handler)
 		{
 			if(!handlers.ContainsKey(type)) {
 				handlers.Add(type, handler);
-
-				if(handler is ExtTypeHandler) {
-					ExtTypeHandlers.AddIfNotExist((ExtTypeHandler)handler);
-				}
 			}
 		}
 	}

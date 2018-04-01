@@ -5,11 +5,17 @@ namespace UniMsgPack
 {
 	public class UriHandler : ITypeHandler
 	{
+		readonly SerializationContext context;
 		ITypeHandler stringHandler;
+
+		public UriHandler(SerializationContext context)
+		{
+			this.context = context;
+		}
 
 		ITypeHandler GetStringHandler()
 		{
-			return stringHandler = stringHandler ?? TypeHandlers.Get(typeof(string));
+			return stringHandler = stringHandler ?? context.typeHandlers.Get<string>();
 		}
 
 		public object Read(Format format, FormatReader reader)

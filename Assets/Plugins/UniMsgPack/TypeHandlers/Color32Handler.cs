@@ -6,9 +6,15 @@ namespace UniMsgPack
 {
 	public class Color32Handler : ITypeHandler
 	{
+		readonly SerializationContext context;
 		ITypeHandler byteHandler;
 		ITypeHandler stringHandler;
 		ITypeHandler mapHandler;
+
+		public Color32Handler(SerializationContext context)
+		{
+			this.context = context;
+		}
 
 		public object Read(Format format, FormatReader reader)
 		{
@@ -17,7 +23,7 @@ namespace UniMsgPack
 				return new Color32(bytes[0], bytes[1], bytes[2], bytes[3]);
 			}
 			if(format.IsArrayFamily) {
-				byteHandler = byteHandler ?? TypeHandlers.Get(typeof(byte));
+				byteHandler = byteHandler ?? context.typeHandlers.Get<byte>();
 				int length = reader.ReadArrayLength(format);
 				byte[] bytes = new byte[length];
 				for(int i = 0; i < length; i++) {
@@ -26,13 +32,13 @@ namespace UniMsgPack
 				return new Color32(bytes[0], bytes[1], bytes[2], bytes[3]);
 			}
 			if(format.IsStringFamily) {
-				stringHandler = stringHandler ?? TypeHandlers.Get(typeof(string));
+				stringHandler = stringHandler ?? context.typeHandlers.Get<string>();
 				Color color;
 				ColorUtility.TryParseHtmlString((string)stringHandler.Read(format, reader), out color);
 				return (Color32)color;
 			}
 			if(format.IsMapFamily) {
-				mapHandler = mapHandler ?? TypeHandlers.Get(typeof(Dictionary<string, byte>));
+				mapHandler = mapHandler ?? context.typeHandlers.Get<Dictionary<string, byte>>();
 				Dictionary<string, byte> map = (Dictionary<string, byte>)mapHandler.Read(format, reader);
 				return new Color32(map["r"], map["g"], map["b"], map["a"]);
 			}

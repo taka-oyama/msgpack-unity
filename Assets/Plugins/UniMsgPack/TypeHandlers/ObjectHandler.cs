@@ -6,6 +6,13 @@ namespace UniMsgPack
 {
 	public class ObjectHandler : ITypeHandler
 	{
+		readonly SerializationContext context;
+
+		public ObjectHandler(SerializationContext context)
+		{
+			this.context = context;
+		}
+
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsNil) return null;
@@ -52,24 +59,24 @@ namespace UniMsgPack
 				writer.WriteNil();
 				return;
 			}
-			TypeHandlers.Resolve(obj.GetType()).Write(obj, writer);
+			context.typeHandlers.Get(obj.GetType()).Write(obj, writer);
 		}
 
 		object ReadArray(Format format, FormatReader reader)
 		{
-			return TypeHandlers.Resolve(typeof(List<object>)).Read(format, reader);
+			return context.typeHandlers.Get<List<object>>().Read(format, reader);
 		}
 
 		object ReadMap(Format format, FormatReader reader)
 		{
-			return TypeHandlers.Resolve(typeof(Dictionary<object, object>)).Read(format, reader);
+			return context.typeHandlers.Get<Dictionary<object, object>>().Read(format, reader);
 		}
 
 		object ReadExt(Format format, FormatReader reader)
 		{
 			uint length = reader.ReadExtLength(format);
 			sbyte extType = reader.ReadExtType(format);
-			return ExtTypeHandlers.Get(extType).Read(length, reader);
+			return context.typeHandlers.GetExt(extType).ReadExt(length, reader);
 		}
 	}
 }

@@ -5,11 +5,17 @@ namespace UniMsgPack
 {
 	public class TimeSpanHandler : ITypeHandler
 	{
+		readonly SerializationContext context;
 		ITypeHandler longHandler;
+
+		public TimeSpanHandler(SerializationContext context)
+		{
+			this.context = context;
+		}
 
 		public object Read(Format format, FormatReader reader)
 		{
-			longHandler = longHandler ?? TypeHandlers.Get(typeof(long));
+			longHandler = longHandler ?? context.typeHandlers.Get<long>();
 			return new TimeSpan((long)longHandler.Read(format, reader));
 		}
 

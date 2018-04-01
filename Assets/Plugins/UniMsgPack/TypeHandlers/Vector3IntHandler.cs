@@ -5,12 +5,18 @@ namespace UniMsgPack
 {
 	public class Vector3IntHandler : ITypeHandler
 	{
+		readonly SerializationContext context;
 		ITypeHandler intHandler;
+
+		public Vector3IntHandler(SerializationContext context)
+		{
+			this.context = context;
+		}
 
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsArrayFamily) {
-				intHandler = intHandler ?? TypeHandlers.Get(typeof(int));
+				intHandler = intHandler ?? context.typeHandlers.Get<int>();
 				Vector3Int vector = new Vector3Int();
 				vector.x = (int)intHandler.Read(reader.ReadFormat(), reader);
 				vector.y = (int)intHandler.Read(reader.ReadFormat(), reader);

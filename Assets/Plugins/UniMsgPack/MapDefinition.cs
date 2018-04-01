@@ -11,33 +11,24 @@ namespace UniMsgPack
 		const BindingFlags fieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField;
 		const BindingFlags methodFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
 
-		readonly static Dictionary<Type, MapDefinition> cache;
-		readonly static Type[] callbackTypes;
+		static readonly Type[] callbackTypes;
 
+		public readonly Type type;
 		public readonly Dictionary<string, FieldInfo> fieldInfos;
 		public readonly Dictionary<string, ITypeHandler> fieldHandlers;
 		public readonly Dictionary<Type, MethodInfo[]> callbacks;
 
-
 		static MapDefinition()
 		{
-			cache = new Dictionary<Type, MapDefinition>();
 			callbackTypes = new Type[] {
 				typeof(OnDeserializingAttribute), typeof(OnDeserializedAttribute),
 				typeof(OnSerializingAttribute), typeof(OnSerializedAttribute),
 			};
 		}
 
-		public static MapDefinition Get(Type type)
+		internal MapDefinition(Type type, TypeHandlers typeHandlers)
 		{
-			if(!cache.ContainsKey(type)) {
-				cache[type] = new MapDefinition(type);
-			}
-			return cache[type];
-		}
-
-		MapDefinition(Type type)
-		{
+			this.type = type;
 			this.fieldInfos = new Dictionary<string, FieldInfo>();
 			foreach(FieldInfo info in type.GetFields(fieldFlags)) {
 				if(!AttributesExist(info, typeof(NonSerializedAttribute))) {
@@ -47,7 +38,7 @@ namespace UniMsgPack
 
 			this.fieldHandlers = new Dictionary<string, ITypeHandler>();
 			foreach(FieldInfo info in fieldInfos.Values) {
-				fieldHandlers.Add(info.Name, TypeHandlers.Resolve(info.FieldType));
+				fieldHandlers.Add(info.Name, typeHandlers.Get(info.FieldType));
 			}
 
 			this.callbacks = new Dictionary<Type, MethodInfo[]>();

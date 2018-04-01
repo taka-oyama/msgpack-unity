@@ -5,26 +5,26 @@ namespace UniMsgPack
 {
 	public static class MsgPack
 	{
-		public static byte[] Pack<T>(T obj)
+		public static byte[] Pack<T>(T obj, SerializationContext context = null)
 		{
 			MemoryStream stream = new MemoryStream();
-			Pack(obj, stream);
+			Pack(obj, stream, context);
 			return stream.ToArray();
 		}
 
-		public static void Pack<T>(T obj, Stream stream)
+		public static void Pack<T>(T obj, Stream stream, SerializationContext context = null)
 		{
-			new MsgPackFormatter().Serialize(stream, obj);
+			new MsgPackFormatter().Serialize(stream, obj, context);
 		}
 
-		public static T Unpack<T>(byte[] data)
+		public static T Unpack<T>(byte[] data, SerializationContext context = null)
 		{
-			return Unpack<T>(new MemoryStream(data));
+			return Unpack<T>(new MemoryStream(data), context);
 		}
 
-		public static T Unpack<T>(Stream stream)
+		public static T Unpack<T>(Stream stream, SerializationContext context = null)
 		{
-			return new MsgPackFormatter().Deserialize<T>(stream);
+			return new MsgPackFormatter().Deserialize<T>(stream, context);
 		}
 	}
 }
