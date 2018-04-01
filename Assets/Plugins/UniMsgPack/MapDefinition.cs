@@ -11,20 +11,15 @@ namespace UniMsgPack
 		const BindingFlags fieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField;
 		const BindingFlags methodFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
 
-		static readonly Type[] callbackTypes;
+		static readonly Type[] callbackTypes = {
+			typeof(OnDeserializingAttribute), typeof(OnDeserializedAttribute),
+			typeof(OnSerializingAttribute), typeof(OnSerializedAttribute),
+		};
 
 		public readonly Type type;
 		public readonly Dictionary<string, FieldInfo> fieldInfos;
 		public readonly Dictionary<string, ITypeHandler> fieldHandlers;
 		public readonly Dictionary<Type, MethodInfo[]> callbacks;
-
-		static MapDefinition()
-		{
-			callbackTypes = new Type[] {
-				typeof(OnDeserializingAttribute), typeof(OnDeserializedAttribute),
-				typeof(OnSerializingAttribute), typeof(OnSerializedAttribute),
-			};
-		}
 
 		internal MapDefinition(Type type, TypeHandlers typeHandlers)
 		{
