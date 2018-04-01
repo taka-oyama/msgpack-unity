@@ -62,7 +62,7 @@ namespace UniMsgPack
 		public void Write(object obj, FormatWriter writer)
 		{
 			DateTime value = (DateTime)obj;
-			switch(context.dateTimePackingFormat) {
+			switch(context.dateTimeOptions.packingFormat) {
 				case DateTimePackingFormat.Extension:
 					TimeSpan diff = value.ToUniversalTime() - epoch;
 					writer.WriteExtHeader(12, ExtType);

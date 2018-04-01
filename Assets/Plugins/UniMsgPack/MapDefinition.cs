@@ -24,7 +24,7 @@ namespace UniMsgPack
 		{
 			this.type = type;
 			this.fieldInfos = new Dictionary<string, FieldInfo>();
-			foreach(FieldInfo info in type.GetFields(context.mapFieldFlags)) {
+			foreach(FieldInfo info in type.GetFields(context.mapOptions.fieldFlags)) {
 				if(!AttributesExist(info, typeof(NonSerializedAttribute))) {
 					fieldInfos[info.Name] = info;
 				}

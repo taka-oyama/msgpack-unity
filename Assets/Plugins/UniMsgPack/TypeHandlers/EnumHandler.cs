@@ -34,8 +34,16 @@ namespace UniMsgPack
 
 		public void Write(object obj, FormatWriter writer)
 		{
-			intHandler = intHandler ?? context.typeHandlers.Get<int>();
-			intHandler.Write(obj, writer);
+			switch(context.enumOptions.packingFormat) {
+				case EnumPackingFormat.Integer:
+              		intHandler = intHandler ?? context.typeHandlers.Get<int>();
+					intHandler.Write(obj, writer);
+					break;
+				case EnumPackingFormat.String:
+					stringHandler = stringHandler ?? context.typeHandlers.Get<string>();
+					stringHandler.Write(obj.ToString(), writer);
+					break;
+			}
 		}
 	}
 }

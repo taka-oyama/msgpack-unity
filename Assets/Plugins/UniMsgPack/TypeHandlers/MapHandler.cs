@@ -19,7 +19,7 @@ namespace UniMsgPack
 		{
 			this.type = definition.type;
 			this.nameHandler = context.typeHandlers.Get<string>();
-			this.nameConverter = context.mapNameConverter;
+			this.nameConverter = context.mapOptions.nameConverter;
 			this.fieldInfos = definition.fieldInfos;
 			this.fieldHandlers = definition.fieldHandlers;
 			this.callbacks = definition.callbacks;
