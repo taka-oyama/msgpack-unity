@@ -71,34 +71,30 @@ namespace UniMsgPack
 
 			if(type.IsNullable()) {
 				Type underlyingType = Nullable.GetUnderlyingType(type);
-				AddIfNotExist(type, new NullableHandler(underlyingType));
+				AddIfNotExist(type, new NullableHandler(Resolve(underlyingType)));
 				return;
 			}
 
 			if(type.IsArray) {
 				Type elementType = type.GetElementType();
-				AddIfNotExist(elementType);
-				AddIfNotExist(type, new ArrayHandler(elementType));
+				AddIfNotExist(type, new ArrayHandler(elementType, Resolve(elementType)));
 				return;
 			}
 
 			if(typeof(IList).IsAssignableFrom(type)) {
 				Type innerType = type.GetGenericArguments()[0];
-				AddIfNotExist(innerType);
-				AddIfNotExist(type, new ListHandler(innerType));
+				AddIfNotExist(type, new ListHandler(innerType, Resolve(innerType)));
 				return;
 			}
 
 			if(typeof(IDictionary).IsAssignableFrom(type)) {
 				Type[] innerTypes = type.GetGenericArguments();
-				AddIfNotExist(innerTypes[0]);
-				AddIfNotExist(innerTypes[1]);
-				AddIfNotExist(type, new DictionaryHandler(type, innerTypes[0], innerTypes[1]));
+				AddIfNotExist(type, new DictionaryHandler(type, Resolve(innerTypes[0]), Resolve(innerTypes[1])));
 				return;
 			}
 
 			if(type.IsClass || type.IsValueType) {
-				AddIfNotExist(type, new MapHandler(type));
+				AddIfNotExist(type, new MapHandler(type, handlers[typeof(string)]));
 				return;
 			}
 

@@ -7,24 +7,24 @@ namespace UniMsgPack
 {
 	public class ListHandler : ITypeHandler
 	{
-		readonly Type elementType;
-		readonly ITypeHandler handler;
+		readonly Type innerType;
+		readonly ITypeHandler innerTypeHandler;
 
-		public ListHandler(Type elementType)
+		public ListHandler(Type innerType, ITypeHandler innerTypeHandler)
 		{
-			this.elementType = elementType;
-			this.handler = TypeHandlers.Get(elementType);
+			this.innerType = innerType;
+			this.innerTypeHandler = innerTypeHandler;
 		}
 
 		public object Read(Format format, FormatReader reader)
 		{
-			Type listType = typeof(List<>).MakeGenericType(new[] { elementType });
+			Type listType = typeof(List<>).MakeGenericType(new[] { innerType });
 			IList list = (IList)Activator.CreateInstance(listType);
 
 			if(format.IsArrayFamily) {
 				int size = reader.ReadArrayLength(format);
 				for(int i = 0; i < size; i++) {
-					list.Add(handler.Read(reader.ReadFormat(), reader));
+					list.Add(innerTypeHandler.Read(reader.ReadFormat(), reader));
 				}
 				return list;
 			}
@@ -43,7 +43,7 @@ namespace UniMsgPack
 			IList values = (IList)obj;
 			writer.WriteArrayHeader(values.Count);
 			foreach(object value in values) {
-				handler.Write(value, writer);
+				innerTypeHandler.Write(value, writer);
 			}
 		}
 	}

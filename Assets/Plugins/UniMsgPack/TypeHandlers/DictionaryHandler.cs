@@ -11,11 +11,11 @@ namespace UniMsgPack
 		readonly ITypeHandler keyHandler;
 		readonly ITypeHandler valueHandler;
 
-		public DictionaryHandler(Type type, Type keyType, Type valueType)
+		public DictionaryHandler(Type type, ITypeHandler keyHandler, ITypeHandler valueHandler)
 		{
 			this.type = type;
-			this.keyHandler = TypeHandlers.Get(keyType);
-			this.valueHandler = TypeHandlers.Get(valueType);
+			this.keyHandler = keyHandler;
+			this.valueHandler = valueHandler;
 		}
 
 		public object Read(Format format, FormatReader reader)

@@ -6,12 +6,12 @@ namespace UniMsgPack
 	public class ArrayHandler : ITypeHandler
 	{
 		readonly Type elementType;
-		readonly ITypeHandler handler;
+		readonly ITypeHandler elementTypeHandler;
 
-		public ArrayHandler(Type elementType)
+		public ArrayHandler(Type elementType, ITypeHandler elementTypehandler)
 		{
 			this.elementType = elementType;
-			this.handler = TypeHandlers.Get(elementType);
+			this.elementTypeHandler = elementTypehandler;
 		}
 
 		public object Read(Format format, FormatReader reader)
@@ -20,7 +20,7 @@ namespace UniMsgPack
 				int size = reader.ReadArrayLength(format);
 				Array array = Array.CreateInstance(elementType, size);
 				for(int i = 0; i < size; i++) {
-					object value = handler.Read(reader.ReadFormat(), reader);
+					object value = elementTypeHandler.Read(reader.ReadFormat(), reader);
 					array.SetValue(value, i);
 				}
 				return array;
@@ -40,7 +40,7 @@ namespace UniMsgPack
 			Array values = (Array)obj;
 			writer.WriteArrayHeader(values.Length);
 			foreach(object value in values) {
-				handler.Write(value, writer);
+				elementTypeHandler.Write(value, writer);
 			}
 		}
 	}

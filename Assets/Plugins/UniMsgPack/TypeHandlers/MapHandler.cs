@@ -16,12 +16,12 @@ namespace UniMsgPack
 		readonly Dictionary<string, ITypeHandler> fieldHandlers;
 		readonly Dictionary<Type, MethodInfo[]> callbacks;
 
-		public MapHandler(Type type)
+		public MapHandler(Type type, ITypeHandler stringHandler)
 		{
 			MapDefinition definition = MapDefinition.Get(type);
 
 			this.type = type;
-			this.nameHandler = TypeHandlers.Get(typeof(string));
+			this.nameHandler = stringHandler;
 			this.fieldInfos = definition.fieldInfos;
 			this.fieldHandlers = definition.fieldHandlers;
 			this.callbacks = definition.callbacks;

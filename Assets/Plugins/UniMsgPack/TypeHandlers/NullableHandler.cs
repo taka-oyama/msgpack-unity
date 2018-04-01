@@ -5,17 +5,17 @@ namespace UniMsgPack
 {
 	public class NullableHandler : ITypeHandler
 	{
-		public readonly Type underlyingType;
+		readonly ITypeHandler underlyingTypeHandler;
 
-		public NullableHandler(Type underlyingType)
+		public NullableHandler(ITypeHandler underlyingTypeHandler)
 		{
-			this.underlyingType = underlyingType;
+			this.underlyingTypeHandler = underlyingTypeHandler;
 		}
 
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsNil) return null;
-			return TypeHandlers.Get(underlyingType).Read(format, reader);
+			return underlyingTypeHandler.Read(format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)
@@ -24,7 +24,7 @@ namespace UniMsgPack
 				writer.WriteNil();
 				return;
 			}
-			TypeHandlers.Get(underlyingType).Write(obj, writer);
+			underlyingTypeHandler.Write(obj, writer);
 		}
 	}
 }
