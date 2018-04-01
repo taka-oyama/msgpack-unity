@@ -62,10 +62,22 @@ namespace UniMsgPack
 		public void Write(object obj, FormatWriter writer)
 		{
 			DateTime value = (DateTime)obj;
-			TimeSpan diff = value.ToUniversalTime() - epoch;
-			writer.WriteExtHeader(12, ExtType);
-			writer.WriteUInt32((uint)(value.Ticks % 10000000) * 100);
-			writer.WriteUInt64((ulong)diff.TotalSeconds);
+			switch(context.dateTimePackingFormat) {
+				case DateTimePackingFormat.Ext:
+					TimeSpan diff = value.ToUniversalTime() - epoch;
+					writer.WriteExtHeader(12, ExtType);
+					writer.WriteUInt32((uint)(value.Ticks % 10000000) * 100);
+					writer.WriteUInt64((ulong)diff.TotalSeconds);
+					break;
+				case DateTimePackingFormat.String:
+					writer.Write(value.ToString("o"));
+					break;
+				case DateTimePackingFormat.Epoch:
+					writer.Write((value.ToUniversalTime() - epoch).TotalSeconds);
+					break;
+				default:
+					throw new FormatException();
+			}
 		}
 	}
 }
