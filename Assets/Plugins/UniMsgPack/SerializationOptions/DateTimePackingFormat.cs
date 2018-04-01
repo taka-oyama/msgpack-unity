@@ -2,7 +2,7 @@
 {
 	public enum DateTimePackingFormat
 	{
-		Ext,
+		Extension,
 		String,
 		Epoch,
 	}
