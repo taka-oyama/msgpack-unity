@@ -125,7 +125,7 @@ namespace UniMsgPack
 
 			if(type.IsClass || type.IsValueType) {
 				if(!mapDefinitions.ContainsKey(type)) {
-					mapDefinitions[type] = new MapDefinition(type, context.typeHandlers);
+					mapDefinitions[type] = new MapDefinition(context, type);
 				}
 				AddIfNotExist(type, new MapHandler(context, mapDefinitions[type]));
 				return;

@@ -8,7 +8,6 @@ namespace UniMsgPack
 {
 	public class MapDefinition
 	{
-		const BindingFlags fieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField;
 		const BindingFlags methodFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
 
 		static readonly Type[] callbackTypes = {
@@ -21,11 +20,11 @@ namespace UniMsgPack
 		public readonly Dictionary<string, ITypeHandler> fieldHandlers;
 		public readonly Dictionary<Type, MethodInfo[]> callbacks;
 
-		internal MapDefinition(Type type, TypeHandlers typeHandlers)
+		internal MapDefinition(SerializationContext context, Type type)
 		{
 			this.type = type;
 			this.fieldInfos = new Dictionary<string, FieldInfo>();
-			foreach(FieldInfo info in type.GetFields(fieldFlags)) {
+			foreach(FieldInfo info in type.GetFields(context.mapFieldFlags)) {
 				if(!AttributesExist(info, typeof(NonSerializedAttribute))) {
 					fieldInfos[info.Name] = info;
 				}
@@ -33,7 +32,7 @@ namespace UniMsgPack
 
 			this.fieldHandlers = new Dictionary<string, ITypeHandler>();
 			foreach(FieldInfo info in fieldInfos.Values) {
-				fieldHandlers.Add(info.Name, typeHandlers.Get(info.FieldType));
+				fieldHandlers.Add(info.Name, context.typeHandlers.Get(info.FieldType));
 			}
 
 			this.callbacks = new Dictionary<Type, MethodInfo[]>();

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Reflection;
+using UnityEngine;
 
 namespace UniMsgPack
 {
@@ -13,9 +14,18 @@ namespace UniMsgPack
 
 		public readonly TypeHandlers typeHandlers;
 
+		public DateTimePackingFormat dateTimePackingFormat;
+
+		public BindingFlags mapFieldFlags;
+
+		public IMapNameConverter mapNameConverter;
+
 		public SerializationContext()
 		{
-			this.typeHandlers = new TypeHandlers(this);
+			typeHandlers = new TypeHandlers(this);
+			dateTimePackingFormat = DateTimePackingFormat.Ext;
+			mapFieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField;
+			mapNameConverter = new DefaultMapNameConverter();
 		}
 	}
 }
