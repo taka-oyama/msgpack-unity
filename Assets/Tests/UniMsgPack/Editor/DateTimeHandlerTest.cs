@@ -51,14 +51,47 @@ namespace UniMsgPack.Tests
 		#endregion
 
 
+		#region Options
+
+		[Test]
+		public void FromString()
+		{
+			var context = new SerializationContext();
+			context.dateTimeOptions.packingFormat = DateTimePackingFormat.String;
+			DateTime value = DateTime.Parse("2018-01-01T12:00:00.1234567+09:00");
+			byte[] data = MsgPack.Pack(value, context);
+			DateTime result = MsgPack.Unpack<DateTime>(data);
+			Assert.AreEqual(Format.Str8, data[0]);
+			Assert.AreEqual(33, data[1]);
+			Assert.AreEqual(35, data.Length);
+			Assert.AreEqual(value.ToString("o"), result.ToString("o"));
+		}
+
+		[Test]
+		public void FromEpoch()
+		{
+			var context = new SerializationContext();
+			context.dateTimeOptions.packingFormat = DateTimePackingFormat.Epoch;
+			// only 4 digit precision due to loss of precision
+			var value = DateTime.Parse("2018-01-01T12:00:00.1234+09:00");
+			byte[] data = MsgPack.Pack(value, context);
+			DateTime result = MsgPack.Unpack<DateTime>(data);
+			Assert.AreEqual(Format.Float64, data[0]);
+			Assert.AreEqual(9, data.Length);
+			Assert.AreEqual(value.ToString("o"), result.ToString("o"));
+		}
+
+		#endregion
+
+
 		#region Validation
 
 		[Test]
 		public void CheckTicks()
 		{
-			DateTime value = DateTime.Parse("2018-01-01 12:00:00.7654321+09:00").ToLocalTime();
+			var value = DateTime.Parse("2018-01-01 12:00:00.7654321+09:00").ToLocalTime();
 			byte[] data = MsgPack.Pack(value);
-			DateTime result = MsgPack.Unpack<DateTime>(data);
+			var result = MsgPack.Unpack<DateTime>(data);
 			Assert.AreEqual(value, result);
 		}
 
