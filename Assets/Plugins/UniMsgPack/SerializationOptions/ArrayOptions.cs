@@ -2,11 +2,11 @@
 {
 	public class ArrayOptions
 	{
-		public bool treatNullAsEmpty;
+		public bool nullAsEmptyOnUnpack;
 
 		public ArrayOptions()
 		{
-			treatNullAsEmpty = true;
+			nullAsEmptyOnUnpack = true;
 		}
 	}
 }

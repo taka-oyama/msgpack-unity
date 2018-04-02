@@ -28,7 +28,7 @@ namespace UniMsgPack
 				return array;
 			}
 			if(format.IsNil) {
-				if(context.arrayOptions.treatNullAsEmpty) {
+				if(context.arrayOptions.nullAsEmptyOnUnpack) {
 					return Array.CreateInstance(elementType, 0);
 				}
 				return null;

@@ -31,7 +31,7 @@ namespace UniMsgPack
 				return list;
 			}
 			if(format.IsNil) {
-				if(context.arrayOptions.treatNullAsEmpty) {
+				if(context.arrayOptions.nullAsEmptyOnUnpack) {
 					return Activator.CreateInstance(listType);
 				}
 				return null;

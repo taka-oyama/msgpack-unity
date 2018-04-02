@@ -218,5 +218,34 @@ namespace UniMsgPack.Tests
 		}
 
 		#endregion
+
+
+		#region Options
+
+		[Test]
+		public void TreatNullAsEmpty()
+		{
+			var context = new SerializationContext();
+			context.arrayOptions.nullAsEmptyOnUnpack = true;
+			int[] value = null;
+			byte[] data = MsgPack.Pack(value);
+			var result = MsgPack.Unpack<int[]>(data, context);
+			Assert.AreEqual(Format.Nil, data[0]);
+			Assert.AreEqual(new int[0], result);
+		}
+
+		[Test]
+		public void DoNotTreatNullAsEmpty()
+		{
+			var context = new SerializationContext();
+			context.arrayOptions.nullAsEmptyOnUnpack = false;
+			int[] value = null;
+			byte[] data = MsgPack.Pack(value);
+			var result = MsgPack.Unpack<int[]>(data, context);
+			Assert.AreEqual(Format.Nil, data[0]);
+			Assert.AreEqual(value, result);
+		}
+
+		#endregion
 	}
 }
