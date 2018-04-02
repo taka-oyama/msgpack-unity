@@ -5,13 +5,15 @@ namespace UniMsgPack
 {
 	public class ArrayHandler : ITypeHandler
 	{
+		readonly SerializationContext context;
 		readonly Type elementType;
 		readonly ITypeHandler elementTypeHandler;
 
-		public ArrayHandler(Type elementType, ITypeHandler elementTypehandler)
+		public ArrayHandler(SerializationContext context, Type type)
 		{
-			this.elementType = elementType;
-			this.elementTypeHandler = elementTypehandler;
+			this.context = context;
+			this.elementType = type.GetElementType();
+			this.elementTypeHandler = context.typeHandlers.Get(elementType);
 		}
 
 		public object Read(Format format, FormatReader reader)
@@ -26,7 +28,10 @@ namespace UniMsgPack
 				return array;
 			}
 			if(format.IsNil) {
-				return Array.CreateInstance(elementType, 0);
+				if(context.arrayOptions.treatNullAsEmpty) {
+					return Array.CreateInstance(elementType, 0);
+				}
+				return null;
 			}
 			throw new FormatException();
 		}

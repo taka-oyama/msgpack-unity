@@ -7,9 +7,10 @@ namespace UniMsgPack
 	{
 		readonly ITypeHandler underlyingTypeHandler;
 
-		public NullableHandler(ITypeHandler underlyingTypeHandler)
+		public NullableHandler(SerializationContext context, Type type)
 		{
-			this.underlyingTypeHandler = underlyingTypeHandler;
+			Type underlyingType = Nullable.GetUnderlyingType(type);
+			this.underlyingTypeHandler = context.typeHandlers.Get(underlyingType);
 		}
 
 		public object Read(Format format, FormatReader reader)

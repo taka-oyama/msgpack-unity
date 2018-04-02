@@ -79,7 +79,6 @@ namespace UniMsgPack
 			lock(handlers) {
 				handlers[type] = handler;
 			}
-
 			if(handler is IExtTypeHandler) {
 				IExtTypeHandler extHandler = (IExtTypeHandler)handler;
 				lock(extHandlers) {
@@ -93,45 +92,27 @@ namespace UniMsgPack
 			if(handlers.ContainsKey(type)) {
 				return;
 			}
-
 			if(type.IsEnum) {
 				AddIfNotExist(type, new EnumHandler(context, type));
-				return;
 			}
-
-			if(type.IsNullable()) {
-				Type underlyingType = Nullable.GetUnderlyingType(type);
-				AddIfNotExist(type, new NullableHandler(Get(underlyingType)));
-				return;
+			else if(type.IsNullable()) {
+				AddIfNotExist(type, new NullableHandler(context, type));
 			}
-
-			if(type.IsArray) {
-				Type elementType = type.GetElementType();
-				AddIfNotExist(type, new ArrayHandler(elementType, Get(elementType)));
-				return;
+			else if(type.IsArray) {
+				AddIfNotExist(type, new ArrayHandler(context, type));
 			}
-
-			if(typeof(IList).IsAssignableFrom(type)) {
-				Type innerType = type.GetGenericArguments()[0];
-				AddIfNotExist(type, new ListHandler(innerType, Get(innerType)));
-				return;
+			else if(typeof(IList).IsAssignableFrom(type)) {
+				AddIfNotExist(type, new ListHandler(context, type));
 			}
-
-			if(typeof(IDictionary).IsAssignableFrom(type)) {
-				Type[] innerTypes = type.GetGenericArguments();
-				AddIfNotExist(type, new DictionaryHandler(type, Get(innerTypes[0]), Get(innerTypes[1])));
-				return;
+			else if(typeof(IDictionary).IsAssignableFrom(type)) {
+				AddIfNotExist(type, new DictionaryHandler(context, type));
 			}
-
-			if(type.IsClass || type.IsValueType) {
-				if(!mapDefinitions.ContainsKey(type)) {
-					mapDefinitions[type] = new MapDefinition(context, type);
-				}
-				AddIfNotExist(type, new MapHandler(context, mapDefinitions[type]));
-				return;
+			else if(type.IsClass || type.IsValueType) {
+				AddIfNotExist(type, new MapHandler(context, GetMapDefinition(type)));
 			}
-
-			throw new FormatException("No Type definition found for " + type);
+			else {
+				throw new FormatException("No Type definition found for " + type);
+			}
 		}
 
 		void AddIfNotExist(Type type, ITypeHandler handler)
@@ -139,6 +120,14 @@ namespace UniMsgPack
 			if(!handlers.ContainsKey(type)) {
 				handlers.Add(type, handler);
 			}
+		}
+
+		MapDefinition GetMapDefinition(Type type)
+		{
+			if(!mapDefinitions.ContainsKey(type)) {
+				mapDefinitions[type] = new MapDefinition(context, type);
+			}
+			return mapDefinitions[type];
 		}
 	}
 }

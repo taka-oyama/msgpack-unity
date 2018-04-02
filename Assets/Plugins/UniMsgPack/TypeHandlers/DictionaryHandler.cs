@@ -11,11 +11,12 @@ namespace UniMsgPack
 		readonly ITypeHandler keyHandler;
 		readonly ITypeHandler valueHandler;
 
-		public DictionaryHandler(Type type, ITypeHandler keyHandler, ITypeHandler valueHandler)
+		public DictionaryHandler(SerializationContext context, Type type)
 		{
+			Type[] innerTypes = type.GetGenericArguments();
 			this.type = type;
-			this.keyHandler = keyHandler;
-			this.valueHandler = valueHandler;
+			this.keyHandler = context.typeHandlers.Get(innerTypes[0]);
+			this.valueHandler = context.typeHandlers.Get(innerTypes[1]);
 		}
 
 		public object Read(Format format, FormatReader reader)

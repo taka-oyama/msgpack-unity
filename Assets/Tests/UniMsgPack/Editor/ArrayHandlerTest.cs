@@ -51,14 +51,11 @@ namespace UniMsgPack.Tests
 			object[] value = { new MapWithNullable() };
 			byte[] data = MsgPack.Pack(value);
 			Assert.AreEqual(Format.FixArrayMin + 1, data[0]);
-			Assert.AreEqual(Format.FixMapMin + 2, data[1]);
+			Assert.AreEqual(Format.FixMapMin + 1, data[1]);
 			Assert.AreEqual(Format.FixStrMin + 1, data[2]);
-			Assert.AreEqual("a", Encoding.UTF8.GetString(new byte[] { data[3] }));
-			Assert.AreEqual(Format.Nil, data[4]);
-			Assert.AreEqual(Format.FixStrMin + 1, data[5]);
-			Assert.AreEqual("b", Encoding.UTF8.GetString(new byte[] { data[6] }));
-			Assert.AreEqual(Format.PositiveFixIntMin, data[7]);
-			Assert.AreEqual(8, data.Length);
+			Assert.AreEqual("b", Encoding.UTF8.GetString(new byte[] { data[3] }));
+			Assert.AreEqual(Format.PositiveFixIntMin, data[4]);
+			Assert.AreEqual(5, data.Length);
 		}
 
 		[Test]

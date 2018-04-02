@@ -8,6 +8,7 @@ namespace UniMsgPack
 {
 	public class MapHandler : ITypeHandler
 	{
+		readonly SerializationContext context;
 		readonly Type type;
 		readonly ITypeHandler nameHandler;
 		readonly IMapNameConverter nameConverter;
@@ -17,6 +18,7 @@ namespace UniMsgPack
 
 		public MapHandler(SerializationContext context, MapDefinition definition)
 		{
+			this.context = context;
 			this.type = definition.type;
 			this.nameHandler = context.typeHandlers.Get<string>();
 			this.nameConverter = context.mapOptions.nameConverter;
@@ -58,13 +60,30 @@ namespace UniMsgPack
 				return;
 			}
 			InvokeCallback<OnSerializingAttribute>(obj);
-			writer.WriteMapHeader(fieldInfos.Count);
+			writer.WriteMapHeader(DetermineSize(obj));
 			foreach(KeyValuePair<string, FieldInfo> kv in fieldInfos) {
 				object value = kv.Value.GetValue(obj);
+				if(context.mapOptions.ignoreNullOnPack && value == null) {
+					continue;
+				}
 				nameHandler.Write(nameConverter.OnPack(kv.Key), writer);
 				fieldHandlers[kv.Key].Write(value, writer);
 			}
 			InvokeCallback<OnSerializedAttribute>(obj);
+		}
+
+		int DetermineSize(object obj)
+		{
+			if(!context.mapOptions.ignoreNullOnPack) {
+				return fieldInfos.Count;
+			}
+			int count = 0;
+			foreach(FieldInfo info in fieldInfos.Values) {
+				if(info.GetValue(obj) != null) {
+					count += 1;
+				}
+			}
+			return count;
 		}
 
 		void InvokeCallback<T>(object obj) where T : Attribute
