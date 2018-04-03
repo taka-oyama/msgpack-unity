@@ -30,7 +30,7 @@ namespace UniMsgPack
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsMapFamily) {
-				object obj = FormatterServices.GetUninitializedObject(type);
+				object obj = Activator.CreateInstance(type);
 				InvokeCallback<OnDeserializingAttribute>(obj);
 				int size = reader.ReadMapLength(format);
 				while(size > 0) {
