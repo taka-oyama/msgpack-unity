@@ -42,6 +42,25 @@ namespace UniMsgPack.Tests
 			public ClassMap inner = null;
 		}
 
+		class MapForNameConverter
+		{
+			public int a = 1;
+			public int aa = 2;
+		}
+
+		class AllCapsNameConverter : IMapNameConverter
+		{
+			public string OnPack(string name)
+			{
+				return name + name;
+			}
+
+			public string OnUnpack(string name)
+			{
+				return name + name;
+			}
+		}
+
 		#endregion
 
 
@@ -294,6 +313,46 @@ namespace UniMsgPack.Tests
 			Assert.AreEqual(Format.Nil, data[7]);
 			Assert.AreEqual(8, data.Length);
 			Assert.AreEqual(value, result);
+		}
+
+		[Test]
+		public void NameConvertionOnPack()
+		{
+			var context = new SerializationContext();
+			context.mapOptions.nameConverter = new AllCapsNameConverter();
+			var value = new MapForNameConverter() { a = 3, aa = 4 };
+			byte[] data = MsgPack.Pack(value, context);
+			var result = MsgPack.Unpack<MapForNameConverter>(data);
+			Assert.AreEqual(Format.FixMapMin + 2, data[0]);
+			Assert.AreEqual(Format.FixStrMin + 2, data[1]);
+			Assert.AreEqual("aa", Encoding.UTF8.GetString(new byte[] { data[2], data[3] }));
+			Assert.AreEqual(Format.PositiveFixIntMin + 3, data[4]);
+			Assert.AreEqual(Format.FixStrMin + 4, data[5]);
+			Assert.AreEqual("aaaa", Encoding.UTF8.GetString(new byte[] { data[6], data[7], data[8], data[9] }));
+			Assert.AreEqual(Format.PositiveFixIntMin + 4, data[10]);
+			Assert.AreEqual(11, data.Length);
+			Assert.AreEqual(1, result.a);
+			Assert.AreEqual(3, result.aa);
+		}
+
+		[Test]
+		public void NameConvertionOnUnpack()
+		{
+			var context = new SerializationContext();
+			context.mapOptions.nameConverter = new AllCapsNameConverter();
+			var value = new MapForNameConverter() { a = 3, aa = 4 };
+			byte[] data = MsgPack.Pack(value);
+			var result = MsgPack.Unpack<MapForNameConverter>(data, context);
+			Assert.AreEqual(Format.FixMapMin + 2, data[0]);
+			Assert.AreEqual(Format.FixStrMin + 1, data[1]);
+			Assert.AreEqual("a", Encoding.UTF8.GetString(new byte[] { data[2] }));
+			Assert.AreEqual(Format.PositiveFixIntMin + 3, data[3]);
+			Assert.AreEqual(Format.FixStrMin + 2, data[4]);
+			Assert.AreEqual("aa", Encoding.UTF8.GetString(new byte[] { data[5], data[6] }));
+			Assert.AreEqual(Format.PositiveFixIntMin + 4, data[7]);
+			Assert.AreEqual(8, data.Length);
+			Assert.AreEqual(1, result.a);
+			Assert.AreEqual(3, result.aa);
 		}
 
 		#endregion
