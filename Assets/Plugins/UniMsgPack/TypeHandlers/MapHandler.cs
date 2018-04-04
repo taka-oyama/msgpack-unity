@@ -15,6 +15,7 @@ namespace UniMsgPack
 		readonly Dictionary<string, FieldInfo> fieldInfos;
 		readonly Dictionary<string, ITypeHandler> fieldHandlers;
 		readonly Dictionary<Type, MethodInfo[]> callbacks;
+		readonly static object[] callbackParameters = new object[0];
 
 		public MapHandler(SerializationContext context, MapDefinition definition)
 		{
@@ -91,7 +92,7 @@ namespace UniMsgPack
 			Type attributeType = typeof(T);
 			if(callbacks.ContainsKey(attributeType)) {
 				foreach(MethodInfo methodInfo in callbacks[attributeType]) {
-					methodInfo.Invoke(obj, new object[0]);
+					methodInfo.Invoke(obj, callbackParameters);
 				}
 			}
 		}
