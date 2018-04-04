@@ -4,17 +4,10 @@ namespace UniMsgPack
 {
 	public class MapOptions
 	{
-		public bool ignoreNullOnPack;
+		public bool ignoreNullOnPack = true;
 
-		public IMapNameConverter nameConverter;
+		public IMapNameConverter nameConverter = new DefaultMapNameConverter();
 
-		public BindingFlags fieldFlags;
-
-		public MapOptions()
-		{
-			ignoreNullOnPack = true;
-			nameConverter = new DefaultMapNameConverter();
-			fieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField;
-		}
+		public BindingFlags fieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField;
 	}
 }
