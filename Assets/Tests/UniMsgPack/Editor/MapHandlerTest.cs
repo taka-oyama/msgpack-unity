@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using NUnit.Framework;
 using UnityEngine;
@@ -59,6 +61,11 @@ namespace UniMsgPack.Tests
 			{
 				return name + name;
 			}
+		}
+
+		class PropertyMap
+		{
+			public int A { get; set; }
 		}
 
 		#endregion
@@ -186,6 +193,21 @@ namespace UniMsgPack.Tests
 				Assert.AreEqual(1, dict[i]);
 			}
 		}
+
+		[Test]
+		public void PackPropertyMap()
+		{
+			var value = new PropertyMap { A = 1 };
+			MemoryStream stream = new MemoryStream(MsgPack.Pack(value));
+			Assert.AreEqual(Format.FixMapMin + 1, stream.ReadByte());
+			Assert.AreEqual(Format.FixStrMin + 18, stream.ReadByte());
+			byte[] buffer = new byte[18];
+			stream.Read(buffer, 0, buffer.Length);
+			Assert.AreEqual("<A>k__BackingField", Encoding.UTF8.GetString(buffer));
+			Assert.AreEqual(Format.PositiveFixIntMin + 1, stream.ReadByte());
+			Assert.AreEqual(21, stream.Length);
+		}
+
 		#endregion
 
 
@@ -271,6 +293,15 @@ namespace UniMsgPack.Tests
 			for(int i = 0; i < ushort.MaxValue + 1; i++) {
 				Assert.AreEqual(1, dict[i]);
 			}
+		}
+
+		[Test]
+		public void UnpackPropertyMap()
+		{
+			var value = new PropertyMap { A = 1 };
+			byte[] data = MsgPack.Pack(value);
+			var result = MsgPack.Unpack<PropertyMap>(data);
+			Assert.AreEqual(result.A, value.A);
 		}
 
 		#endregion
