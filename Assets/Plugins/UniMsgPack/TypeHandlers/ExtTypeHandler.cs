@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace UniMsgPack
+﻿namespace UniMsgPack
 {
 	public interface IExtTypeHandler : ITypeHandler
 	{
