@@ -16,7 +16,7 @@ namespace UniMsgPack
 			if(format.IsInt16) return (int)reader.ReadInt16();
 			if(format.IsInt32) return reader.ReadInt32();
 			if(format.IsNil) return default(int);
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)

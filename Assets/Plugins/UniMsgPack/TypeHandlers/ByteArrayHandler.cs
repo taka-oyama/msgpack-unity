@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UniMsgPack
 {
@@ -11,7 +10,7 @@ namespace UniMsgPack
 			if(format.IsBin8) return reader.ReadBin8();
 			if(format.IsBin16) return reader.ReadBin16();
 			if(format.IsBin32) return reader.ReadBin32();
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)

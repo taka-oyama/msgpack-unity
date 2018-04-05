@@ -111,7 +111,7 @@ namespace UniMsgPack
 				AddIfNotExist(type, new MapHandler(context, GetMapDefinition(type)));
 			}
 			else {
-				throw new FormatException("No Type definition found for " + type);
+				throw new FormatException("No TypeHandler found for type: " + type);
 			}
 		}
 

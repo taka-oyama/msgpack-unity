@@ -36,7 +36,7 @@ namespace UniMsgPack
 				double seconds = (double)doubleHandler.Read(format, reader);
 				return epoch.AddSeconds(seconds).ToLocalTime();
 			}
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public object ReadExt(uint length, FormatReader reader)

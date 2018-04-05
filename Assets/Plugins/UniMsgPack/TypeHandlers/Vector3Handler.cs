@@ -23,7 +23,7 @@ namespace UniMsgPack
 				vector.z = (float)floatHandler.Read(reader.ReadFormat(), reader);
 				return vector;
 			}
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)

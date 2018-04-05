@@ -36,7 +36,7 @@ namespace UniMsgPack
 				}
 				return null;
 			}
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)

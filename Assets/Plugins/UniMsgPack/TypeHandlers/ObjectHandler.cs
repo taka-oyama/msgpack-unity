@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace UniMsgPack
@@ -50,7 +49,7 @@ namespace UniMsgPack
 			if(format.IsExt8) return ReadExt(format, reader);
 			if(format.IsExt16) return ReadExt(format, reader);
 			if(format.IsExt32) return ReadExt(format, reader);
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)

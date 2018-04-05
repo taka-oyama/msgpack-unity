@@ -11,6 +11,8 @@ namespace UniMsgPack
 		byte[] staticBuffer = new byte[8];
 		byte[] dynamicBuffer = new byte[64];
 
+		internal long Position { get { return stream.Position; } }
+
 		public FormatReader(Stream stream)
 		{
 			this.stream = stream;

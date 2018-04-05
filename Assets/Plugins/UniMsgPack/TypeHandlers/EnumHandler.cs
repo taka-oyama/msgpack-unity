@@ -29,7 +29,7 @@ namespace UniMsgPack
 			if(format.IsNil) {
 				return Enum.ToObject(type, 0);
 			}
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)

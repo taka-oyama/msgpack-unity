@@ -13,7 +13,7 @@ namespace UniMsgPack
 			if(format.IsUInt32) return (ulong)reader.ReadUInt32();
 			if(format.IsUInt64) return reader.ReadUInt64();
 			if(format.IsNil) return default(ulong);
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)

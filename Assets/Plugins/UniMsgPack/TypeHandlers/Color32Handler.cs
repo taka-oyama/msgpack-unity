@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 using System.Collections.Generic;
 
 namespace UniMsgPack
@@ -42,7 +41,7 @@ namespace UniMsgPack
 				Dictionary<string, byte> map = (Dictionary<string, byte>)mapHandler.Read(format, reader);
 				return new Color32(map["r"], map["g"], map["b"], map["a"]);
 			}
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System;
 
 namespace UniMsgPack
 {
@@ -24,7 +23,7 @@ namespace UniMsgPack
 				quaternion.w = (float)floatHandler.Read(reader.ReadFormat(), reader);
 				return quaternion;
 			}
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)

@@ -24,7 +24,7 @@ namespace UniMsgPack
 				stringHandler = stringHandler ?? context.typeHandlers.Get<string>();
 				return new Guid((string)stringHandler.Read(format, reader));				
 			}
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)

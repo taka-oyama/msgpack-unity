@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 using System;
 
 namespace UniMsgPack
@@ -12,7 +11,7 @@ namespace UniMsgPack
 			if(format.IsUInt8) return Convert.ToChar(reader.ReadUInt8());
 			if(format.IsUInt16) return Convert.ToChar(reader.ReadUInt16());
 			if(format.IsNil) return default(char);
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)

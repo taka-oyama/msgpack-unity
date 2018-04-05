@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UniMsgPack
 {
@@ -10,7 +9,7 @@ namespace UniMsgPack
 			if(format.IsFalse) return false;
 			if(format.IsTrue) return true;
 			if(format.IsNil) return default(bool);
-			throw new FormatException();
+			throw new FormatException(this, format, reader);
 		}
 
 		public void Write(object obj, FormatWriter writer)
