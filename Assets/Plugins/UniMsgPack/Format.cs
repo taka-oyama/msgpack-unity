@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace UniMsgPack
 {
 	public struct Format
 	{
-		readonly internal byte value;
+		readonly public byte value;
 
 		public Format(byte value)
 		{
@@ -136,6 +133,11 @@ namespace UniMsgPack
 		public static bool operator !=(Format f1, Format f2)
 		{
 			return f1.value != f2.value;
+		}
+
+		public override string ToString()
+		{
+			return string.Concat("0x", value.ToString("X2"));
 		}
 	}
 }
