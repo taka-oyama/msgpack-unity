@@ -36,12 +36,16 @@ namespace UniMsgPack
 				int size = reader.ReadMapLength(format);
 				while(size > 0) {
 					string name = nameConverter.OnUnpack((string)nameHandler.Read(reader.ReadFormat(), reader));
+
 					if(fieldHandlers.ContainsKey(name)) {
 						object value = fieldHandlers[name].Read(reader.ReadFormat(), reader);
 						fieldInfos[name].SetValue(obj, value);
 					}
-					else {
+					else if(context.mapOptions.ignoreMissingFieldOnUnpack) {
 						reader.Skip();
+					}
+					else {
+						throw new MissingFieldException(name + " does not exist for type: " + type);
 					}
 					size = size - 1;
 				}

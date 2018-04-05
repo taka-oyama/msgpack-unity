@@ -386,6 +386,26 @@ namespace UniMsgPack.Tests
 			Assert.AreEqual(3, result.aa);
 		}
 
+		[Test]
+		public void IgnoreMissingFieldOnUnpack()
+		{
+			var context = new SerializationContext();
+			context.mapOptions.ignoreMissingFieldOnUnpack = true;
+			var value = new StructMapExt();
+			byte[] data = MsgPack.Pack(value);
+			MsgPack.Unpack<StructMap>(data, context);
+		}
+
+		[Test]
+		public void DoNotIgnoreMissingFieldOnUnpack()
+		{
+			var context = new SerializationContext();
+			context.mapOptions.ignoreMissingFieldOnUnpack = false;
+			var value = new StructMapExt();
+			byte[] data = MsgPack.Pack(value);
+			Assert.Throws<MissingFieldException>(() => MsgPack.Unpack<StructMap>(data, context));
+		}
+
 		#endregion
 	}
 }
