@@ -5,8 +5,8 @@ This is a messagepack (aka MsgPack) serialization library written in C# specific
 
 ## Features
 
-- Implements the latest (as of 2018) [specification](https://github.com/msgpack/msgpack/blob/master/spec.md)
-- Compatible with legacy scripting runtime (.NET 3.5)
+- Implements the latest [specification](https://github.com/msgpack/msgpack/blob/master/spec.md) (as of 2018) 
+- Compatible with .NET 3.5 scripting runtime
 - Compatible with other message pack libraries written in other languages such as PHP/Ruby/Javascript
 - Works with all types out of the box
 - Add or replace custom serialization handler for any definable type
@@ -16,7 +16,7 @@ This is a messagepack (aka MsgPack) serialization library written in C# specific
 
 ## Installation
 - [Download the latest .unitypackage in the releases section](https://github.com/taka-oyama/msgpack-unity/releases) 
-- Goto the top menu bar and choose **Assets > Import Package > Custom Package... > (Select msgpack-unity)**
+- Goto menu bar and choose **Assets > Import Package > Custom Package... > (Select the downloaded package)**
 
 ## Usage
 
@@ -24,7 +24,6 @@ Basic Usage for Packing/Unpacking
 
 ```cs
 int[] values = { 1, 2, 3 };
-
 byte[] bytes = MessagePack.Pack(values);
 int[] result = MessagePack.Unpack<int[]>(bytes);
 ```
@@ -35,7 +34,7 @@ Change options
 SerializationContext.Default.dateTimeOptions.packingFormat = DateTimePackingFormat.Epoch;
 
 DateTime date = DateTime.Now;
-byte[] bytes = MessagePack.Pack(date, context); // DateTime packed as double instead of Default Ext format.
+byte[] bytes = MessagePack.Pack(date, context); // DateTime packed as double instead of Ext format.
 ```
 
 Defining different context for different occations
@@ -57,11 +56,11 @@ public class MapWithCallbacks
     public int a = 1;
 
     [NonSerialized]
-    public int b = 2; // ignored
+    public int b = 2; // ignored by serializer
 
     [OnSerializing]
     void T1()
-    {        
+    {
         // Called before serializing
     }
     
