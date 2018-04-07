@@ -4,8 +4,7 @@
 - Author: [Takayasu Oyama](https://github.com/taka-oyama)
 - License: MIT
 
-This is a messagepack (aka MsgPack) serialization library written in C# specifically for [Unity](https://unity3d.com/unity).
-
+This is a MessagePack (aka MsgPack) serialization library written in C# specifically for [Unity](https://unity3d.com/unity).
 
 ## Features
 
@@ -41,7 +40,7 @@ DateTime date = DateTime.Now;
 byte[] bytes = MessagePack.Pack(date, context); // DateTime packed as double instead of Ext format.
 ```
 
-Defining different context for different occations
+Defining different context for different occasions
 
 ```cs
 SerializationContext context = new SerializationContext();
