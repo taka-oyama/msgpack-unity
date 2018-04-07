@@ -3,7 +3,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using UnityEngine;
 
-namespace UniMsgPack
+namespace MessagePack
 {
 	public class Benchmark : MonoBehaviour
 	{
@@ -30,9 +30,9 @@ namespace UniMsgPack
 				maps[i] = new Map() { a = UnityEngine.Random.Range(0, 100), b = UnityEngine.Random.Range(0, 100) };
 			}
 
-			var bytes = MsgPack.Pack(maps);
+			var bytes = MessagePack.Pack(maps);
 			Stream stream = new MemoryStream(bytes);
-			MsgPackFormatter formatter = new MsgPackFormatter();
+			MessagePackFormatter formatter = new MessagePackFormatter();
 			for(int n = 0; n < times; n++) {
 				var s1 = System.Diagnostics.Stopwatch.StartNew();
 				stream.Position = 0;
