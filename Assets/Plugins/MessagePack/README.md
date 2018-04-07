@@ -1,7 +1,7 @@
 # MessagePack For Unity
 
 - Source: https://github.com/taka-oyama/msgpack-unity
-- Author: (Takayasu Oyama)[https://github.com/taka-oyama]
+- Author: [Takayasu Oyama](https://github.com/taka-oyama)
 - License: MIT
 
 This is a messagepack (aka MsgPack) serialization library written in C# specifically for [Unity](https://unity3d.com/unity).
@@ -102,5 +102,5 @@ ITypeHandler handler = new MyCustomClassHandler();
 SerializationContext.Default.typeHandlers.SetHandler(type, handler);
 ```
 
-Checkout the implementations of (other types)[https://github.com/taka-oyama/msgpack-unity/tree/master/Assets/Plugins/MessagePack/TypeHandlers] for reference.
+Checkout the implementations of [other types](https://github.com/taka-oyama/msgpack-unity/tree/master/Assets/Plugins/MessagePack/TypeHandlers) for reference.
 
