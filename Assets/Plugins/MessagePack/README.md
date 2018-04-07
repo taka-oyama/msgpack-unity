@@ -1,5 +1,9 @@
 # MessagePack For Unity
 
+- Source: https://github.com/taka-oyama/msgpack-unity
+- Author: (Takayasu Oyama)[https://github.com/taka-oyama]
+- License: MIT
+
 This is a messagepack (aka MsgPack) serialization library written in C# specifically for [Unity](https://unity3d.com/unity).
 
 
@@ -74,3 +78,29 @@ public class MapWithCallbacks
 MapWithCallbacks map = new MapWithCallbacks();
 byte[] bytes = MessagePack.Pack(map);
 ```
+
+Add A Custom Type Handler
+
+```cs
+using MessagePack;
+
+public class MyCustomClassHandler : ITypeHandler
+{
+    public object Read(Format format, FormatReader reader)
+    {
+        // unpack your object instance and return it
+    }
+
+    public void Write(object obj, FormatWriter writer)
+    {
+        // pack your object instance
+    }
+}
+
+Type type = typeof(MyCustomClass);
+ITypeHandler handler = new MyCustomClassHandler();
+SerializationContext.Default.typeHandlers.SetHandler(type, handler);
+```
+
+Checkout the implementations of (other types)[https://github.com/taka-oyama/msgpack-unity/tree/master/Assets/Plugins/MessagePack/TypeHandlers] for reference.
+
