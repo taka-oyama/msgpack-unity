@@ -49,6 +49,19 @@ context.dateTimeOptions.packingFormat = DateTimePackingFormat.Epoch;
 int[] result = MessagePack.Unpack<int[]>(bytes, context);
 ```
 
+Pack to and Unpack from snake cased maps
+
+```cs
+public class Map
+{
+    public int fooBar = 1;
+}
+
+SerializationContext.Default.mapOptions.nameConverter = new SnakeCaseMapNameConverter();
+
+MessagePack.Pack(new Map()); // serialized as  { foo_bar: 1 }
+```
+
 Using Attributes
 
 ```cs
