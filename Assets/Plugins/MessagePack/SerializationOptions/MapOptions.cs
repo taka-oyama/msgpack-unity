@@ -8,7 +8,7 @@ namespace MessagePack
 
 		public bool ignoreMissingFieldOnUnpack = true;
 
-		public IMapNamingStrategy namingStrategy = new DefaultMapNameConverter();
+		public IMapNamingStrategy namingStrategy = new DefaultNamingStrategy();
 
 		public BindingFlags fieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField;
 	}

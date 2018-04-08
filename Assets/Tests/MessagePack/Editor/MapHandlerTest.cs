@@ -50,7 +50,7 @@ namespace MessagePack.Tests
 			public int aa = 2;
 		}
 
-		class AllCapsNameConverter : IMapNameConverter
+		class AllCapsNameConverter : IMapNamingStrategy
 		{
 			public string OnPack(string name)
 			{
@@ -350,7 +350,7 @@ namespace MessagePack.Tests
 		public void NameConvertionOnPack()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.nameConverter = new AllCapsNameConverter();
+			context.mapOptions.namingStrategy = new AllCapsNameConverter();
 			var value = new MapForNameConverter() { a = 3, aa = 4 };
 			byte[] data = MessagePack.Pack(value, context);
 			var result = MessagePack.Unpack<MapForNameConverter>(data);
@@ -370,7 +370,7 @@ namespace MessagePack.Tests
 		public void NameConvertionOnUnpack()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.nameConverter = new AllCapsNameConverter();
+			context.mapOptions.namingStrategy = new AllCapsNameConverter();
 			var value = new MapForNameConverter() { a = 3, aa = 4 };
 			byte[] data = MessagePack.Pack(value);
 			var result = MessagePack.Unpack<MapForNameConverter>(data, context);
