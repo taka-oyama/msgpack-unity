@@ -11,7 +11,7 @@ namespace MessagePack
 		readonly SerializationContext context;
 		readonly Type type;
 		readonly ITypeHandler nameHandler;
-		readonly IMapNameConverter nameConverter;
+		readonly IMapNamingStrategy nameConverter;
 		readonly Dictionary<string, FieldInfo> fieldInfos;
 		readonly Dictionary<string, ITypeHandler> fieldHandlers;
 		readonly Dictionary<Type, MethodInfo[]> callbacks;
@@ -22,7 +22,7 @@ namespace MessagePack
 			this.context = context;
 			this.type = definition.type;
 			this.nameHandler = context.typeHandlers.Get<string>();
-			this.nameConverter = context.mapOptions.nameConverter;
+			this.nameConverter = context.mapOptions.namingStrategy;
 			this.fieldInfos = definition.fieldInfos;
 			this.fieldHandlers = definition.fieldHandlers;
 			this.callbacks = definition.callbacks;

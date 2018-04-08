@@ -2,7 +2,7 @@
 
 namespace MessagePack
 {
-	public interface IMapNameConverter
+	public interface IMapNamingStrategy
 	{
 		string OnPack(string name);
 		string OnUnpack(string name);

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace MessagePack
 {
-	public class DefaultMapNameConverter : IMapNameConverter
+	public class DefaultNamingStrategy : IMapNamingStrategy
 	{
 		public string OnPack(string name)
 		{

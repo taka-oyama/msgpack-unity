@@ -57,7 +57,7 @@ public class Map
     public int fooBar = 1;
 }
 
-SerializationContext.Default.mapOptions.nameConverter = new SnakeCaseMapNameConverter();
+SerializationContext.Default.mapOptions.namingStrategy = new SnakeCaseNamingStrategy();
 
 MessagePack.Pack(new Map()); // serialized as  { foo_bar: 1 }
 ```
