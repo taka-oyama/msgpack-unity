@@ -20,6 +20,7 @@ namespace MessagePack
 		public const byte FixStrMin = 0xa0;
 		public const byte FixStrMax = 0xbf;
 		public const byte Nil = 0xc0;
+		public const byte NeverUsed = 0xc1;
 		public const byte False = 0xc2;
 		public const byte True = 0xc3;
 		public const byte Bin8 = 0xc4;
@@ -58,6 +59,7 @@ namespace MessagePack
 		public bool IsFixArray { get { return Between(FixArrayMin, FixArrayMax); } }
 		public bool IsFixStr { get { return Between(FixStrMin, FixStrMax); } }
 		public bool IsNil { get { return value == Nil; } }
+		public bool IsNeverUsed { get { return value == NeverUsed; } }
 		public bool IsFalse { get { return value == False; } }
 		public bool IsTrue { get { return value == True; } }
 		public bool IsBin8 { get { return value == Bin8; } }
