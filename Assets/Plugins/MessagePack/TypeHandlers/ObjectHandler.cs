@@ -36,19 +36,9 @@ namespace MessagePack
 			if(format.IsBin8) return reader.ReadBin8();
 			if(format.IsBin16) return reader.ReadBin16();
 			if(format.IsBin32) return reader.ReadBin32();
-			if(format.IsFixArray) return ReadArray(format, reader);
-			if(format.IsArray16) return ReadArray(format, reader);
-			if(format.IsArray32) return ReadArray(format, reader);
-			if(format.IsFixMap) return ReadMap(format, reader);
-			if(format.IsMap16) return ReadMap(format, reader);
-			if(format.IsMap32) return ReadMap(format, reader);
-			if(format.IsFixExt1) return ReadExt(format, reader);
-			if(format.IsFixExt2) return ReadExt(format, reader);
-			if(format.IsFixExt4) return ReadExt(format, reader);
-			if(format.IsFixExt8) return ReadExt(format, reader);
-			if(format.IsExt8) return ReadExt(format, reader);
-			if(format.IsExt16) return ReadExt(format, reader);
-			if(format.IsExt32) return ReadExt(format, reader);
+			if(format.IsArrayFamily) return ReadArray(format, reader);
+			if(format.IsMapFamily) return ReadMap(format, reader);
+			if(format.IsExtFamily) return ReadExt(format, reader);
 			throw new FormatException(this, format, reader);
 		}
 
