@@ -20,6 +20,8 @@ namespace MessagePack
 
 		public readonly MapOptions mapOptions;
 
+		public readonly JsonOptions jsonOptions;
+
 		public readonly TypeHandlers typeHandlers;
 
 		public SerializationContext()
@@ -28,6 +30,7 @@ namespace MessagePack
 			enumOptions = new EnumOptions();
 			arrayOptions = new ArrayOptions();
 			mapOptions = new MapOptions();
+			jsonOptions = new JsonOptions();
 			typeHandlers = new TypeHandlers(this);
 		}
 	}

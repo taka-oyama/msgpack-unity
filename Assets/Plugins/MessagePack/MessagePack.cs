@@ -26,5 +26,15 @@ namespace MessagePack
 		{
 			return new MessagePackFormatter().Deserialize<T>(stream, context);
 		}
+
+		public static string AsJson(byte[] data, SerializationContext context = null)
+		{
+			return AsJson(new MemoryStream(data), context);
+		}
+
+		public static string AsJson(Stream stream, SerializationContext context = null)
+		{
+			return JsonConverter.Encode(stream, context);
+		}
 	}
 }
