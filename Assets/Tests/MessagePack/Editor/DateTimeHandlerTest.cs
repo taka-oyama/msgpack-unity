@@ -72,8 +72,8 @@ namespace MessagePack.Tests
 		{
 			var context = new SerializationContext();
 			context.dateTimeOptions.packingFormat = DateTimePackingFormat.Epoch;
-			// only 4 digit precision due to loss of precision
-			var value = DateTime.Parse("2018-01-01T12:00:00.1234+09:00");
+			// only 3 digit precision due to loss of precision
+			var value = DateTime.Parse("2018-01-01T12:00:00.123+09:00");
 			byte[] data = MessagePack.Pack(value, context);
 			DateTime result = MessagePack.Unpack<DateTime>(data);
 			Assert.AreEqual(Format.Float64, data[0]);
