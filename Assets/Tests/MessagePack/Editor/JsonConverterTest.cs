@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -59,6 +60,25 @@ namespace MessagePack.Tests
 			var json = MessagePack.AsJson(data, context);
 
 			Assert.AreEqual("[\n 1,\n 2,\n 3\n]", json);
+		}
+
+		[Test]
+		public void FormatError()
+		{
+			var array = new int[] { 1, 2, 3 };
+			var data = MessagePack.Pack(array);
+			var bytes = new List<byte>(data);
+			bytes.Insert(2, Format.NeverUsed);
+
+			Assert.Throws(typeof(FormatException), () => {
+				try {
+					MessagePack.AsJson(bytes.ToArray());
+				}
+				catch(Exception e) {
+					Assert.AreEqual(e.Source, "[1,");
+					throw;
+				}
+			});
 		}
 	}
 }

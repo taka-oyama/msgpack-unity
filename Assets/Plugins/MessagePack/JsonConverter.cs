@@ -14,11 +14,13 @@ namespace MessagePack
 
 		public static string Encode(Stream stream, SerializationContext context = null)
 		{
+			JsonConverter converter = new JsonConverter(stream, context);
 			try {
-				return new JsonConverter(stream, context).AppendStream().ToString();
+				return converter.AppendStream().ToString();
 			}
 			catch(Exception e) {
-				throw new FormatException(stream, e);
+				e.Source = converter.builder.ToString();
+				throw;
 			}
 		}
 
@@ -59,7 +61,7 @@ namespace MessagePack
 			else if(format.IsArrayFamily) ReadArray(format);
 			else if(format.IsMapFamily) ReadMap(format);
 			else if(format.IsExtFamily) ReadExt(format);
-			else throw new FormatException();
+			else throw new FormatException(format, reader);
 
 			return this;
 		}
