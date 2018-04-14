@@ -16,6 +16,7 @@ This is a MessagePack (aka MsgPack) serialization library written in C# specific
 - Supports callback attributes `OnSerializing` `OnSerialized` `OnDeserializing` `OnDeserialized`
 - Options to change how types like DateTime and Enums are serialized
 - Options to change how map field names are packed/unpacked (like changing names to snake case on pack.. etc)
+- Decode as JSON for easy debugging
 
 ## Installation
 - [Download the latest .unitypackage in the releases section](https://github.com/taka-oyama/msgpack-unity/releases)
