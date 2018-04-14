@@ -8,7 +8,7 @@ This is a MessagePack (aka MsgPack) serialization library written in C# specific
 
 ## Features
 
-- Implements the latest [specification](https://github.com/msgpack/msgpack/blob/master/spec.md) (as of 2018) 
+- Implements the latest [specification](https://github.com/msgpack/msgpack/blob/master/spec.md) (as of 2018)
 - Compatible with .NET 3.5 scripting runtime
 - Compatible with other message pack libraries written in other languages such as PHP/Ruby/Javascript
 - Works with all types out of the box (as long as it has a default constructor)
@@ -18,7 +18,7 @@ This is a MessagePack (aka MsgPack) serialization library written in C# specific
 - Options to change how map field names are packed/unpacked (like changing names to snake case on pack.. etc)
 
 ## Installation
-- [Download the latest .unitypackage in the releases section](https://github.com/taka-oyama/msgpack-unity/releases) 
+- [Download the latest .unitypackage in the releases section](https://github.com/taka-oyama/msgpack-unity/releases)
 - Goto menu bar and choose **Assets > Import Package > Custom Package... > (Select the downloaded package)**
 
 ## Usage
@@ -77,7 +77,7 @@ public class MapWithCallbacks
     {
         // Called before serializing
     }
-    
+
     [OnSerialized]
     void T2()
     {
@@ -114,3 +114,21 @@ SerializationContext.Default.typeHandlers.SetHandler(type, handler);
 
 Checkout the implementations of [other types](https://github.com/taka-oyama/msgpack-unity/tree/master/Assets/Plugins/MessagePack/TypeHandlers) for reference.
 
+## Debugging
+
+You can debug your packed binary by converting it to JSON by using `MessagePack.AsJson(byte[])`
+
+
+```cs
+public class Map
+{
+    public int foo = 1;
+    public int[] bar = {1, 2};
+}
+
+Map value = new Map();
+byte[] bytes = MessagePack.Pack(value);
+string json = MessagePack.AsJson(bytes);
+
+Debug.Log(json); // {"foo":1,"bar":[1,2]}
+```
