@@ -36,9 +36,7 @@ Change options
 
 ```cs
 SerializationContext.Default.dateTimeOptions.packingFormat = DateTimePackingFormat.Epoch;
-
-DateTime date = DateTime.Now;
-byte[] bytes = MessagePack.Pack(date); // DateTime packed as double instead of Ext format.
+byte[] bytes = MessagePack.Pack(DateTime.Now); // DateTime packed as double instead of Ext format.
 ```
 
 Defining different context for different occasions
