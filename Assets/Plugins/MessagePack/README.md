@@ -36,6 +36,7 @@ Change options
 
 ```cs
 SerializationContext.Default.dateTimeOptions.packingFormat = DateTimePackingFormat.Epoch;
+
 byte[] bytes = MessagePack.Pack(DateTime.Now); // DateTime packed as double instead of Ext format.
 ```
 
