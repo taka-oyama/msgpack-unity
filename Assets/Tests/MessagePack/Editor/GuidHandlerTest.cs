@@ -12,8 +12,8 @@ namespace MessagePack.Tests
 		public void Pack()
 		{
 			var value = Guid.NewGuid();
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<Guid>(data);
+			byte[] data = Pack(value);
+			var result = Unpack<Guid>(data);
 			Assert.AreEqual(value, result);
 		}
 
@@ -26,8 +26,8 @@ namespace MessagePack.Tests
 		public void UnpackAsString()
 		{
 			var value = Guid.NewGuid().ToString();
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<Guid>(data);
+			byte[] data = Pack(value);
+			var result = Unpack<Guid>(data);
 			Assert.AreEqual(value, result.ToString());
 		}
 

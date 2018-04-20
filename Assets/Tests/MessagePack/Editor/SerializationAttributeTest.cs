@@ -19,7 +19,7 @@ namespace MessagePack.Tests
 		public void PackNonSerialize()
 		{
 			MapActual map = new MapActual() { a = 1 };
-			byte[] bytes = MessagePack.Pack(map);
+			byte[] bytes = Pack(map);
 			Assert.AreEqual(1, bytes.Length);
 			Assert.AreEqual(Format.FixMapMin, bytes[0]);
 		}
@@ -28,8 +28,8 @@ namespace MessagePack.Tests
 		public void UnpackNonSerialize()
 		{
 			MapTemp map = new MapTemp() { a = 1 };
-			byte[] bytes = MessagePack.Pack(map);
-			MapActual actual = MessagePack.Unpack<MapActual>(bytes);
+			byte[] bytes = Pack(map);
+			MapActual actual = Unpack<MapActual>(bytes);
 			Assert.AreEqual(null, actual.a);
 		}
 
@@ -37,8 +37,8 @@ namespace MessagePack.Tests
 		public void PackMapWithSerializing()
 		{
 			MapWithSerializing mapBefore = new MapWithSerializing();
-			byte[] bytes = MessagePack.Pack(mapBefore);
-			MapWithSerializing mapAfter = MessagePack.Unpack<MapWithSerializing>(bytes);
+			byte[] bytes = Pack(mapBefore);
+			MapWithSerializing mapAfter = Unpack<MapWithSerializing>(bytes);
 			Assert.AreEqual(1, mapAfter.a); // overwritten by callback
 		}
 
@@ -46,8 +46,8 @@ namespace MessagePack.Tests
 		public void UnpackMapWithDeserializing()
 		{
 			MapWithDeserializing mapBefore = new MapWithDeserializing();
-			byte[] bytes = MessagePack.Pack(mapBefore);
-			MapWithDeserializing mapAfter = MessagePack.Unpack<MapWithDeserializing>(bytes);
+			byte[] bytes = Pack(mapBefore);
+			MapWithDeserializing mapAfter = Unpack<MapWithDeserializing>(bytes);
 			Assert.AreEqual(0, mapAfter.a); // overwritten by packed value
 		}
 
@@ -55,8 +55,8 @@ namespace MessagePack.Tests
 		public void PackMapWithSerialized()
 		{
 			MapWithSerialized mapBefore = new MapWithSerialized();
-			byte[] bytes = MessagePack.Pack(mapBefore);
-			MapWithSerialized mapAfter = MessagePack.Unpack<MapWithSerialized>(bytes);
+			byte[] bytes = Pack(mapBefore);
+			MapWithSerialized mapAfter = Unpack<MapWithSerialized>(bytes);
 			Assert.AreEqual(0, mapAfter.a); // overwritten after packing so not reflected on unpacking
 		}
 
@@ -64,8 +64,8 @@ namespace MessagePack.Tests
 		public void UnpackMapWithDeserialized()
 		{
 			MapWithDeserialized mapBefore = new MapWithDeserialized();
-			byte[] bytes = MessagePack.Pack(mapBefore);
-			MapWithDeserialized mapAfter = MessagePack.Unpack<MapWithDeserialized>(bytes);
+			byte[] bytes = Pack(mapBefore);
+			MapWithDeserialized mapAfter = Unpack<MapWithDeserialized>(bytes);
 			Assert.AreEqual(4, mapAfter.a); // overwritten by callback
 		}
 
@@ -73,8 +73,8 @@ namespace MessagePack.Tests
 		public void MultipleSerializings()
 		{
 			MapWithSerializings mapBefore = new MapWithSerializings();
-			byte[] bytes = MessagePack.Pack(mapBefore);
-			MapWithSerializings mapAfter = MessagePack.Unpack<MapWithSerializings>(bytes);
+			byte[] bytes = Pack(mapBefore);
+			MapWithSerializings mapAfter = Unpack<MapWithSerializings>(bytes);
 			Assert.AreEqual(1, mapAfter.a); // overwritten by callback
 			Assert.AreEqual(2, mapAfter.b); // overwritten by callback
 		}

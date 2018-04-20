@@ -13,8 +13,8 @@ namespace MessagePack.Tests
 		public void Pack()
 		{
 			Color value = new Color(0.25f, 0.5f, 1, 1);
-			byte[] data = MessagePack.Pack(value);
-			Color result = MessagePack.Unpack<Color>(data);
+			byte[] data = Pack(value);
+			Color result = Unpack<Color>(data);
 			Assert.AreEqual(value, result);
 		}
 		#endregion
@@ -26,8 +26,8 @@ namespace MessagePack.Tests
 		public void UnpackAsBinary()
 		{
 			Color value = new Color(0f, 0.51f, 0.51f, 1f);
-			byte[] data = MessagePack.Pack(value);
-			Color result = MessagePack.Unpack<Color>(data);
+			byte[] data = Pack(value);
+			Color result = Unpack<Color>(data);
 			Assert.AreEqual(value, result);
 		}
 
@@ -35,8 +35,8 @@ namespace MessagePack.Tests
 		public void UnpackAsArray()
 		{
 			Color value = new Color(0f, 0.51f, 0.51f, 1f);
-			byte[] data = MessagePack.Pack(value);
-			Color result = MessagePack.Unpack<Color>(data);
+			byte[] data = Pack(value);
+			Color result = Unpack<Color>(data);
 			Assert.AreEqual(new Color(0f, 0.51f, 0.51f, 1f), result);
 		}
 
@@ -44,8 +44,8 @@ namespace MessagePack.Tests
 		public void UnpackAsString()
 		{
 			string value = "#008282ff";
-			byte[] data = MessagePack.Pack(value);
-			Color result = MessagePack.Unpack<Color>(data);
+			byte[] data = Pack(value);
+			Color result = Unpack<Color>(data);
 			Assert.AreEqual(new Color(0f, 0.51f, 0.51f, 1f).ToString(), result.ToString());
 		}
 
@@ -57,8 +57,8 @@ namespace MessagePack.Tests
 			value.Add("g", 0.51f);
 			value.Add("b", 0.51f);
 			value.Add("a", 1f);
-			byte[] data = MessagePack.Pack(value);
-			Color result = MessagePack.Unpack<Color>(data);
+			byte[] data = Pack(value);
+			Color result = Unpack<Color>(data);
 			Assert.AreEqual(new Color(0f, 0.51f, 0.51f, 1f), result);
 		}
 

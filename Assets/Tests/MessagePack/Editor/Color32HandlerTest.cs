@@ -12,8 +12,8 @@ namespace MessagePack.Tests
 		public void Pack()
 		{
 			Color32 value = new Color32(0, 50, 100, 255);
-			byte[] data = MessagePack.Pack(value);
-			Color32 result = MessagePack.Unpack<Color32>(data);
+			byte[] data = Pack(value);
+			Color32 result = Unpack<Color32>(data);
 			Assert.AreEqual(value, result);
 		}
 
@@ -26,8 +26,8 @@ namespace MessagePack.Tests
 		public void UnpackAsBinary()
 		{
 			Color32 value = new Color32(100, 100, 100, 255);
-			byte[] data = MessagePack.Pack(value);
-			Color32 result = MessagePack.Unpack<Color32>(data);
+			byte[] data = Pack(value);
+			Color32 result = Unpack<Color32>(data);
 			Assert.AreEqual(value, result);
 		}
 
@@ -35,8 +35,8 @@ namespace MessagePack.Tests
 		public void UnpackAsArray()
 		{
 			int[] value = { 100, 100, 100, 255 };
-			byte[] data = MessagePack.Pack(value);
-			Color32 result = MessagePack.Unpack<Color32>(data);
+			byte[] data = Pack(value);
+			Color32 result = Unpack<Color32>(data);
 			Assert.AreEqual(new Color32(100, 100, 100, 255), result);
 		}
 
@@ -44,8 +44,8 @@ namespace MessagePack.Tests
 		public void UnpackAsString()
 		{
 			string value = "#646464ff";
-			byte[] data = MessagePack.Pack(value);
-			Color32 result = MessagePack.Unpack<Color32>(data);
+			byte[] data = Pack(value);
+			Color32 result = Unpack<Color32>(data);
 			Assert.AreEqual(new Color32(100, 100, 100, 255), result);
 		}
 
@@ -57,8 +57,8 @@ namespace MessagePack.Tests
 			value.Add("g", 100);
 			value.Add("b", 100);
 			value.Add("a", 255);
-			byte[] data = MessagePack.Pack(value);
-			Color32 result = MessagePack.Unpack<Color32>(data);
+			byte[] data = Pack(value);
+			Color32 result = Unpack<Color32>(data);
 			Assert.AreEqual(new Color32(100, 100, 100, 255), result);
 		}
 

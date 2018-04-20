@@ -12,8 +12,8 @@ namespace MessagePack.Tests
 		public void PackPositiveFixIntMinAsUShort()
 		{
 			ushort value = 0;
-			byte[] data = MessagePack.Pack<ushort>(value);
-			ushort result = MessagePack.Unpack<ushort>(data);
+			byte[] data = Pack<ushort>(value);
+			ushort result = Unpack<ushort>(data);
 			Assert.AreEqual(Format.PositiveFixIntMin, data[0]);
 			Assert.AreEqual(1, data.Length);
 			Assert.AreEqual(value, result);
@@ -23,8 +23,8 @@ namespace MessagePack.Tests
 		public void PackPositiveFixIntMaxAsUShort()
 		{
 			ushort value = (ushort)sbyte.MaxValue;
-			byte[] data = MessagePack.Pack<ushort>(value);
-			ushort result = MessagePack.Unpack<ushort>(data);
+			byte[] data = Pack<ushort>(value);
+			ushort result = Unpack<ushort>(data);
 			Assert.AreEqual(Format.PositiveFixIntMax, data[0]);
 			Assert.AreEqual(1, data.Length);
 			Assert.AreEqual(value, result);
@@ -34,8 +34,8 @@ namespace MessagePack.Tests
 		public void PackUInt8MinAsUShort()
 		{
 			ushort value = sbyte.MaxValue + 1;
-			byte[] data = MessagePack.Pack<ushort>(value);
-			ushort result = MessagePack.Unpack<ushort>(data);
+			byte[] data = Pack<ushort>(value);
+			ushort result = Unpack<ushort>(data);
 			Assert.AreEqual(Format.UInt8, data[0]);
 			Assert.AreEqual(2, data.Length);
 			Assert.AreEqual(value, result);
@@ -45,8 +45,8 @@ namespace MessagePack.Tests
 		public void PackUInt8MaxAsUShort()
 		{
 			ushort value = byte.MaxValue;
-			byte[] data = MessagePack.Pack<ushort>(value);
-			ushort result = MessagePack.Unpack<ushort>(data);
+			byte[] data = Pack<ushort>(value);
+			ushort result = Unpack<ushort>(data);
 			Assert.AreEqual(Format.UInt8, data[0]);
 			Assert.AreEqual(2, data.Length);
 			Assert.AreEqual(value, result);
@@ -56,8 +56,8 @@ namespace MessagePack.Tests
 		public void PackUInt16MinAsUShort()
 		{
 			ushort value = byte.MaxValue + 1;
-			byte[] data = MessagePack.Pack<ushort>(value);
-			ushort result = MessagePack.Unpack<ushort>(data);
+			byte[] data = Pack<ushort>(value);
+			ushort result = Unpack<ushort>(data);
 			Assert.AreEqual(Format.UInt16, data[0]);
 			Assert.AreEqual(3, data.Length);
 			Assert.AreEqual(value, result);
@@ -67,8 +67,8 @@ namespace MessagePack.Tests
 		public void PackUInt16MaxAsUShort()
 		{
 			ushort value = ushort.MaxValue;
-			byte[] data = MessagePack.Pack<ushort>(value);
-			ushort result = MessagePack.Unpack<ushort>(data);
+			byte[] data = Pack<ushort>(value);
+			ushort result = Unpack<ushort>(data);
 			Assert.AreEqual(Format.UInt16, data[0]);
 			Assert.AreEqual(3, data.Length);
 			Assert.AreEqual(value, result);
@@ -82,127 +82,127 @@ namespace MessagePack.Tests
 		[Test]
 		public void UnpackPositiveFixIntMinAsUShort()
 		{
-			ushort value = MessagePack.Unpack<ushort>(ReadFile("Ints/PositiveFixIntMin"));
+			ushort value = Unpack<ushort>(ReadFile("Ints/PositiveFixIntMin"));
 			Assert.AreEqual(0, value);
 		}
 
 		[Test]
 		public void UnpackPositiveFixIntMaxAsUShort()
 		{
-			ushort value = MessagePack.Unpack<ushort>(ReadFile("Ints/PositiveFixIntMax"));
+			ushort value = Unpack<ushort>(ReadFile("Ints/PositiveFixIntMax"));
 			Assert.AreEqual(sbyte.MaxValue, value);
 		}
 
 		[Test]
 		public void UnpackUInt8MinAsUShort()
 		{
-			ushort value = MessagePack.Unpack<ushort>(ReadFile("Ints/UInt8Min"));
+			ushort value = Unpack<ushort>(ReadFile("Ints/UInt8Min"));
 			Assert.AreEqual(sbyte.MaxValue + 1, value);
 		}
 
 		[Test]
 		public void UnpackUInt8MaxAsUShort()
 		{
-			ushort value = MessagePack.Unpack<ushort>(ReadFile("Ints/UInt8Max"));
+			ushort value = Unpack<ushort>(ReadFile("Ints/UInt8Max"));
 			Assert.AreEqual(byte.MaxValue, value);
 		}
 
 		[Test]
 		public void UnpackUInt16MinAsUShort()
 		{
-			ushort value = MessagePack.Unpack<ushort>(ReadFile("Ints/UInt16Min"));
+			ushort value = Unpack<ushort>(ReadFile("Ints/UInt16Min"));
 			Assert.AreEqual(byte.MaxValue + 1, value);
 		}
 
 		[Test]
 		public void UnpackUInt16MaxAsUShort()
 		{
-			ushort value = MessagePack.Unpack<ushort>(ReadFile("Ints/UInt16Max"));
+			ushort value = Unpack<ushort>(ReadFile("Ints/UInt16Max"));
 			Assert.AreEqual(ushort.MaxValue, value);
 		}
 
 		[Test]
 		public void UnpackUInt32MinAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/UInt32Min")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/UInt32Min")));
 		}
 
 		[Test]
 		public void UnpackUInt32MaxAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/UInt32Max")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/UInt32Max")));
 		}
 
 		[Test]
 		public void UnpackUInt64MinAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/UInt64Min")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/UInt64Min")));
 		}
 
 		[Test]
 		public void UnpackUInt64MaxAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/UInt64Max")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/UInt64Max")));
 		}
 
 		[Test]
 		public void UnpackNegativeFixIntMinAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/NegativeFixIntMin")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/NegativeFixIntMin")));
 		}
 
 		[Test]
 		public void UnpackNegativeFixIntMaxAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/NegativeFixIntMax")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/NegativeFixIntMax")));
 		}
 
 		[Test]
 		public void UnpackInt8MinAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/Int8Min")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/Int8Min")));
 		}
 
 		[Test]
 		public void UnpackInt8MaxAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/Int8Max")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/Int8Max")));
 		}
 
 		[Test]
 		public void UnpackInt16MinAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/Int16Min")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/Int16Min")));
 		}
 
 		[Test]
 		public void UnpackInt16MaxAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/Int16Max")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/Int16Max")));
 		}
 
 		[Test]
 		public void UnpackInt32MinAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/Int32Min")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/Int32Min")));
 		}
 
 		[Test]
 		public void UnpackInt32MaxAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/Int32Max")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/Int32Max")));
 		}
 
 		[Test]
 		public void UnpackInt64MinAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/Int64Min")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/Int64Min")));
 		}
 
 		[Test]
 		public void UnpackInt64MaxAsUShort()
 		{
-			Assert.Throws<FormatException>(() => MessagePack.Unpack<ushort>(ReadFile("Ints/Int64Max")));
+			Assert.Throws<FormatException>(() => Unpack<ushort>(ReadFile("Ints/Int64Max")));
 		}
 
 		#endregion

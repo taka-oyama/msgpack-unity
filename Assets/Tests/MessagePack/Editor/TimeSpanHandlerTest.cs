@@ -12,8 +12,8 @@ namespace MessagePack.Tests
 		public void Pack()
 		{
 			var value = new TimeSpan(0, 0, 0, 0, 100);
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<TimeSpan>(data);
+			byte[] data = Pack(value);
+			var result = Unpack<TimeSpan>(data);
 			Assert.AreEqual(value, result);
 		}
 
@@ -26,8 +26,8 @@ namespace MessagePack.Tests
 		public void Unpack()
 		{
 			var value = new TimeSpan(100, 100, 100, 100, 100);
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<TimeSpan>(data);
+			byte[] data = Pack(value);
+			var result = Unpack<TimeSpan>(data);
 			Assert.AreEqual(result, value);
 		}
 

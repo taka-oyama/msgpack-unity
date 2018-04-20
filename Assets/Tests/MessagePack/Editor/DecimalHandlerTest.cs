@@ -10,8 +10,8 @@ namespace MessagePack.Tests
 		public void Pack()
 		{
 			var value = decimal.MinValue;
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<decimal>(data);
+			byte[] data = Pack(value);
+			var result = Unpack<decimal>(data);
 			Assert.AreEqual(value, result);
 		}
 
@@ -19,8 +19,8 @@ namespace MessagePack.Tests
 		public void Unpack()
 		{
 			var value = decimal.MaxValue;
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<decimal>(data);
+			byte[] data = Pack(value);
+			var result = Unpack<decimal>(data);
 			Assert.AreEqual(result, value);
 		}
 
@@ -28,8 +28,8 @@ namespace MessagePack.Tests
 		public void Decimal()
 		{
 			var value = new decimal(12345.67890);
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<decimal>(data);
+			byte[] data = Pack(value);
+			var result = Unpack<decimal>(data);
 			Assert.AreEqual(result, value);
 		}
 	}

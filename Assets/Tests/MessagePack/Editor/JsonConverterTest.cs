@@ -21,8 +21,8 @@ namespace MessagePack.Tests
 		public void MapAsJson()
 		{
 			var map = new Map();
-			var data = MessagePack.Pack(map);
-			var json = MessagePack.AsJson(data);
+			var data = Pack(map);
+			var json = AsJson(data);
 
 			Assert.AreEqual("{\"a\":1,\"b\":1,\"c\":[1,2],\"e\":true,\"f\":false}", json);
 		}
@@ -33,8 +33,8 @@ namespace MessagePack.Tests
 			var context = new SerializationContext();
 			context.mapOptions.ignoreNullOnPack = false;
 			var map = new Map();
-			var data = MessagePack.Pack(map, context);
-			var json = MessagePack.AsJson(data);
+			var data = Pack(map, context);
+			var json = AsJson(data);
 
 			Assert.AreEqual("{\"a\":1,\"b\":1,\"c\":[1,2],\"d\":null,\"e\":true,\"f\":false}", json);
 		}
@@ -43,8 +43,8 @@ namespace MessagePack.Tests
 		public void ArrayAsJson()
 		{
 			var array = new int[] { 1, 2, 3 };
-			var data = MessagePack.Pack(array);
-			var json = MessagePack.AsJson(data);
+			var data = Pack(array);
+			var json = AsJson(data);
 
 			Assert.AreEqual("[1,2,3]", json);
 		}
@@ -56,8 +56,8 @@ namespace MessagePack.Tests
 			context.jsonOptions.prettyPrint = true;
 			context.jsonOptions.indentationString = " ";
 			var array = new int[] { 1, 2, 3 };
-			var data = MessagePack.Pack(array);
-			var json = MessagePack.AsJson(data, context);
+			var data = Pack(array);
+			var json = AsJson(data, context);
 
 			Assert.AreEqual("[\n 1,\n 2,\n 3\n]", json);
 		}
@@ -66,13 +66,13 @@ namespace MessagePack.Tests
 		public void FormatError()
 		{
 			var array = new int[] { 1, 2, 3 };
-			var data = MessagePack.Pack(array);
+			var data = Pack(array);
 			var bytes = new List<byte>(data);
 			bytes.Insert(2, Format.NeverUsed);
 
 			Assert.Throws(typeof(FormatException), () => {
 				try {
-					MessagePack.AsJson(bytes.ToArray());
+					AsJson(bytes.ToArray());
 				}
 				catch(Exception e) {
 					Assert.AreEqual(e.Source, "[1,");

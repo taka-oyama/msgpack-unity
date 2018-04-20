@@ -77,8 +77,8 @@ namespace MessagePack.Tests
 		public void PackStruct()
 		{
 			StructMap map = new StructMap() { a = 0, d = null };
-			byte[] data = MessagePack.Pack<StructMap>(map);
-			StructMap result = MessagePack.Unpack<StructMap>(data);
+			byte[] data = Pack<StructMap>(map);
+			StructMap result = Unpack<StructMap>(data);
 			Assert.AreEqual(map.a, result.a);
 			Assert.AreEqual(map.d, result.d);
 		}
@@ -87,8 +87,8 @@ namespace MessagePack.Tests
 		public void PackClass()
 		{
 			ClassMap map = new ClassMap() { a = 1, b = 2 };
-			byte[] data = MessagePack.Pack<ClassMap>(map);
-			ClassMap result = MessagePack.Unpack<ClassMap>(data);
+			byte[] data = Pack<ClassMap>(map);
+			ClassMap result = Unpack<ClassMap>(data);
 			Assert.AreEqual(map.a, result.a);
 			Assert.AreEqual(map.b, result.b);
 			Assert.AreEqual(map.c, result.c);
@@ -99,8 +99,8 @@ namespace MessagePack.Tests
 		public void PackClassWithPrivateFields()
 		{
 			PrivateClassMap map = new PrivateClassMap();
-			byte[] data = MessagePack.Pack<PrivateClassMap>(map);
-			PrivateClassMap result = MessagePack.Unpack<PrivateClassMap>(data);
+			byte[] data = Pack<PrivateClassMap>(map);
+			PrivateClassMap result = Unpack<PrivateClassMap>(data);
 			Assert.AreEqual(map.A, result.A);
 		}
 
@@ -110,8 +110,8 @@ namespace MessagePack.Tests
 			MixedMap map = new MixedMap() {
 				inner = new ClassMap() { a = 1, b = 2 }
 			};
-			byte[] data = MessagePack.Pack<MixedMap>(map);
-			MixedMap result = MessagePack.Unpack<MixedMap>(data);
+			byte[] data = Pack<MixedMap>(map);
+			MixedMap result = Unpack<MixedMap>(data);
 			Assert.AreEqual(map.inner.a, result.inner.a);
 			Assert.AreEqual(map.inner.b, result.inner.b);
 		}
@@ -120,8 +120,8 @@ namespace MessagePack.Tests
 		public void PackFixMapMin()
 		{
 			Dictionary<int, int> dict = new Dictionary<int, int>();
-			byte[] data = MessagePack.Pack<Dictionary<int, int>>(dict);
-			Dictionary<int, int> result = MessagePack.Unpack<Dictionary<int, int>>(data);
+			byte[] data = Pack<Dictionary<int, int>>(dict);
+			Dictionary<int, int> result = Unpack<Dictionary<int, int>>(data);
 			Assert.AreEqual(Format.FixMapMin, data[0]);
 			Assert.AreEqual(0, result.Count);
 		}
@@ -134,8 +134,8 @@ namespace MessagePack.Tests
 			for(int i = 0; i < size; i++) {
 				dict.Add(i, 1);
 			}
-			byte[] data = MessagePack.Pack<Dictionary<int, int>>(dict);
-			Dictionary<int, int> result = MessagePack.Unpack<Dictionary<int, int>>(data);
+			byte[] data = Pack<Dictionary<int, int>>(dict);
+			Dictionary<int, int> result = Unpack<Dictionary<int, int>>(data);
 			Assert.AreEqual(Format.FixMapMax, data[0]);
 			Assert.AreEqual(size, result.Count);
 			for(int i = 0; i < result.Count; i++) {
@@ -151,8 +151,8 @@ namespace MessagePack.Tests
 			for(int i = 0; i < size; i++) {
 				dict.Add(i, 1);
 			}
-			byte[] data = MessagePack.Pack<Dictionary<int, int>>(dict);
-			Dictionary<int, int> result = MessagePack.Unpack<Dictionary<int, int>>(data);
+			byte[] data = Pack<Dictionary<int, int>>(dict);
+			Dictionary<int, int> result = Unpack<Dictionary<int, int>>(data);
 			Assert.AreEqual(Format.Map16, data[0]);
 			Assert.AreEqual(size, result.Count);
 			for(int i = 0; i < result.Count; i++) {
@@ -168,8 +168,8 @@ namespace MessagePack.Tests
 			for(int i = 0; i < size; i++) {
 				dict.Add(i, 1);
 			}
-			byte[] data = MessagePack.Pack<Dictionary<int, int>>(dict);
-			Dictionary<int, int> result = MessagePack.Unpack<Dictionary<int, int>>(data);
+			byte[] data = Pack<Dictionary<int, int>>(dict);
+			Dictionary<int, int> result = Unpack<Dictionary<int, int>>(data);
 			Assert.AreEqual(Format.Map16, data[0]);
 			Assert.AreEqual(size, result.Count);
 			for(int i = 0; i < result.Count; i++) {
@@ -185,8 +185,8 @@ namespace MessagePack.Tests
 			for(int i = 0; i < size; i++) {
 				dict.Add(i, 1);
 			}
-			byte[] data = MessagePack.Pack<Dictionary<int, int>>(dict);
-			Dictionary<int, int> result = MessagePack.Unpack<Dictionary<int, int>>(data);
+			byte[] data = Pack<Dictionary<int, int>>(dict);
+			Dictionary<int, int> result = Unpack<Dictionary<int, int>>(data);
 			Assert.AreEqual(Format.Map32, data[0]);
 			Assert.AreEqual(size, result.Count);
 			for(int i = 0; i < result.Count; i++) {
@@ -198,7 +198,7 @@ namespace MessagePack.Tests
 		public void PackPropertyMap()
 		{
 			var value = new PropertyMap { A = 1 };
-			MemoryStream stream = new MemoryStream(MessagePack.Pack(value));
+			MemoryStream stream = new MemoryStream(Pack(value));
 			Assert.AreEqual(Format.FixMapMin + 1, stream.ReadByte());
 			Assert.AreEqual(Format.FixStrMin + 18, stream.ReadByte());
 			byte[] buffer = new byte[18];
@@ -216,7 +216,7 @@ namespace MessagePack.Tests
 		[Test]
 		public void UnpackStruct()
 		{
-			StructMapExt map = MessagePack.Unpack<StructMapExt>(ReadFile("Maps/Struct"));
+			StructMapExt map = Unpack<StructMapExt>(ReadFile("Maps/Struct"));
 			Assert.AreEqual(map.a, 1);
 			Assert.AreEqual(map.b, 2);
 			Assert.AreEqual(map.c, 0);
@@ -226,7 +226,7 @@ namespace MessagePack.Tests
 		[Test]
 		public void UnpackClass()
 		{
-			ClassMap map = MessagePack.Unpack<ClassMap>(ReadFile("Maps/Struct"));
+			ClassMap map = Unpack<ClassMap>(ReadFile("Maps/Struct"));
 			Assert.AreEqual(map.a, 1);
 			Assert.AreEqual(map.b, 2);
 			Assert.AreEqual(map.c, 0);
@@ -236,14 +236,14 @@ namespace MessagePack.Tests
 		[Test]
 		public void UnpackClassWithPrivateFields()
 		{
-			PrivateClassMap map = MessagePack.Unpack<PrivateClassMap>(ReadFile("Maps/Struct"));
+			PrivateClassMap map = Unpack<PrivateClassMap>(ReadFile("Maps/Struct"));
 			Assert.AreEqual(map.A, 1);
 		}
 
 		[Test]
 		public void UnpackMapSkippable()
 		{
-			MixedMap map = MessagePack.Unpack<MixedMap>(ReadFile("Maps/MapSkippable"));
+			MixedMap map = Unpack<MixedMap>(ReadFile("Maps/MapSkippable"));
 			Assert.AreEqual(map.inner.a, 1);
 			Assert.AreEqual(map.inner.b, 2);
 		}
@@ -251,14 +251,14 @@ namespace MessagePack.Tests
 		[Test]
 		public void UnpackFixMapMin()
 		{
-			Dictionary<int, int> dict = MessagePack.Unpack<Dictionary<int, int>>(ReadFile("Maps/FixMapMin"));
+			Dictionary<int, int> dict = Unpack<Dictionary<int, int>>(ReadFile("Maps/FixMapMin"));
 			Assert.AreEqual(0, dict.Count);
 		}
 
 		[Test]
 		public void UnpackFixMapMax()
 		{
-			Dictionary<int, int> dict = MessagePack.Unpack<Dictionary<int, int>>(ReadFile("Maps/FixMapMax"));
+			Dictionary<int, int> dict = Unpack<Dictionary<int, int>>(ReadFile("Maps/FixMapMax"));
 			Assert.AreEqual(15, dict.Count);
 			for(int i = 0; i < 15; i++) {
 				Assert.AreEqual(1, dict[i]);
@@ -268,7 +268,7 @@ namespace MessagePack.Tests
 		[Test]
 		public void UnpackMap16Min()
 		{
-			Dictionary<int, int> dict = MessagePack.Unpack<Dictionary<int, int>>(ReadFile("Maps/Map16Min"));
+			Dictionary<int, int> dict = Unpack<Dictionary<int, int>>(ReadFile("Maps/Map16Min"));
 			Assert.AreEqual(16, dict.Count);
 			for(int i = 0; i < 16; i++) {
 				Assert.AreEqual(1, dict[i]);
@@ -278,7 +278,7 @@ namespace MessagePack.Tests
 		[Test]
 		public void UnpackMap16Max()
 		{
-			Dictionary<int, int> dict = MessagePack.Unpack<Dictionary<int, int>>(ReadFile("Maps/Map16Max"));
+			Dictionary<int, int> dict = Unpack<Dictionary<int, int>>(ReadFile("Maps/Map16Max"));
 			Assert.AreEqual(ushort.MaxValue, dict.Count);
 			for(int i = 0; i < ushort.MaxValue; i++) {
 				Assert.AreEqual(1, dict[i]);
@@ -288,7 +288,7 @@ namespace MessagePack.Tests
 		[Test]
 		public void UnpackMap32Min()
 		{
-			Dictionary<int, int> dict = MessagePack.Unpack<Dictionary<int, int>>(ReadFile("Maps/Map32Min"));
+			Dictionary<int, int> dict = Unpack<Dictionary<int, int>>(ReadFile("Maps/Map32Min"));
 			Assert.AreEqual(ushort.MaxValue + 1, dict.Count);
 			for(int i = 0; i < ushort.MaxValue + 1; i++) {
 				Assert.AreEqual(1, dict[i]);
@@ -299,8 +299,8 @@ namespace MessagePack.Tests
 		public void UnpackPropertyMap()
 		{
 			var value = new PropertyMap { A = 1 };
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<PropertyMap>(data);
+			byte[] data = Pack(value);
+			var result = Unpack<PropertyMap>(data);
 			Assert.AreEqual(result.A, value.A);
 		}
 
@@ -315,8 +315,8 @@ namespace MessagePack.Tests
 			var context = new SerializationContext();
 			context.mapOptions.ignoreNullOnPack = true;
 			var value = new[] { new StructMap() };
-			byte[] data = MessagePack.Pack(value, context);
-			var result = MessagePack.Unpack<StructMap[]>(data);
+			byte[] data = Pack(value, context);
+			var result = Unpack<StructMap[]>(data);
 			Assert.AreEqual(Format.FixArrayMin + 1, data[0]);
 			Assert.AreEqual(Format.FixMapMin + 1, data[1]);
 			Assert.AreEqual(Format.FixStrMin + 1, data[2]);
@@ -332,8 +332,8 @@ namespace MessagePack.Tests
 			var context = new SerializationContext();
 			context.mapOptions.ignoreNullOnPack = false;
 			var value = new[] { new StructMap() };
-			byte[] data = MessagePack.Pack(value, context);
-			var result = MessagePack.Unpack<StructMap[]>(data);
+			byte[] data = Pack(value, context);
+			var result = Unpack<StructMap[]>(data);
 			Assert.AreEqual(Format.FixArrayMin + 1, data[0]);
 			Assert.AreEqual(Format.FixMapMin + 2, data[1]);
 			Assert.AreEqual(Format.FixStrMin + 1, data[2]);
@@ -352,8 +352,8 @@ namespace MessagePack.Tests
 			var context = new SerializationContext();
 			context.mapOptions.namingStrategy = new AllCapsNameConverter();
 			var value = new MapForNameConverter() { a = 3, aa = 4 };
-			byte[] data = MessagePack.Pack(value, context);
-			var result = MessagePack.Unpack<MapForNameConverter>(data);
+			byte[] data = Pack(value, context);
+			var result = Unpack<MapForNameConverter>(data);
 			Assert.AreEqual(Format.FixMapMin + 2, data[0]);
 			Assert.AreEqual(Format.FixStrMin + 2, data[1]);
 			Assert.AreEqual("aa", Encoding.UTF8.GetString(new byte[] { data[2], data[3] }));
@@ -372,8 +372,8 @@ namespace MessagePack.Tests
 			var context = new SerializationContext();
 			context.mapOptions.namingStrategy = new AllCapsNameConverter();
 			var value = new MapForNameConverter() { a = 3, aa = 4 };
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<MapForNameConverter>(data, context);
+			byte[] data = Pack(value);
+			var result = Unpack<MapForNameConverter>(data, context);
 			Assert.AreEqual(Format.FixMapMin + 2, data[0]);
 			Assert.AreEqual(Format.FixStrMin + 1, data[1]);
 			Assert.AreEqual("a", Encoding.UTF8.GetString(new byte[] { data[2] }));
@@ -392,8 +392,8 @@ namespace MessagePack.Tests
 			var context = new SerializationContext();
 			context.mapOptions.ignoreMissingFieldOnUnpack = true;
 			var value = new StructMapExt();
-			byte[] data = MessagePack.Pack(value);
-			MessagePack.Unpack<StructMap>(data, context);
+			byte[] data = Pack(value);
+			Unpack<StructMap>(data, context);
 		}
 
 		[Test]
@@ -402,8 +402,8 @@ namespace MessagePack.Tests
 			var context = new SerializationContext();
 			context.mapOptions.ignoreMissingFieldOnUnpack = false;
 			var value = new StructMapExt();
-			byte[] data = MessagePack.Pack(value);
-			Assert.Throws<MissingFieldException>(() => MessagePack.Unpack<StructMap>(data, context));
+			byte[] data = Pack(value);
+			Assert.Throws<MissingFieldException>(() => Unpack<StructMap>(data, context));
 		}
 
 		#endregion

@@ -10,14 +10,14 @@ namespace MessagePack.Tests
 		[Test]
 		public void PackTrue()
 		{
-			byte[] data = MessagePack.Pack(true);
+			byte[] data = Pack(true);
 			Assert.AreEqual(Format.True, data[0]);
 		}
 
 		[Test]
 		public void PackFalse()
 		{
-			byte[] data = MessagePack.Pack(false);
+			byte[] data = Pack(false);
 			Assert.AreEqual(Format.False, data[0]);
 		}
 
@@ -29,14 +29,14 @@ namespace MessagePack.Tests
 		[Test]
 		public void UnpackTrue()
 		{
-			bool boolValue = MessagePack.Unpack<bool>(ReadFile("Bools/True"));
+			bool boolValue = Unpack<bool>(ReadFile("Bools/True"));
 			Assert.IsTrue(boolValue);
 		}
 
 		[Test]
 		public void UnpackFalse()
 		{
-			bool boolValue = MessagePack.Unpack<bool>(ReadFile("Bools/False"));
+			bool boolValue = Unpack<bool>(ReadFile("Bools/False"));
 			Assert.IsFalse(boolValue);
 		}
 

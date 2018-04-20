@@ -12,8 +12,8 @@ namespace MessagePack.Tests
 		public void PackNil()
 		{
 			byte[] value = null;
-			byte[] data = MessagePack.Pack<byte[]>(value);
-			byte[] result = MessagePack.Unpack<byte[]>(data);
+			byte[] data = Pack<byte[]>(value);
+			byte[] result = Unpack<byte[]>(data);
 			Assert.AreEqual(Format.Nil, data[0]);
 			Assert.AreEqual(0, result.Length);
 		}
@@ -24,8 +24,8 @@ namespace MessagePack.Tests
 			RandomNumberGenerator rand = RandomNumberGenerator.Create();
 			byte[] value = new byte[1];
 			rand.GetBytes(value);
-			byte[] data = MessagePack.Pack<byte[]>(value);
-			byte[] result = MessagePack.Unpack<byte[]>(data);
+			byte[] data = Pack<byte[]>(value);
+			byte[] result = Unpack<byte[]>(data);
 			Assert.AreEqual(Format.Bin8, data[0]);
 			Assert.AreEqual(value, result);
 		}
@@ -36,8 +36,8 @@ namespace MessagePack.Tests
 			RandomNumberGenerator rand = RandomNumberGenerator.Create();
 			byte[] value = new byte[byte.MaxValue];
 			rand.GetBytes(value);
-			byte[] data = MessagePack.Pack<byte[]>(value);
-			byte[] result = MessagePack.Unpack<byte[]>(data);
+			byte[] data = Pack<byte[]>(value);
+			byte[] result = Unpack<byte[]>(data);
 			Assert.AreEqual(Format.Bin8, data[0]);
 			Assert.AreEqual(value, result);
 		}
@@ -48,8 +48,8 @@ namespace MessagePack.Tests
 			RandomNumberGenerator rand = RandomNumberGenerator.Create();
 			byte[] value = new byte[byte.MaxValue + 1];
 			rand.GetBytes(value);
-			byte[] data = MessagePack.Pack<byte[]>(value);
-			byte[] result = MessagePack.Unpack<byte[]>(data);
+			byte[] data = Pack<byte[]>(value);
+			byte[] result = Unpack<byte[]>(data);
 			Assert.AreEqual(Format.Bin16, data[0]);
 			Assert.AreEqual(value, result);
 		}
@@ -60,8 +60,8 @@ namespace MessagePack.Tests
 			RandomNumberGenerator rand = RandomNumberGenerator.Create();
 			byte[] value = new byte[ushort.MaxValue];
 			rand.GetBytes(value);
-			byte[] data = MessagePack.Pack<byte[]>(value);
-			byte[] result = MessagePack.Unpack<byte[]>(data);
+			byte[] data = Pack<byte[]>(value);
+			byte[] result = Unpack<byte[]>(data);
 			Assert.AreEqual(Format.Bin16, data[0]);
 			Assert.AreEqual(value, result);
 		}
@@ -72,8 +72,8 @@ namespace MessagePack.Tests
 			RandomNumberGenerator rand = RandomNumberGenerator.Create();
 			byte[] value = new byte[ushort.MaxValue + 1];
 			rand.GetBytes(value);
-			byte[] data = MessagePack.Pack<byte[]>(value);
-			byte[] result = MessagePack.Unpack<byte[]>(data);
+			byte[] data = Pack<byte[]>(value);
+			byte[] result = Unpack<byte[]>(data);
 			Assert.AreEqual(Format.Bin32, data[0]);
 			Assert.AreEqual(value, result);
 		}
@@ -91,42 +91,42 @@ namespace MessagePack.Tests
 		[Test]
 		public void UnpackNil()
 		{
-			byte[] result = MessagePack.Unpack<byte[]>(ReadFile("Nullables/Nil"));
+			byte[] result = Unpack<byte[]>(ReadFile("Nullables/Nil"));
 			Assert.AreEqual(0, result.Length);
 		}
 
 		[Test]
 		public void UnpackBin8Min()
 		{
-			byte[] result = MessagePack.Unpack<byte[]>(ReadFile("Binaries/Bin8Min"));
+			byte[] result = Unpack<byte[]>(ReadFile("Binaries/Bin8Min"));
 			Assert.AreEqual(1, result.Length);
 		}
 
 		[Test]
 		public void UnpackBin8Max()
 		{
-			byte[] result = MessagePack.Unpack<byte[]>(ReadFile("Binaries/Bin8Max"));
+			byte[] result = Unpack<byte[]>(ReadFile("Binaries/Bin8Max"));
 			Assert.AreEqual(byte.MaxValue, result.Length);
 		}
 
 		[Test]
 		public void UnpackBin16Min()
 		{
-			byte[] result = MessagePack.Unpack<byte[]>(ReadFile("Binaries/Bin16Min"));
+			byte[] result = Unpack<byte[]>(ReadFile("Binaries/Bin16Min"));
 			Assert.AreEqual(byte.MaxValue + 1, result.Length);
 		}
 
 		[Test]
 		public void UnpackBin16Max()
 		{
-			byte[] result = MessagePack.Unpack<byte[]>(ReadFile("Binaries/Bin16Max"));
+			byte[] result = Unpack<byte[]>(ReadFile("Binaries/Bin16Max"));
 			Assert.AreEqual(ushort.MaxValue, result.Length);
 		}
 
 		[Test]
 		public void UnpackBin32Min()
 		{
-			byte[] result = MessagePack.Unpack<byte[]>(ReadFile("Binaries/Bin32Min"));
+			byte[] result = Unpack<byte[]>(ReadFile("Binaries/Bin32Min"));
 			Assert.AreEqual(ushort.MaxValue + 1, result.Length);
 		}
 

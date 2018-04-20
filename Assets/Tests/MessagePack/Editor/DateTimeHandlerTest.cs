@@ -12,7 +12,7 @@ namespace MessagePack.Tests
 		public void PackAsExt8()
 		{
 			DateTime value = DateTime.Parse("2018-01-01 12:00:00+09:00").ToLocalTime();
-			byte[] data = MessagePack.Pack(value);
+			byte[] data = Pack(value);
 			Assert.AreEqual(Format.Ext8, data[0]);
 			Assert.AreEqual(12, data[1]);
 			Assert.AreEqual(-1, (sbyte)data[2]);
@@ -28,7 +28,7 @@ namespace MessagePack.Tests
 		public void UnpackAsExt8()
 		{
 			byte[] data = ReadFile("Timestamps/Timestamp96");
-			DateTime result = MessagePack.Unpack<DateTime>(data);
+			DateTime result = Unpack<DateTime>(data);
 			Assert.AreEqual("2018-01-01T12:00:00.0000000+09:00", result.ToString("o"));
 		}
 
@@ -36,7 +36,7 @@ namespace MessagePack.Tests
 		public void UnpackFromString()
 		{
 			byte[] data = ReadFile("Timestamps/String");
-			DateTime result = MessagePack.Unpack<DateTime>(data);
+			DateTime result = Unpack<DateTime>(data);
 			Assert.AreEqual("2018-01-01T12:00:00.0000000+09:00", result.ToString("o"));
 		}
 
@@ -44,7 +44,7 @@ namespace MessagePack.Tests
 		public void UnpackFromInt()
 		{
 			byte[] data = ReadFile("Timestamps/Int");
-			DateTime result = MessagePack.Unpack<DateTime>(data);
+			DateTime result = Unpack<DateTime>(data);
 			Assert.AreEqual("2018-01-01T12:00:00.0000000+09:00", result.ToString("o"));
 		}
 
@@ -59,8 +59,8 @@ namespace MessagePack.Tests
 			var context = new SerializationContext();
 			context.dateTimeOptions.packingFormat = DateTimePackingFormat.String;
 			DateTime value = DateTime.Parse("2018-01-01T12:00:00.1234567+09:00");
-			byte[] data = MessagePack.Pack(value, context);
-			DateTime result = MessagePack.Unpack<DateTime>(data);
+			byte[] data = Pack(value, context);
+			DateTime result = Unpack<DateTime>(data);
 			Assert.AreEqual(Format.Str8, data[0]);
 			Assert.AreEqual(33, data[1]);
 			Assert.AreEqual(35, data.Length);
@@ -74,8 +74,8 @@ namespace MessagePack.Tests
 			context.dateTimeOptions.packingFormat = DateTimePackingFormat.Epoch;
 			// only 3 digit precision due to loss of precision
 			var value = DateTime.Parse("2018-01-01T12:00:00.123+09:00");
-			byte[] data = MessagePack.Pack(value, context);
-			DateTime result = MessagePack.Unpack<DateTime>(data);
+			byte[] data = Pack(value, context);
+			DateTime result = Unpack<DateTime>(data);
 			Assert.AreEqual(Format.Float64, data[0]);
 			Assert.AreEqual(9, data.Length);
 			Assert.AreEqual(value.ToString("o"), result.ToString("o"));
@@ -90,8 +90,8 @@ namespace MessagePack.Tests
 		public void CheckTicks()
 		{
 			var value = DateTime.Parse("2018-01-01 12:00:00.7654321+09:00").ToLocalTime();
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<DateTime>(data);
+			byte[] data = Pack(value);
+			var result = Unpack<DateTime>(data);
 			Assert.AreEqual(value, result);
 		}
 

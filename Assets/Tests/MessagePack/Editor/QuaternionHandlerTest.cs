@@ -12,8 +12,8 @@ namespace MessagePack.Tests
 		public void Pack()
 		{
 			var value = new Quaternion(1f, 2f, 3f, 4f);
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<Quaternion>(data);
+			byte[] data = Pack(value);
+			var result = Unpack<Quaternion>(data);
 			Assert.AreEqual(Format.FixArrayMin + 4, data[0]);
 			Assert.AreEqual(Format.Float32, data[1]);
 			Assert.AreEqual(value, result);
@@ -28,8 +28,8 @@ namespace MessagePack.Tests
 		public void Unpack()
 		{
 			var value = new Quaternion(1f, 2f, 3f, 4f);
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<Quaternion>(data);
+			byte[] data = Pack(value);
+			var result = Unpack<Quaternion>(data);
 			Assert.AreEqual(result, value);
 		}
 
@@ -37,8 +37,8 @@ namespace MessagePack.Tests
 		public void UnpackAsFloats()
 		{
 			var value = new float[] { 1f, 2f, 3f, 4f };
-			byte[] data = MessagePack.Pack(value);
-			var result = MessagePack.Unpack<Quaternion>(data);
+			byte[] data = Pack(value);
+			var result = Unpack<Quaternion>(data);
 			Assert.AreEqual(result.x, value[0]);
 			Assert.AreEqual(result.y, value[1]);
 			Assert.AreEqual(result.z, value[2]);

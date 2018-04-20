@@ -12,8 +12,8 @@ namespace MessagePack.Tests
 		public void PackUriString()
 		{
 			Uri value = new Uri("https://github.com/msgpack/msgpack/blob/master/spec.md#type-system");
-			byte[] data = MessagePack.Pack<Uri>(value);
-			Uri result = MessagePack.Unpack<Uri>(data);
+			byte[] data = Pack<Uri>(value);
+			Uri result = Unpack<Uri>(data);
 			Assert.AreEqual(value, result);
 		}
 
@@ -21,8 +21,8 @@ namespace MessagePack.Tests
 		public void PackNil()
 		{
 			Uri value = null;
-			byte[] data = MessagePack.Pack<Uri>(value);
-			Uri result = MessagePack.Unpack<Uri>(data);
+			byte[] data = Pack<Uri>(value);
+			Uri result = Unpack<Uri>(data);
 			Assert.AreEqual(null, result);
 		}
 
@@ -34,7 +34,7 @@ namespace MessagePack.Tests
 		[Test]
 		public void UnpackUriString()
 		{
-			Uri value = MessagePack.Unpack<Uri>(ReadFile("Strings/Uri"));
+			Uri value = Unpack<Uri>(ReadFile("Strings/Uri"));
 			Uri expected = new Uri("https://github.com/msgpack/msgpack/blob/master/spec.md#type-system");
 			Assert.AreEqual(expected, value);
 		}
@@ -42,14 +42,14 @@ namespace MessagePack.Tests
 		[Test]
 		public void UnpackNil()
 		{
-			Uri value = MessagePack.Unpack<Uri>(ReadFile("Strings/Nil"));
+			Uri value = Unpack<Uri>(ReadFile("Strings/Nil"));
 			Assert.AreEqual(null, value);
 		}
 
 		[Test]
 		public void UnpackEmptyString()
 		{
-			Assert.Throws<UriFormatException>(() => MessagePack.Unpack<Uri>(ReadFile("Strings/FixStrMin")));
+			Assert.Throws<UriFormatException>(() => Unpack<Uri>(ReadFile("Strings/FixStrMin")));
 		}
 
 		#endregion
