@@ -5,6 +5,7 @@
 ### Changed
 - namespace has been changed to `SouthPointe.Serialization.MessagePack`
 - Slight performance boost for real world string usage
+- Attributes `NonSerialized`, `OnSerialized`, `OnSerializing`, `OnDeserialized`, `OnDeserializing` no longer rely on `System.Runtime.Serialization`
 
 ### Removed
 - `MessagePack` was removed so people can implement a wrapper using that name
