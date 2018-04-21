@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.0 (2018-04-22)
+
+### Changed
+- namespace has been changed to `SouthPointe.Serialization.MessagePack`
+- Slight performance boost for real world string usage
+
+### Removed
+- `MessagePack` was removed so people can implement a wrapper using that name
+
 ## 1.1.0 (2018-04-15)
 
 ### Added
