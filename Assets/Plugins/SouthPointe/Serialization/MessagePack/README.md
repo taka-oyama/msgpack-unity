@@ -74,8 +74,6 @@ formatter.Serialize(new Map()); // serialized as  { foo_bar: 1 }
 Using Attributes
 
 ```cs
-using System.Runtime.Serialization;
-
 public class MapWithCallbacks
 {
     public int a = 1;
