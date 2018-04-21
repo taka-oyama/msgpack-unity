@@ -35,20 +35,25 @@ byte[] bytes = formatter.Serialize(values);
 int[] result = formatter.Deserialize<int[]>(bytes);
 ```
 
-Change options
-
-```cs
-SerializationContext.Default.dateTimeOptions.packingFormat = DateTimePackingFormat.Epoch;
-
-byte[] bytes = new MessagePackFormatter().Serialize(DateTime.Now); // DateTime serialized as double instead of Ext format.
-```
 
 Defining different context for different occasions
 
 ```cs
 SerializationContext context = new SerializationContext();
+
 MessagePackFormatter formatter = new MessagePackFormatter(context);
 int[] result = formatter.Deserialize<int[]>(bytes, context);
+```
+
+Change options
+
+```cs
+
+SerializationContext context = new SerializationContext();
+context.dateTimeOptions.packingFormat = DateTimePackingFormat.Epoch;
+
+MessagePackFormatter formatter = new MessagePackFormatter(context);
+byte[] bytes = new MessagePackFormatter().Serialize(DateTime.Now); // DateTime serialized as double instead of Ext format.
 ```
 
 Serialize to and Deserialize from snake cased maps
@@ -59,7 +64,8 @@ public class Map
     public int fooBar = 1;
 }
 
-SerializationContext.Default.mapOptions.namingStrategy = new SnakeCaseNamingStrategy();
+SerializationContext context = new SerializationContext();
+context.mapOptions.namingStrategy = new SnakeCaseNamingStrategy();
 
 MessagePackFormatter formatter = new MessagePackFormatter();
 formatter.Serialize(new Map()); // serialized as  { foo_bar: 1 }
