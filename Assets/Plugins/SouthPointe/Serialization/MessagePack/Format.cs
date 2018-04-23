@@ -92,7 +92,7 @@ namespace SouthPointe.Serialization.MessagePack
 		public bool IsMap32 { get { return value == Map32; } }
 		public bool IsNegativeFixInt { get { return Between(NegativeFixIntMin, NegativeFixIntMax); } }
 
-		public bool IsIntFamily { get { return IsPositiveFixInt || IsNegativeFixInt || IsInt8 || IsUInt8 || IsInt16 || IsUInt16 || IsInt32 || IsUInt32; } }
+		public bool IsIntFamily { get { return IsPositiveFixInt || IsNegativeFixInt || IsInt8 || IsUInt8 || IsInt16 || IsUInt16 || IsInt32 || IsUInt32 || IsInt64 || IsUInt64; } }
 		public bool IsBoolFamily { get { return IsFalse || IsTrue; } }
 		public bool IsFloatFamily { get { return IsFloat32 || IsFloat64; } }
 		public bool IsStringFamily { get { return IsFixStr || IsStr8 || IsStr16 || IsStr32; } }
