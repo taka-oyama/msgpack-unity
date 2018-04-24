@@ -417,7 +417,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void AllowEmptyArrayOnUnpack()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.allowEmptyArrayAsMap = true;
+			context.mapOptions.allowEmptyArrayOnUnpack = true;
 			var map = Unpack<StructMap>(new [] { Format.FixArrayMin }, context);
 			Assert.IsInstanceOf<StructMap>(map);
 		}
@@ -426,7 +426,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void DoNotEmptyArrayOnUnpack()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.allowEmptyArrayAsMap = false;
+			context.mapOptions.allowEmptyArrayOnUnpack = false;
 			var data = new[] { Format.FixArrayMin };
 			Assert.Throws<FormatException>(() => Unpack<StructMap>(data, context));
 		}

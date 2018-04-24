@@ -12,7 +12,7 @@ namespace SouthPointe.Serialization.MessagePack
 		/// This is for compatibility with msgpack-php
 		/// since php cannot distinguish between ordered array and hashed array.
 		/// </summary>
-		public bool allowEmptyArrayAsMap = true;
+		public bool allowEmptyArrayOnUnpack = true;
 
 		public IMapNamingStrategy namingStrategy = new DefaultNamingStrategy();
 
