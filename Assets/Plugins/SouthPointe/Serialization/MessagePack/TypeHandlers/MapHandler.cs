@@ -40,7 +40,7 @@ namespace SouthPointe.Serialization.MessagePack
 						object value = fieldHandlers[name].Read(reader.ReadFormat(), reader);
 						fieldInfos[name].SetValue(obj, value);
 					}
-					else if(context.mapOptions.ignoreMissingFieldOnUnpack) {
+					else if(context.mapOptions.ignoreUnknownFieldOnUnpack) {
 						reader.Skip();
 					}
 					else {

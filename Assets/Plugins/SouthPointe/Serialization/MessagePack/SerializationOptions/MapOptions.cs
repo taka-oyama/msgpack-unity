@@ -6,7 +6,7 @@ namespace SouthPointe.Serialization.MessagePack
 	{
 		public bool ignoreNullOnPack = true;
 
-		public bool ignoreMissingFieldOnUnpack = true;
+		public bool ignoreUnknownFieldOnUnpack = true;
 
 		/// <summary>
 		/// This is for compatibility with msgpack-php

@@ -394,20 +394,20 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		}
 
 		[Test]
-		public void IgnoreMissingFieldOnUnpack()
+		public void IgnoreUnknownFieldOnUnpack()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.ignoreMissingFieldOnUnpack = true;
+			context.mapOptions.ignoreUnknownFieldOnUnpack = true;
 			var value = new StructMapExt();
 			byte[] data = Pack(value);
 			Unpack<StructMap>(data, context);
 		}
 
 		[Test]
-		public void DoNotIgnoreMissingFieldOnUnpack()
+		public void DoNotIgnoreUnknownFieldOnUnpack()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.ignoreMissingFieldOnUnpack = false;
+			context.mapOptions.ignoreUnknownFieldOnUnpack = false;
 			var value = new StructMapExt();
 			byte[] data = Pack(value);
 			Assert.Throws<MissingFieldException>(() => Unpack<StructMap>(data, context));
