@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System;
+﻿#if UNITY_2017_2_OR_NEWER
+using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack
 {
@@ -36,3 +36,4 @@ namespace SouthPointe.Serialization.MessagePack
 		}
 	}
 }
+#endif

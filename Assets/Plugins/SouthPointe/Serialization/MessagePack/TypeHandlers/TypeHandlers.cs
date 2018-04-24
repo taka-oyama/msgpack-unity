@@ -41,10 +41,13 @@ namespace SouthPointe.Serialization.MessagePack
 				{ typeof(TimeSpan), new TimeSpanHandler(context) },
 				{ typeof(Uri), new UriHandler(context) },
 				{ typeof(Vector2), new Vector2Handler(context) },
-				{ typeof(Vector2Int), new Vector2IntHandler(context) },
 				{ typeof(Vector3), new Vector3Handler(context) },
-				{ typeof(Vector3Int), new Vector3IntHandler(context) },
 				{ typeof(Vector4), new Vector4Handler(context) },
+
+				#if UNITY_2017_2_OR_NEWER
+				{ typeof(Vector2Int), new Vector2IntHandler(context) },
+				{ typeof(Vector3Int), new Vector3IntHandler(context) },
+				#endif
 			};
 
 			this.extHandlers = new Dictionary<sbyte, IExtTypeHandler>() {
