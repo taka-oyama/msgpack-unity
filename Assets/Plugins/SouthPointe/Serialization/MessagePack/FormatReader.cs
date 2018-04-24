@@ -18,7 +18,11 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public Format ReadFormat()
 		{
-			return new Format((byte)stream.ReadByte());
+			int value = stream.ReadByte();
+			if(value >= 0) {
+				return new Format((byte)value);
+			}
+			throw new FormatException("There is nothing more to read");
 		}
 
 		public byte ReadPositiveFixInt(Format format)

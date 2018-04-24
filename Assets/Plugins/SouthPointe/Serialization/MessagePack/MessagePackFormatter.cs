@@ -25,6 +25,9 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public object Deserialize(Type type, byte[] bytes)
 		{
+			if(bytes.Length == 0) {
+				return null;
+			}
 			return Deserialize(type, new MemoryStream(bytes));
 		}
 

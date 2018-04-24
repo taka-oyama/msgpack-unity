@@ -214,6 +214,13 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		#region Unpack
 
 		[Test]
+		public void UnpackEmpty()
+		{
+			var map = Unpack<ClassMap>(new byte[0]);
+			Assert.AreEqual(null, map);
+		}
+
+		[Test]
 		public void UnpackStruct()
 		{
 			StructMapExt map = Unpack<StructMapExt>(ReadFile("Maps/Struct"));
