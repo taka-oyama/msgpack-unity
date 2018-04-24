@@ -91,6 +91,7 @@ namespace SouthPointe.Serialization.MessagePack
 		public bool IsMap16 { get { return value == Map16; } }
 		public bool IsMap32 { get { return value == Map32; } }
 		public bool IsNegativeFixInt { get { return Between(NegativeFixIntMin, NegativeFixIntMax); } }
+		public bool IsEmptyArray { get { return value == FixArrayMin; } }
 
 		public bool IsIntFamily { get { return IsPositiveFixInt || IsNegativeFixInt || IsInt8 || IsUInt8 || IsInt16 || IsUInt16 || IsInt32 || IsUInt32 || IsInt64 || IsUInt64; } }
 		public bool IsBoolFamily { get { return IsFalse || IsTrue; } }

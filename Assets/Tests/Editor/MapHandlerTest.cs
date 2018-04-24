@@ -413,6 +413,24 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			Assert.Throws<MissingFieldException>(() => Unpack<StructMap>(data, context));
 		}
 
+		[Test]
+		public void AllowEmptyArrayOnUnpack()
+		{
+			var context = new SerializationContext();
+			context.mapOptions.allowEmptyArrayAsMap = true;
+			var map = Unpack<StructMap>(new [] { Format.FixArrayMin }, context);
+			Assert.IsInstanceOf<StructMap>(map);
+		}
+
+		[Test]
+		public void DoNotEmptyArrayOnUnpack()
+		{
+			var context = new SerializationContext();
+			context.mapOptions.allowEmptyArrayAsMap = false;
+			var data = new[] { Format.FixArrayMin };
+			Assert.Throws<FormatException>(() => Unpack<StructMap>(data, context));
+		}
+
 		#endregion
 	}
 }

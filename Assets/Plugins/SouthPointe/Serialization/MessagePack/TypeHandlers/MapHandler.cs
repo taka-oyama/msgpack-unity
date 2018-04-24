@@ -51,6 +51,9 @@ namespace SouthPointe.Serialization.MessagePack
 				InvokeCallback<OnDeserializedAttribute>(obj);
 				return obj;
 			}
+			if(format.IsEmptyArray && context.mapOptions.allowEmptyArrayAsMap) {
+				return Activator.CreateInstance(type);
+			}
 			if(format.IsNil) {
 				return null;
 			}
