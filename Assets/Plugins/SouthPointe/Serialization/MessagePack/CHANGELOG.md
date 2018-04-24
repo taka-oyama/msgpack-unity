@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.1.0 (2018-04-24)
+
+### Added
+- Added an option to map so empty array can be deserialized as map (compatibility with `msgpack-php`)
+
+### Fixed
+- Zero length bytes no longer throw an error on Unpack (will return null instead)
+- Fixed issue when DateTimeHandler threw an error if epoch time was represented as `long`/`ulong` 
+
 ## 2.0.0 (2018-04-22)
 
 ### Changed
