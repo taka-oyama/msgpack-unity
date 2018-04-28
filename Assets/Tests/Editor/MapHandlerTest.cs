@@ -52,12 +52,12 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 
 		class AllCapsNameConverter : IMapNamingStrategy
 		{
-			public string OnPack(string name)
+			public string OnPack(string name, MapDefinition definition)
 			{
 				return name + name;
 			}
 
-			public string OnUnpack(string name)
+			public string OnUnpack(string name, MapDefinition definition)
 			{
 				return name + name;
 			}

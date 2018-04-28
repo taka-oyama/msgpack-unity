@@ -5,7 +5,7 @@ namespace SouthPointe.Serialization.MessagePack
 {
 	public class SnakeCaseNamingStrategy : IMapNamingStrategy
 	{
-		public string OnPack(string name)
+		public string OnPack(string name, MapDefinition definition)
 		{
 			StringBuilder sb = new StringBuilder();
 
@@ -26,7 +26,7 @@ namespace SouthPointe.Serialization.MessagePack
 			return sb.ToString();
 		}
 
-		public string OnUnpack(string name)
+		public string OnUnpack(string name, MapDefinition definition)
 		{
 			StringBuilder sb = new StringBuilder();
 

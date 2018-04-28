@@ -8,43 +8,39 @@ namespace SouthPointe.Serialization.MessagePack
 	public class MapHandler : ITypeHandler
 	{
 		readonly SerializationContext context;
+		readonly MapDefinition definition;
 		readonly Type type;
 		readonly ITypeHandler nameHandler;
 		readonly IMapNamingStrategy nameConverter;
-		readonly Dictionary<string, FieldInfo> fieldInfos;
-		readonly Dictionary<string, ITypeHandler> fieldHandlers;
-		readonly Dictionary<Type, MethodInfo[]> callbacks;
 		readonly static object[] callbackParameters = new object[0];
 
 		public MapHandler(SerializationContext context, MapDefinition definition)
 		{
 			this.context = context;
-			this.type = definition.Type;
+			this.definition = definition;
 			this.nameHandler = context.TypeHandlers.Get<string>();
 			this.nameConverter = context.MapOptions.NamingStrategy;
-			this.fieldInfos = definition.FieldInfos;
-			this.fieldHandlers = definition.FieldHandlers;
-			this.callbacks = definition.Callbacks;
 		}
 
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsMapFamily) {
-				object obj = Activator.CreateInstance(type);
+				object obj = Activator.CreateInstance(definition.Type);
 				InvokeCallback<OnDeserializingAttribute>(obj);
 				int size = reader.ReadMapLength(format);
 				while(size > 0) {
-					string name = nameConverter.OnUnpack((string)nameHandler.Read(reader.ReadFormat(), reader));
+					string name = (string)nameHandler.Read(reader.ReadFormat(), reader);
+					name = nameConverter.OnUnpack(name, definition);
 
-					if(fieldHandlers.ContainsKey(name)) {
-						object value = fieldHandlers[name].Read(reader.ReadFormat(), reader);
-						fieldInfos[name].SetValue(obj, value);
+					if(definition.FieldHandlers.ContainsKey(name)) {
+						object value = definition.FieldHandlers[name].Read(reader.ReadFormat(), reader);
+						definition.FieldInfos[name].SetValue(obj, value);
 					}
 					else if(context.MapOptions.IgnoreUnknownFieldOnUnpack) {
 						reader.Skip();
 					}
 					else {
-						throw new MissingFieldException(name + " does not exist for type: " + type);
+						throw new MissingFieldException(name + " does not exist for type: " + definition.Type);
 					}
 					size = size - 1;
 				}
@@ -52,7 +48,7 @@ namespace SouthPointe.Serialization.MessagePack
 				return obj;
 			}
 			if(format.IsEmptyArray && context.MapOptions.AllowEmptyArrayOnUnpack) {
-				return Activator.CreateInstance(type);
+				return Activator.CreateInstance(definition.Type);
 			}
 			if(format.IsNil) {
 				return null;
@@ -68,13 +64,14 @@ namespace SouthPointe.Serialization.MessagePack
 			}
 			InvokeCallback<OnSerializingAttribute>(obj);
 			writer.WriteMapHeader(DetermineSize(obj));
-			foreach(KeyValuePair<string, FieldInfo> kv in fieldInfos) {
+			foreach(KeyValuePair<string, FieldInfo> kv in definition.FieldInfos) {
 				object value = kv.Value.GetValue(obj);
 				if(context.MapOptions.IgnoreNullOnPack && value == null) {
 					continue;
 				}
-				nameHandler.Write(nameConverter.OnPack(kv.Key), writer);
-				fieldHandlers[kv.Key].Write(value, writer);
+				string name = nameConverter.OnPack(kv.Key, definition);
+				nameHandler.Write(name, writer);
+				definition.FieldHandlers[kv.Key].Write(value, writer);
 			}
 			InvokeCallback<OnSerializedAttribute>(obj);
 		}
@@ -82,10 +79,10 @@ namespace SouthPointe.Serialization.MessagePack
 		int DetermineSize(object obj)
 		{
 			if(!context.MapOptions.IgnoreNullOnPack) {
-				return fieldInfos.Count;
+				return definition.FieldInfos.Count;
 			}
 			int count = 0;
-			foreach(FieldInfo info in fieldInfos.Values) {
+			foreach(FieldInfo info in definition.FieldInfos.Values) {
 				if(info.GetValue(obj) != null) {
 					count += 1;
 				}
@@ -96,8 +93,8 @@ namespace SouthPointe.Serialization.MessagePack
 		void InvokeCallback<T>(object obj) where T : Attribute
 		{
 			Type attributeType = typeof(T);
-			if(callbacks.ContainsKey(attributeType)) {
-				foreach(MethodInfo methodInfo in callbacks[attributeType]) {
+			if(definition.Callbacks.ContainsKey(attributeType)) {
+				foreach(MethodInfo methodInfo in definition.Callbacks[attributeType]) {
 					methodInfo.Invoke(obj, callbackParameters);
 				}
 			}
