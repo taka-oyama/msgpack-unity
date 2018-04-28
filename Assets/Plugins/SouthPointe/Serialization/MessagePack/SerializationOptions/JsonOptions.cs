@@ -2,8 +2,8 @@
 {
 	public class JsonOptions
 	{
-		public bool prettyPrint = false;
-		public string indentationString = "    ";
+		public bool PrettyPrint = false;
+		public string IndentationString = "    ";
 
 		public string valueSeparator = "\n";
 	}

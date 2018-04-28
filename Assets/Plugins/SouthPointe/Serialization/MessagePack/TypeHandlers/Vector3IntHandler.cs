@@ -16,7 +16,7 @@ namespace SouthPointe.Serialization.MessagePack
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsArrayFamily) {
-				intHandler = intHandler ?? context.typeHandlers.Get<int>();
+				intHandler = intHandler ?? context.TypeHandlers.Get<int>();
 				Vector3Int vector = new Vector3Int();
 				vector.x = (int)intHandler.Read(reader.ReadFormat(), reader);
 				vector.y = (int)intHandler.Read(reader.ReadFormat(), reader);

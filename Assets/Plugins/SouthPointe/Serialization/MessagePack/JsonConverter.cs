@@ -73,9 +73,9 @@ namespace SouthPointe.Serialization.MessagePack
 
 		JsonConverter Indent()
 		{
-			if(context.jsonOptions.prettyPrint) {
+			if(context.JsonOptions.PrettyPrint) {
 				for(int i = 0; i < indentationSize; i++) {
-					Append(context.jsonOptions.indentationString);
+					Append(context.JsonOptions.IndentationString);
 				}
 			}
 			return this;
@@ -89,7 +89,7 @@ namespace SouthPointe.Serialization.MessagePack
 
 		JsonConverter PrettyAppend(string str)
 		{
-			if(context.jsonOptions.prettyPrint) {
+			if(context.JsonOptions.PrettyPrint) {
 				Append(str);
 			}
 			return this;
@@ -118,14 +118,14 @@ namespace SouthPointe.Serialization.MessagePack
 				return;
 			}
 
-			Append("[").PrettyAppend(context.jsonOptions.valueSeparator);
+			Append("[").PrettyAppend(context.JsonOptions.valueSeparator);
 			indentationSize += 1;
 			for(int i = 0; i < size; i++) {
 				Indent().AppendStream();
 				if(i < size - 1) {
 					Append(",");
 				}
-				PrettyAppend(context.jsonOptions.valueSeparator);
+				PrettyAppend(context.JsonOptions.valueSeparator);
 			}
 			indentationSize -= 1;
 			Indent().Append("]");
@@ -140,14 +140,14 @@ namespace SouthPointe.Serialization.MessagePack
 				return;
 			}
 
-			Append("{").PrettyAppend(context.jsonOptions.valueSeparator);
+			Append("{").PrettyAppend(context.JsonOptions.valueSeparator);
 			indentationSize += 1;
 			for(int i = 0; i < size; i++) {
 				Indent().AppendStream().Append(":").PrettyAppend(" ").AppendStream();
 				if(i < size - 1) {
 					Append(",");
 				}
-				PrettyAppend(context.jsonOptions.valueSeparator);
+				PrettyAppend(context.JsonOptions.valueSeparator);
 			}
 			indentationSize -= 1;
 			Indent().Append("}");
@@ -157,7 +157,7 @@ namespace SouthPointe.Serialization.MessagePack
 		{
 			uint length = reader.ReadExtLength(format);
 			sbyte extType = reader.ReadExtType(format);
-			object value = context.typeHandlers.GetExt(extType).ReadExt(length, reader);
+			object value = context.TypeHandlers.GetExt(extType).ReadExt(length, reader);
 			Append(value.ToString());
 		}
 	}

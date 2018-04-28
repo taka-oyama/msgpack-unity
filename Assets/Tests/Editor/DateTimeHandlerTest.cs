@@ -57,7 +57,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void FromString()
 		{
 			var context = new SerializationContext();
-			context.dateTimeOptions.packingFormat = DateTimePackingFormat.String;
+			context.DateTimeOptions.PackingFormat = DateTimePackingFormat.String;
 			DateTime value = DateTime.Parse("2018-01-01T12:00:00.1234567+09:00");
 			byte[] data = Pack(value, context);
 			DateTime result = Unpack<DateTime>(data);
@@ -71,7 +71,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void FromEpoch()
 		{
 			var context = new SerializationContext();
-			context.dateTimeOptions.packingFormat = DateTimePackingFormat.Epoch;
+			context.DateTimeOptions.PackingFormat = DateTimePackingFormat.Epoch;
 			// only 3 digit precision due to loss of precision
 			var value = DateTime.Parse("2018-01-01T12:00:00.123+09:00");
 			byte[] data = Pack(value, context);

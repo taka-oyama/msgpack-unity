@@ -320,7 +320,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void IgnoreNulls()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.ignoreNullOnPack = true;
+			context.MapOptions.IgnoreNullOnPack = true;
 			var value = new[] { new StructMap() };
 			byte[] data = Pack(value, context);
 			var result = Unpack<StructMap[]>(data);
@@ -337,7 +337,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void DoNotIgnoreNulls()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.ignoreNullOnPack = false;
+			context.MapOptions.IgnoreNullOnPack = false;
 			var value = new[] { new StructMap() };
 			byte[] data = Pack(value, context);
 			var result = Unpack<StructMap[]>(data);
@@ -357,7 +357,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void NameConvertionOnPack()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.namingStrategy = new AllCapsNameConverter();
+			context.MapOptions.NamingStrategy = new AllCapsNameConverter();
 			var value = new MapForNameConverter() { a = 3, aa = 4 };
 			byte[] data = Pack(value, context);
 			var result = Unpack<MapForNameConverter>(data);
@@ -377,7 +377,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void NameConvertionOnUnpack()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.namingStrategy = new AllCapsNameConverter();
+			context.MapOptions.NamingStrategy = new AllCapsNameConverter();
 			var value = new MapForNameConverter() { a = 3, aa = 4 };
 			byte[] data = Pack(value);
 			var result = Unpack<MapForNameConverter>(data, context);
@@ -397,7 +397,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void IgnoreUnknownFieldOnUnpack()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.ignoreUnknownFieldOnUnpack = true;
+			context.MapOptions.IgnoreUnknownFieldOnUnpack = true;
 			var value = new StructMapExt();
 			byte[] data = Pack(value);
 			Unpack<StructMap>(data, context);
@@ -407,7 +407,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void DoNotIgnoreUnknownFieldOnUnpack()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.ignoreUnknownFieldOnUnpack = false;
+			context.MapOptions.IgnoreUnknownFieldOnUnpack = false;
 			var value = new StructMapExt();
 			byte[] data = Pack(value);
 			Assert.Throws<MissingFieldException>(() => Unpack<StructMap>(data, context));
@@ -417,7 +417,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void AllowEmptyArrayOnUnpack()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.allowEmptyArrayOnUnpack = true;
+			context.MapOptions.AllowEmptyArrayOnUnpack = true;
 			var map = Unpack<StructMap>(new [] { Format.FixArrayMin }, context);
 			Assert.IsInstanceOf<StructMap>(map);
 		}
@@ -426,7 +426,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void DoNotEmptyArrayOnUnpack()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.allowEmptyArrayOnUnpack = false;
+			context.MapOptions.AllowEmptyArrayOnUnpack = false;
 			var data = new[] { Format.FixArrayMin };
 			Assert.Throws<FormatException>(() => Unpack<StructMap>(data, context));
 		}

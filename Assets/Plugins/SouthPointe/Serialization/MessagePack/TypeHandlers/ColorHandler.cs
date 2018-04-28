@@ -18,7 +18,7 @@ namespace SouthPointe.Serialization.MessagePack
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsArrayFamily) {
-				floatHandler = floatHandler ?? context.typeHandlers.Get<float>();
+				floatHandler = floatHandler ?? context.TypeHandlers.Get<float>();
 				int length = reader.ReadArrayLength(format);
 				float[] bytes = new float[length];
 				for(int i = 0; i < length; i++) {
@@ -27,13 +27,13 @@ namespace SouthPointe.Serialization.MessagePack
 				return new Color(bytes[0], bytes[1], bytes[2], bytes[3]);
 			}
 			if(format.IsStringFamily) {
-				stringHandler = stringHandler ?? context.typeHandlers.Get<string>();
+				stringHandler = stringHandler ?? context.TypeHandlers.Get<string>();
 				Color color;
 				ColorUtility.TryParseHtmlString((string)stringHandler.Read(format, reader), out color);
 				return color;
 			}
 			if(format.IsMapFamily) {
-				mapHandler = mapHandler ?? context.typeHandlers.Get<Dictionary<string, float>>();
+				mapHandler = mapHandler ?? context.TypeHandlers.Get<Dictionary<string, float>>();
 				Dictionary<string, float> map = (Dictionary<string, float>)mapHandler.Read(format, reader);
 				return new Color(map["r"], map["g"], map["b"], map["a"]);
 			}

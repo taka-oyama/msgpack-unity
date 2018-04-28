@@ -9,7 +9,7 @@ namespace SouthPointe.Serialization.MessagePack
 
 		class Map
 		{
-			public int a;
+			int a;
 			public Vector2[] v2s;
 		}
 
@@ -27,7 +27,7 @@ namespace SouthPointe.Serialization.MessagePack
 				new Map() { v2s = vector2s },
 			};
 			var formatter = new MessagePackFormatter();
-			SerializationContext.Default.jsonOptions.prettyPrint = true;
+			SerializationContext.Default.JsonOptions.PrettyPrint = true;
 			var data = formatter.Serialize(maps);
 			var json = formatter.AsJson(data);
 

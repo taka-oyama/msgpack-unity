@@ -34,7 +34,7 @@ namespace SouthPointe.Serialization.MessagePack
 		public object Deserialize(Type type, Stream stream)
 		{
 			FormatReader reader = new FormatReader(stream);
-			return Context.typeHandlers.Get(type).Read(reader.ReadFormat(), reader);
+			return Context.TypeHandlers.Get(type).Read(reader.ReadFormat(), reader);
 		}
 
 		public byte[] Serialize<T>(T obj)
@@ -59,7 +59,7 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public void Serialize(Stream stream, Type type, object obj)
 		{
-			Context.typeHandlers.Get(type).Write(obj, new FormatWriter(stream));
+			Context.TypeHandlers.Get(type).Write(obj, new FormatWriter(stream));
 		}
 
 		public string AsJson(byte[] data)

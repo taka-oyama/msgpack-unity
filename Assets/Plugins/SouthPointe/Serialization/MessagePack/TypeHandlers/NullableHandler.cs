@@ -10,7 +10,7 @@ namespace SouthPointe.Serialization.MessagePack
 		public NullableHandler(SerializationContext context, Type type)
 		{
 			Type underlyingType = Nullable.GetUnderlyingType(type);
-			this.underlyingTypeHandler = context.typeHandlers.Get(underlyingType);
+			this.underlyingTypeHandler = context.TypeHandlers.Get(underlyingType);
 		}
 
 		public object Read(Format format, FormatReader reader)

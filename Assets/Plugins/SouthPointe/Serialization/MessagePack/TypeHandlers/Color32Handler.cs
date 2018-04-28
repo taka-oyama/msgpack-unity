@@ -22,7 +22,7 @@ namespace SouthPointe.Serialization.MessagePack
 				return new Color32(bytes[0], bytes[1], bytes[2], bytes[3]);
 			}
 			if(format.IsArrayFamily) {
-				byteHandler = byteHandler ?? context.typeHandlers.Get<byte>();
+				byteHandler = byteHandler ?? context.TypeHandlers.Get<byte>();
 				int length = reader.ReadArrayLength(format);
 				byte[] bytes = new byte[length];
 				for(int i = 0; i < length; i++) {
@@ -31,13 +31,13 @@ namespace SouthPointe.Serialization.MessagePack
 				return new Color32(bytes[0], bytes[1], bytes[2], bytes[3]);
 			}
 			if(format.IsStringFamily) {
-				stringHandler = stringHandler ?? context.typeHandlers.Get<string>();
+				stringHandler = stringHandler ?? context.TypeHandlers.Get<string>();
 				Color color;
 				ColorUtility.TryParseHtmlString((string)stringHandler.Read(format, reader), out color);
 				return (Color32)color;
 			}
 			if(format.IsMapFamily) {
-				mapHandler = mapHandler ?? context.typeHandlers.Get<Dictionary<string, byte>>();
+				mapHandler = mapHandler ?? context.TypeHandlers.Get<Dictionary<string, byte>>();
 				Dictionary<string, byte> map = (Dictionary<string, byte>)mapHandler.Read(format, reader);
 				return new Color32(map["r"], map["g"], map["b"], map["a"]);
 			}

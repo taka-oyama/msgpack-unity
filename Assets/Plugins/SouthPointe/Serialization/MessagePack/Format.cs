@@ -4,11 +4,11 @@ namespace SouthPointe.Serialization.MessagePack
 {
 	public struct Format
 	{
-		readonly public byte value;
+		readonly public byte Value;
 
 		public Format(byte value)
 		{
-			this.value = value;
+			this.Value = value;
 		}
 
 		public const byte PositiveFixIntMin = 0x00;
@@ -58,40 +58,40 @@ namespace SouthPointe.Serialization.MessagePack
 		public bool IsFixMap { get { return Between(FixMapMin, FixMapMax); } }
 		public bool IsFixArray { get { return Between(FixArrayMin, FixArrayMax); } }
 		public bool IsFixStr { get { return Between(FixStrMin, FixStrMax); } }
-		public bool IsNil { get { return value == Nil; } }
-		public bool IsNeverUsed { get { return value == NeverUsed; } }
-		public bool IsFalse { get { return value == False; } }
-		public bool IsTrue { get { return value == True; } }
-		public bool IsBin8 { get { return value == Bin8; } }
-		public bool IsBin16 { get { return value == Bin16; } }
-		public bool IsBin32 { get { return value == Bin32; } }
-		public bool IsExt8 { get { return value == Ext8; } }
-		public bool IsExt16 { get { return value == Ext16; } }
-		public bool IsExt32 { get { return value == Ext32; } }
-		public bool IsFloat32 { get { return value == Float32; } }
-		public bool IsFloat64 { get { return value == Float64; } }
-		public bool IsUInt8 { get { return value == UInt8; } }
-		public bool IsUInt16 { get { return value == UInt16; } }
-		public bool IsUInt32 { get { return value == UInt32; } }
-		public bool IsUInt64 { get { return value == UInt64; } }
-		public bool IsInt8 { get { return value == Int8; } }
-		public bool IsInt16 { get { return value == Int16; } }
-		public bool IsInt32 { get { return value == Int32; } }
-		public bool IsInt64 { get { return value == Int64; } }
-		public bool IsFixExt1 { get { return value == FixExt1; } }
-		public bool IsFixExt2 { get { return value == FixExt2; } }
-		public bool IsFixExt4 { get { return value == FixExt4; } }
-		public bool IsFixExt8 { get { return value == FixExt8; } }
-		public bool IsFixExt16 { get { return value == FixExt16; } }
-		public bool IsStr8 { get { return value == Str8; } }
-		public bool IsStr16 { get { return value == Str16; } }
-		public bool IsStr32 { get { return value == Str32; } }
-		public bool IsArray16 { get { return value == Array16; } }
-		public bool IsArray32 { get { return value == Array32; } }
-		public bool IsMap16 { get { return value == Map16; } }
-		public bool IsMap32 { get { return value == Map32; } }
+		public bool IsNil { get { return Value == Nil; } }
+		public bool IsNeverUsed { get { return Value == NeverUsed; } }
+		public bool IsFalse { get { return Value == False; } }
+		public bool IsTrue { get { return Value == True; } }
+		public bool IsBin8 { get { return Value == Bin8; } }
+		public bool IsBin16 { get { return Value == Bin16; } }
+		public bool IsBin32 { get { return Value == Bin32; } }
+		public bool IsExt8 { get { return Value == Ext8; } }
+		public bool IsExt16 { get { return Value == Ext16; } }
+		public bool IsExt32 { get { return Value == Ext32; } }
+		public bool IsFloat32 { get { return Value == Float32; } }
+		public bool IsFloat64 { get { return Value == Float64; } }
+		public bool IsUInt8 { get { return Value == UInt8; } }
+		public bool IsUInt16 { get { return Value == UInt16; } }
+		public bool IsUInt32 { get { return Value == UInt32; } }
+		public bool IsUInt64 { get { return Value == UInt64; } }
+		public bool IsInt8 { get { return Value == Int8; } }
+		public bool IsInt16 { get { return Value == Int16; } }
+		public bool IsInt32 { get { return Value == Int32; } }
+		public bool IsInt64 { get { return Value == Int64; } }
+		public bool IsFixExt1 { get { return Value == FixExt1; } }
+		public bool IsFixExt2 { get { return Value == FixExt2; } }
+		public bool IsFixExt4 { get { return Value == FixExt4; } }
+		public bool IsFixExt8 { get { return Value == FixExt8; } }
+		public bool IsFixExt16 { get { return Value == FixExt16; } }
+		public bool IsStr8 { get { return Value == Str8; } }
+		public bool IsStr16 { get { return Value == Str16; } }
+		public bool IsStr32 { get { return Value == Str32; } }
+		public bool IsArray16 { get { return Value == Array16; } }
+		public bool IsArray32 { get { return Value == Array32; } }
+		public bool IsMap16 { get { return Value == Map16; } }
+		public bool IsMap32 { get { return Value == Map32; } }
 		public bool IsNegativeFixInt { get { return Between(NegativeFixIntMin, NegativeFixIntMax); } }
-		public bool IsEmptyArray { get { return value == FixArrayMin; } }
+		public bool IsEmptyArray { get { return Value == FixArrayMin; } }
 
 		public bool IsIntFamily { get { return IsPositiveFixInt || IsNegativeFixInt || IsInt8 || IsUInt8 || IsInt16 || IsUInt16 || IsInt32 || IsUInt32 || IsInt64 || IsUInt64; } }
 		public bool IsBoolFamily { get { return IsFalse || IsTrue; } }
@@ -104,43 +104,43 @@ namespace SouthPointe.Serialization.MessagePack
 
 		bool Between(byte min, byte max)
 		{
-			return value >= min && value <= max;
+			return Value >= min && Value <= max;
 		}
 
 		public override int GetHashCode()
 		{
-			return this.value.GetHashCode();
+			return this.Value.GetHashCode();
 		}
 
 		public override bool Equals(object obj)
 		{
 			if(obj is Format) {
-				return this.value == ((Format)obj).value;
+				return this.Value == ((Format)obj).Value;
 			}
 			if(obj is byte) {
-				return this.value == (byte)obj;
+				return this.Value == (byte)obj;
 			}
 			return false;
 		}
 
 		public static byte operator &(Format f1, byte value)
 		{
-			return (byte)(f1.value & value);
+			return (byte)(f1.Value & value);
 		}
 
 		public static bool operator ==(Format f1, Format f2)
 		{
-			return f1.value == f2.value;
+			return f1.Value == f2.Value;
 		}
 
 		public static bool operator !=(Format f1, Format f2)
 		{
-			return f1.value != f2.value;
+			return f1.Value != f2.Value;
 		}
 
 		public override string ToString()
 		{
-			return string.Concat("0x", value.ToString("X2"));
+			return string.Concat("0x", Value.ToString("X2"));
 		}
 	}
 }

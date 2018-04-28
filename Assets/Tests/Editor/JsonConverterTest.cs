@@ -31,7 +31,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void MapAsJsonWithNull()
 		{
 			var context = new SerializationContext();
-			context.mapOptions.ignoreNullOnPack = false;
+			context.MapOptions.IgnoreNullOnPack = false;
 			var map = new Map();
 			var data = Pack(map, context);
 			var json = AsJson(data);
@@ -53,8 +53,8 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void PrettyPrint()
 		{
 			var context = new SerializationContext();
-			context.jsonOptions.prettyPrint = true;
-			context.jsonOptions.indentationString = " ";
+			context.JsonOptions.PrettyPrint = true;
+			context.JsonOptions.IndentationString = " ";
 			var array = new int[] { 1, 2, 3 };
 			var data = Pack(array);
 			var json = AsJson(data, context);

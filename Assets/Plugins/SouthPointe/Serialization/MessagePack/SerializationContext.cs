@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using UnityEngine;
-
-namespace SouthPointe.Serialization.MessagePack
+﻿namespace SouthPointe.Serialization.MessagePack
 {
 	public class SerializationContext
 	{
@@ -12,26 +9,26 @@ namespace SouthPointe.Serialization.MessagePack
 			get { return defaultContext = defaultContext ?? new SerializationContext(); }
 		}
 
-		public readonly DateTimeOptions dateTimeOptions;
+		public readonly DateTimeOptions DateTimeOptions;
 
-		public readonly EnumOptions enumOptions;
+		public readonly EnumOptions EnumOptions;
 
-		public readonly ArrayOptions arrayOptions;
+		public readonly ArrayOptions ArrayOptions;
 
-		public readonly MapOptions mapOptions;
+		public readonly MapOptions MapOptions;
 
-		public readonly JsonOptions jsonOptions;
+		public readonly JsonOptions JsonOptions;
 
-		public readonly TypeHandlers typeHandlers;
+		public readonly TypeHandlers TypeHandlers;
 
 		public SerializationContext()
 		{
-			dateTimeOptions = new DateTimeOptions();
-			enumOptions = new EnumOptions();
-			arrayOptions = new ArrayOptions();
-			mapOptions = new MapOptions();
-			jsonOptions = new JsonOptions();
-			typeHandlers = new TypeHandlers(this);
+			DateTimeOptions = new DateTimeOptions();
+			EnumOptions = new EnumOptions();
+			ArrayOptions = new ArrayOptions();
+			MapOptions = new MapOptions();
+			JsonOptions = new JsonOptions();
+			TypeHandlers = new TypeHandlers(this);
 		}
 	}
 }

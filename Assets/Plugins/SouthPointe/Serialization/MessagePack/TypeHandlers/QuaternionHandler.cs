@@ -15,7 +15,7 @@ namespace SouthPointe.Serialization.MessagePack
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsArrayFamily) {
-				floatHandler = floatHandler ?? context.typeHandlers.Get<float>();
+				floatHandler = floatHandler ?? context.TypeHandlers.Get<float>();
 				Quaternion quaternion = new Quaternion();
 				quaternion.x = (float)floatHandler.Read(reader.ReadFormat(), reader);
 				quaternion.y = (float)floatHandler.Read(reader.ReadFormat(), reader);

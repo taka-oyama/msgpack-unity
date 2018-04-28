@@ -19,12 +19,12 @@ namespace SouthPointe.Serialization.MessagePack
 		public MapHandler(SerializationContext context, MapDefinition definition)
 		{
 			this.context = context;
-			this.type = definition.type;
-			this.nameHandler = context.typeHandlers.Get<string>();
-			this.nameConverter = context.mapOptions.namingStrategy;
-			this.fieldInfos = definition.fieldInfos;
-			this.fieldHandlers = definition.fieldHandlers;
-			this.callbacks = definition.callbacks;
+			this.type = definition.Type;
+			this.nameHandler = context.TypeHandlers.Get<string>();
+			this.nameConverter = context.MapOptions.NamingStrategy;
+			this.fieldInfos = definition.FieldInfos;
+			this.fieldHandlers = definition.FieldHandlers;
+			this.callbacks = definition.Callbacks;
 		}
 
 		public object Read(Format format, FormatReader reader)
@@ -40,7 +40,7 @@ namespace SouthPointe.Serialization.MessagePack
 						object value = fieldHandlers[name].Read(reader.ReadFormat(), reader);
 						fieldInfos[name].SetValue(obj, value);
 					}
-					else if(context.mapOptions.ignoreUnknownFieldOnUnpack) {
+					else if(context.MapOptions.IgnoreUnknownFieldOnUnpack) {
 						reader.Skip();
 					}
 					else {
@@ -51,7 +51,7 @@ namespace SouthPointe.Serialization.MessagePack
 				InvokeCallback<OnDeserializedAttribute>(obj);
 				return obj;
 			}
-			if(format.IsEmptyArray && context.mapOptions.allowEmptyArrayOnUnpack) {
+			if(format.IsEmptyArray && context.MapOptions.AllowEmptyArrayOnUnpack) {
 				return Activator.CreateInstance(type);
 			}
 			if(format.IsNil) {
@@ -70,7 +70,7 @@ namespace SouthPointe.Serialization.MessagePack
 			writer.WriteMapHeader(DetermineSize(obj));
 			foreach(KeyValuePair<string, FieldInfo> kv in fieldInfos) {
 				object value = kv.Value.GetValue(obj);
-				if(context.mapOptions.ignoreNullOnPack && value == null) {
+				if(context.MapOptions.IgnoreNullOnPack && value == null) {
 					continue;
 				}
 				nameHandler.Write(nameConverter.OnPack(kv.Key), writer);
@@ -81,7 +81,7 @@ namespace SouthPointe.Serialization.MessagePack
 
 		int DetermineSize(object obj)
 		{
-			if(!context.mapOptions.ignoreNullOnPack) {
+			if(!context.MapOptions.IgnoreNullOnPack) {
 				return fieldInfos.Count;
 			}
 			int count = 0;

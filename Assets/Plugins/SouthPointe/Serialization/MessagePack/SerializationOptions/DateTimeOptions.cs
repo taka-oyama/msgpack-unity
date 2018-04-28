@@ -2,6 +2,6 @@
 {
 	public class DateTimeOptions
 	{
-		public DateTimePackingFormat packingFormat = DateTimePackingFormat.Extension;
+		public DateTimePackingFormat PackingFormat = DateTimePackingFormat.Extension;
 	}
 }

@@ -237,7 +237,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void TreatNullAsEmpty()
 		{
 			var context = new SerializationContext();
-			context.arrayOptions.nullAsEmptyOnUnpack = true;
+			context.ArrayOptions.NullAsEmptyOnUnpack = true;
 			List<int> value = null;
 			byte[] data = Pack(value);
 			var result = Unpack<List<int>>(data, context);
@@ -249,7 +249,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void DoNotTreatNullAsEmpty()
 		{
 			var context = new SerializationContext();
-			context.arrayOptions.nullAsEmptyOnUnpack = false;
+			context.ArrayOptions.NullAsEmptyOnUnpack = false;
 			List<int> value = null;
 			byte[] data = Pack(value);
 			var result = Unpack<List<int>>(data, context);

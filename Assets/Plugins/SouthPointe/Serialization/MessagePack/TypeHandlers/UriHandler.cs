@@ -15,7 +15,7 @@ namespace SouthPointe.Serialization.MessagePack
 
 		ITypeHandler GetStringHandler()
 		{
-			return stringHandler = stringHandler ?? context.typeHandlers.Get<string>();
+			return stringHandler = stringHandler ?? context.TypeHandlers.Get<string>();
 		}
 
 		public object Read(Format format, FormatReader reader)

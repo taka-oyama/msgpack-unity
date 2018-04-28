@@ -2,6 +2,6 @@
 {
 	public class ArrayOptions
 	{
-		public bool nullAsEmptyOnUnpack = true;
+		public bool NullAsEmptyOnUnpack = true;
 	}
 }

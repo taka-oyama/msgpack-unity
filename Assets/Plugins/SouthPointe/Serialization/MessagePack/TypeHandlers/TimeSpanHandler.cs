@@ -15,7 +15,7 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public object Read(Format format, FormatReader reader)
 		{
-			longHandler = longHandler ?? context.typeHandlers.Get<long>();
+			longHandler = longHandler ?? context.TypeHandlers.Get<long>();
 			return new TimeSpan((long)longHandler.Read(format, reader));
 		}
 

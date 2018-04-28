@@ -16,7 +16,7 @@ namespace SouthPointe.Serialization.MessagePack
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsArrayFamily) {
-				floatHandler = floatHandler ?? context.typeHandlers.Get<float>();
+				floatHandler = floatHandler ?? context.TypeHandlers.Get<float>();
 				Vector4 vector = new Vector4();
 				vector.x = (float)floatHandler.Read(reader.ReadFormat(), reader);
 				vector.y = (float)floatHandler.Read(reader.ReadFormat(), reader);

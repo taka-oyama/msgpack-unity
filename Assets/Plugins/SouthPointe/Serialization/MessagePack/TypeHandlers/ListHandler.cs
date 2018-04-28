@@ -15,7 +15,7 @@ namespace SouthPointe.Serialization.MessagePack
 		{
 			this.context = context;
 			this.innerType = type.GetGenericArguments()[0];
-			this.innerTypeHandler = context.typeHandlers.Get(innerType);
+			this.innerTypeHandler = context.TypeHandlers.Get(innerType);
 		}
 
 		public object Read(Format format, FormatReader reader)
@@ -31,7 +31,7 @@ namespace SouthPointe.Serialization.MessagePack
 				return list;
 			}
 			if(format.IsNil) {
-				if(context.arrayOptions.nullAsEmptyOnUnpack) {
+				if(context.ArrayOptions.NullAsEmptyOnUnpack) {
 					return Activator.CreateInstance(listType);
 				}
 				return null;

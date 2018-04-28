@@ -19,11 +19,11 @@ namespace SouthPointe.Serialization.MessagePack
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsIntFamily) {
-				intHandler = intHandler ?? context.typeHandlers.Get<int>();
+				intHandler = intHandler ?? context.TypeHandlers.Get<int>();
 				return Enum.ToObject(type, intHandler.Read(format, reader));
 			}
 			if(format.IsStringFamily) {
-				stringHandler = stringHandler ?? context.typeHandlers.Get<string>();
+				stringHandler = stringHandler ?? context.TypeHandlers.Get<string>();
 				return Enum.Parse(type, (string)stringHandler.Read(format, reader), true);
 			}
 			if(format.IsNil) {
@@ -34,13 +34,13 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public void Write(object obj, FormatWriter writer)
 		{
-			switch(context.enumOptions.packingFormat) {
+			switch(context.EnumOptions.PackingFormat) {
 				case EnumPackingFormat.Integer:
-              		intHandler = intHandler ?? context.typeHandlers.Get<int>();
+              		intHandler = intHandler ?? context.TypeHandlers.Get<int>();
 					intHandler.Write(obj, writer);
 					break;
 				case EnumPackingFormat.String:
-					stringHandler = stringHandler ?? context.typeHandlers.Get<string>();
+					stringHandler = stringHandler ?? context.TypeHandlers.Get<string>();
 					stringHandler.Write(obj.ToString(), writer);
 					break;
 			}

@@ -13,7 +13,7 @@ namespace SouthPointe.Serialization.MessagePack
 		{
 			this.context = context;
 			this.elementType = type.GetElementType();
-			this.elementTypeHandler = context.typeHandlers.Get(elementType);
+			this.elementTypeHandler = context.TypeHandlers.Get(elementType);
 		}
 
 		public object Read(Format format, FormatReader reader)
@@ -28,7 +28,7 @@ namespace SouthPointe.Serialization.MessagePack
 				return array;
 			}
 			if(format.IsNil) {
-				if(context.arrayOptions.nullAsEmptyOnUnpack) {
+				if(context.ArrayOptions.NullAsEmptyOnUnpack) {
 					return Array.CreateInstance(elementType, 0);
 				}
 				return null;

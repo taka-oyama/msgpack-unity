@@ -48,24 +48,24 @@ namespace SouthPointe.Serialization.MessagePack
 				writer.WriteNil();
 				return;
 			}
-			context.typeHandlers.Get(obj.GetType()).Write(obj, writer);
+			context.TypeHandlers.Get(obj.GetType()).Write(obj, writer);
 		}
 
 		object ReadArray(Format format, FormatReader reader)
 		{
-			return context.typeHandlers.Get<List<object>>().Read(format, reader);
+			return context.TypeHandlers.Get<List<object>>().Read(format, reader);
 		}
 
 		object ReadMap(Format format, FormatReader reader)
 		{
-			return context.typeHandlers.Get<Dictionary<object, object>>().Read(format, reader);
+			return context.TypeHandlers.Get<Dictionary<object, object>>().Read(format, reader);
 		}
 
 		object ReadExt(Format format, FormatReader reader)
 		{
 			uint length = reader.ReadExtLength(format);
 			sbyte extType = reader.ReadExtType(format);
-			return context.typeHandlers.GetExt(extType).ReadExt(length, reader);
+			return context.TypeHandlers.GetExt(extType).ReadExt(length, reader);
 		}
 	}
 }

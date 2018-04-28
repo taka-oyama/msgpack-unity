@@ -2,6 +2,6 @@
 {
 	public class EnumOptions
 	{
-		public EnumPackingFormat packingFormat = EnumPackingFormat.Integer;
+		public EnumPackingFormat PackingFormat = EnumPackingFormat.Integer;
 	}
 }

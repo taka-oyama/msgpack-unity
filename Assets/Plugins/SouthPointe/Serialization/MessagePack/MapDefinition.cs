@@ -7,35 +7,35 @@ namespace SouthPointe.Serialization.MessagePack
 {
 	public class MapDefinition
 	{
-		const BindingFlags methodFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
+		const BindingFlags MethodFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
 
 		static readonly Type[] callbackTypes = {
 			typeof(OnDeserializingAttribute), typeof(OnDeserializedAttribute),
 			typeof(OnSerializingAttribute), typeof(OnSerializedAttribute),
 		};
 
-		public readonly Type type;
-		public readonly Dictionary<string, FieldInfo> fieldInfos;
-		public readonly Dictionary<string, ITypeHandler> fieldHandlers;
-		public readonly Dictionary<Type, MethodInfo[]> callbacks;
+		public readonly Type Type;
+		public readonly Dictionary<string, FieldInfo> FieldInfos;
+		public readonly Dictionary<string, ITypeHandler> FieldHandlers;
+		public readonly Dictionary<Type, MethodInfo[]> Callbacks;
 
 		internal MapDefinition(SerializationContext context, Type type)
 		{
-			this.type = type;
-			this.fieldInfos = new Dictionary<string, FieldInfo>();
-			foreach(FieldInfo info in type.GetFields(context.mapOptions.fieldFlags)) {
+			this.Type = type;
+			this.FieldInfos = new Dictionary<string, FieldInfo>();
+			foreach(FieldInfo info in type.GetFields(context.MapOptions.FieldFlags)) {
 				if(!AttributesExist(info, typeof(NonSerializedAttribute))) {
-					fieldInfos[info.Name] = info;
+					FieldInfos[info.Name] = info;
 				}
 			}
 
-			this.fieldHandlers = new Dictionary<string, ITypeHandler>();
-			foreach(FieldInfo info in fieldInfos.Values) {
-				fieldHandlers.Add(info.Name, context.typeHandlers.Get(info.FieldType));
+			this.FieldHandlers = new Dictionary<string, ITypeHandler>();
+			foreach(FieldInfo info in FieldInfos.Values) {
+				FieldHandlers.Add(info.Name, context.TypeHandlers.Get(info.FieldType));
 			}
 
-			this.callbacks = new Dictionary<Type, MethodInfo[]>();
-			MethodInfo[] methodInfos = type.GetMethods(methodFlags);
+			this.Callbacks = new Dictionary<Type, MethodInfo[]>();
+			MethodInfo[] methodInfos = type.GetMethods(MethodFlags);
 			foreach(Type callbackType in callbackTypes) {
 				List<MethodInfo> methodsWithCallbacks = new List<MethodInfo>();
 				foreach(MethodInfo methodInfo in methodInfos) {
@@ -44,7 +44,7 @@ namespace SouthPointe.Serialization.MessagePack
 					}
 				}
 				if(methodsWithCallbacks.Count > 0) {
-					callbacks[callbackType] = methodsWithCallbacks.ToArray();
+					Callbacks[callbackType] = methodsWithCallbacks.ToArray();
 				}
 			}
 		}

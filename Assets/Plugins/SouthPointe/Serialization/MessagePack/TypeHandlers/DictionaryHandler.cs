@@ -14,8 +14,8 @@ namespace SouthPointe.Serialization.MessagePack
 		{
 			Type[] innerTypes = type.GetGenericArguments();
 			this.type = type;
-			this.keyHandler = context.typeHandlers.Get(innerTypes[0]);
-			this.valueHandler = context.typeHandlers.Get(innerTypes[1]);
+			this.keyHandler = context.TypeHandlers.Get(innerTypes[0]);
+			this.valueHandler = context.TypeHandlers.Get(innerTypes[1]);
 		}
 
 		public object Read(Format format, FormatReader reader)

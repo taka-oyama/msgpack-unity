@@ -27,12 +27,12 @@ namespace SouthPointe.Serialization.MessagePack
 				}
 			}
 			if(format.IsStringFamily) {
-				stringHandler = stringHandler ?? context.typeHandlers.Get<string>();
+				stringHandler = stringHandler ?? context.TypeHandlers.Get<string>();
 				string dateTimeStr = (string)stringHandler.Read(format, reader);
 				return DateTime.Parse(dateTimeStr);
 			}
 			if(format.IsFloatFamily || format.IsIntFamily) {
-				doubleHandler = doubleHandler ?? context.typeHandlers.Get<double>();
+				doubleHandler = doubleHandler ?? context.TypeHandlers.Get<double>();
 				double seconds = (double)doubleHandler.Read(format, reader);
 				return epoch.AddSeconds(seconds).ToLocalTime();
 			}
@@ -62,7 +62,7 @@ namespace SouthPointe.Serialization.MessagePack
 		public void Write(object obj, FormatWriter writer)
 		{
 			DateTime value = (DateTime)obj;
-			switch(context.dateTimeOptions.packingFormat) {
+			switch(context.DateTimeOptions.PackingFormat) {
 				case DateTimePackingFormat.Extension:
 					TimeSpan diff = value.ToUniversalTime() - epoch;
 					writer.WriteExtHeader(12, ExtType);
