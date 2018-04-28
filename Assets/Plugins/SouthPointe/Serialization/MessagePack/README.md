@@ -50,7 +50,7 @@ Change options
 ```cs
 
 SerializationContext context = new SerializationContext();
-context.dateTimeOptions.packingFormat = DateTimePackingFormat.Epoch;
+context.DateTimeOptions.PackingFormat = DateTimePackingFormat.Epoch;
 
 MessagePackFormatter formatter = new MessagePackFormatter(context);
 byte[] bytes = new MessagePackFormatter().Serialize(DateTime.Now); // DateTime serialized as double instead of Ext format.
@@ -65,7 +65,7 @@ public class Map
 }
 
 SerializationContext context = new SerializationContext();
-context.mapOptions.namingStrategy = new SnakeCaseNamingStrategy();
+context.MapOptions.NamingStrategy = new SnakeCaseNamingStrategy();
 
 MessagePackFormatter formatter = new MessagePackFormatter();
 formatter.Serialize(new Map()); // serialized as  { foo_bar: 1 }
