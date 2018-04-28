@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.0 (2018-04-28)
+
+### Changed
+- Changed naming convention to match that of [MSDN's general naming conventions](https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/general-naming-conventions)
+- INamingStrategy now includes MapDefinition as a second argument
+
 ## 2.1.1 (2018-04-24)
 
 ### Fixed
