@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.1 (2018-05-08)
+
+### Fixed
+- Formatter will return `null` if `null` is given as a argument for `Deserialize<T>(byte[])` and `AsJson(byte[])`
+
 ## 2.2.0 (2018-04-28)
 
 ### Changed

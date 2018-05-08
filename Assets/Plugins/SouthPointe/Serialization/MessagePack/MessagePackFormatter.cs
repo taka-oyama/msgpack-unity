@@ -25,7 +25,7 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public object Deserialize(Type type, byte[] bytes)
 		{
-			if(bytes.Length == 0) {
+			if(bytes == null || bytes.Length == 0) {
 				return null;
 			}
 			return Deserialize(type, new MemoryStream(bytes));
@@ -64,6 +64,9 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public string AsJson(byte[] data)
 		{
+			if(data == null) {
+				return null;
+			}
 			return AsJson(new MemoryStream(data));
 		}
 
