@@ -111,7 +111,7 @@ namespace SouthPointe.Serialization.MessagePack
 				AddIfNotExist(type, new DictionaryHandler(context, type));
 			}
 			else if(type.IsClass || type.IsValueType) {
-				AddIfNotExist(type, new MapHandler(context, GetMapDefinition(type)));
+				AddIfNotExist(type, new MapHandler(context, GetLazyMapDefinition(type)));
 			}
 			else {
 				throw new FormatException("No TypeHandler found for type: " + type);
@@ -125,17 +125,14 @@ namespace SouthPointe.Serialization.MessagePack
 			}
 		}
 
-		MapDefinition GetMapDefinition(Type type)
+		Lazy<MapDefinition> GetLazyMapDefinition(Type type)
 		{
-			if(!mapDefinitions.ContainsKey(type)) {
-				// HACK: So this implementation is a bit embarassing... 
-				// This null assignment is here because MapDefinition is calling `context.Typehandlers.Get` internally
-				// and if I don't add the key for `type` here, there's a chance that a circular reference might
-				// cause an infinite loop and crash the app.
-				mapDefinitions[type] = null;
-				mapDefinitions[type] = new MapDefinition(context, type);
-			}
-			return mapDefinitions[type];
+			return new Lazy<MapDefinition>(() => {
+				if(!mapDefinitions.ContainsKey(type)) {
+					mapDefinitions[type] = new MapDefinition(context, type);
+				}
+				return mapDefinitions[type];
+			});
 		}
 	}
 }

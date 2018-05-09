@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.2 (2018-05-09)
+
+### Fixed
+- Fixed a case where circular referenced Maps were causing apps to crash
+
 ## 2.2.1 (2018-05-08)
 
 ### Fixed

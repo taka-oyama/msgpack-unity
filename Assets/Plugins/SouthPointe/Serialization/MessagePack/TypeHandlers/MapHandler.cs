@@ -8,13 +8,12 @@ namespace SouthPointe.Serialization.MessagePack
 	public class MapHandler : ITypeHandler
 	{
 		readonly SerializationContext context;
-		readonly MapDefinition definition;
-		readonly Type type;
+		readonly Lazy<MapDefinition> definition;
 		readonly ITypeHandler nameHandler;
 		readonly IMapNamingStrategy nameConverter;
 		readonly static object[] callbackParameters = new object[0];
 
-		public MapHandler(SerializationContext context, MapDefinition definition)
+		public MapHandler(SerializationContext context, Lazy<MapDefinition> definition)
 		{
 			this.context = context;
 			this.definition = definition;
@@ -25,22 +24,22 @@ namespace SouthPointe.Serialization.MessagePack
 		public object Read(Format format, FormatReader reader)
 		{
 			if(format.IsMapFamily) {
-				object obj = Activator.CreateInstance(definition.Type);
+				object obj = Activator.CreateInstance(definition.Value.Type);
 				InvokeCallback<OnDeserializingAttribute>(obj);
 				int size = reader.ReadMapLength(format);
 				while(size > 0) {
 					string name = (string)nameHandler.Read(reader.ReadFormat(), reader);
-					name = nameConverter.OnUnpack(name, definition);
+					name = nameConverter.OnUnpack(name, definition.Value);
 
-					if(definition.FieldHandlers.ContainsKey(name)) {
-						object value = definition.FieldHandlers[name].Read(reader.ReadFormat(), reader);
-						definition.FieldInfos[name].SetValue(obj, value);
+					if(definition.Value.FieldHandlers.ContainsKey(name)) {
+						object value = definition.Value.FieldHandlers[name].Read(reader.ReadFormat(), reader);
+						definition.Value.FieldInfos[name].SetValue(obj, value);
 					}
 					else if(context.MapOptions.IgnoreUnknownFieldOnUnpack) {
 						reader.Skip();
 					}
 					else {
-						throw new MissingFieldException(name + " does not exist for type: " + definition.Type);
+						throw new MissingFieldException(name + " does not exist for type: " + definition.Value.Type);
 					}
 					size = size - 1;
 				}
@@ -48,7 +47,7 @@ namespace SouthPointe.Serialization.MessagePack
 				return obj;
 			}
 			if(format.IsEmptyArray && context.MapOptions.AllowEmptyArrayOnUnpack) {
-				return Activator.CreateInstance(definition.Type);
+				return Activator.CreateInstance(definition.Value.Type);
 			}
 			if(format.IsNil) {
 				return null;
@@ -64,14 +63,14 @@ namespace SouthPointe.Serialization.MessagePack
 			}
 			InvokeCallback<OnSerializingAttribute>(obj);
 			writer.WriteMapHeader(DetermineSize(obj));
-			foreach(KeyValuePair<string, FieldInfo> kv in definition.FieldInfos) {
+			foreach(KeyValuePair<string, FieldInfo> kv in definition.Value.FieldInfos) {
 				object value = kv.Value.GetValue(obj);
 				if(context.MapOptions.IgnoreNullOnPack && value == null) {
 					continue;
 				}
-				string name = nameConverter.OnPack(kv.Key, definition);
+				string name = nameConverter.OnPack(kv.Key, definition.Value);
 				nameHandler.Write(name, writer);
-				definition.FieldHandlers[kv.Key].Write(value, writer);
+				definition.Value.FieldHandlers[kv.Key].Write(value, writer);
 			}
 			InvokeCallback<OnSerializedAttribute>(obj);
 		}
@@ -79,10 +78,10 @@ namespace SouthPointe.Serialization.MessagePack
 		int DetermineSize(object obj)
 		{
 			if(!context.MapOptions.IgnoreNullOnPack) {
-				return definition.FieldInfos.Count;
+				return definition.Value.FieldInfos.Count;
 			}
 			int count = 0;
-			foreach(FieldInfo info in definition.FieldInfos.Values) {
+			foreach(FieldInfo info in definition.Value.FieldInfos.Values) {
 				if(info.GetValue(obj) != null) {
 					count += 1;
 				}
@@ -93,8 +92,8 @@ namespace SouthPointe.Serialization.MessagePack
 		void InvokeCallback<T>(object obj) where T : Attribute
 		{
 			Type attributeType = typeof(T);
-			if(definition.Callbacks.ContainsKey(attributeType)) {
-				foreach(MethodInfo methodInfo in definition.Callbacks[attributeType]) {
+			if(definition.Value.Callbacks.ContainsKey(attributeType)) {
+				foreach(MethodInfo methodInfo in definition.Value.Callbacks[attributeType]) {
 					methodInfo.Invoke(obj, callbackParameters);
 				}
 			}

@@ -68,6 +68,16 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			public int A { get; set; }
 		}
 
+		class CircularA
+		{
+			public CircularB B;
+		}
+
+		class CircularB
+		{
+			public CircularA A;
+		}
+
 		#endregion
 
 
@@ -208,6 +218,12 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			Assert.AreEqual(21, stream.Length);
 		}
 
+		[Test]
+		public void CircularReferenceOfClassOnPack()
+		{
+			Assert.DoesNotThrow(() => Pack(new CircularA()));
+		}
+
 		#endregion
 
 
@@ -309,6 +325,12 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			byte[] data = Pack(value);
 			var result = Unpack<PropertyMap>(data);
 			Assert.AreEqual(result.A, value.A);
+		}
+
+		[Test]
+		public void CircularReferenceOfClassOnUnpack()
+		{
+			Assert.DoesNotThrow(() => Unpack<CircularA>(ReadFile("Strings/Nil")));
 		}
 
 		#endregion
