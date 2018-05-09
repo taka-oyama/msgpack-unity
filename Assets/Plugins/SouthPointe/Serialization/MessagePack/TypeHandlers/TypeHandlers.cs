@@ -128,6 +128,11 @@ namespace SouthPointe.Serialization.MessagePack
 		MapDefinition GetMapDefinition(Type type)
 		{
 			if(!mapDefinitions.ContainsKey(type)) {
+				// HACK: So this implementation is a bit embarassing... 
+				// This null assignment is here because MapDefinition is calling `context.Typehandlers.Get` internally
+				// and if I don't add the key for `type` here, there's a chance that a circular reference might
+				// cause an infinite loop and crash the app.
+				mapDefinitions[type] = null;
 				mapDefinitions[type] = new MapDefinition(context, type);
 			}
 			return mapDefinitions[type];
