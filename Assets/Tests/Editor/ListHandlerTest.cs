@@ -2,18 +2,20 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Text;
+using System;
 
 namespace SouthPointe.Serialization.MessagePack.Tests
 {
 	public class ListHandlerTest : TestBase
 	{
+		#region Pack
+
+		[Serializable]
 		struct MapWithNullable
 		{
 			public int? a;
 			public int b;
 		}
-
-		#region Pack
 
 		[Test]
 		public void PackNil()
@@ -134,6 +136,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 
 		#region Unpack
 
+		[Serializable]
 		struct Map
 		{
 			public int a;

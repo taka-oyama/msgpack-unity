@@ -11,12 +11,14 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 	{
 		#region Declarations
 
+		[Serializable]
 		struct StructMap
 		{
 			public int a;
 			public int? d;
 		}
 
+		[Serializable]
 		struct StructMapExt
 		{
 			public int a;
@@ -25,6 +27,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			public int? d;
 		}
 
+		[Serializable]
 		class ClassMap
 		{
 			public int a = 0;
@@ -33,23 +36,27 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			public int? d = null;
 		}
 
+		[Serializable]
 		class PrivateClassMap
 		{
 			private int a = 0;
 			public int A { get { return a; } }
 		}
 
+		[Serializable]
 		class MixedMap
 		{
 			public ClassMap inner = null;
 		}
 
+		[Serializable]
 		class MapForNameConverter
 		{
 			public int a = 1;
 			public int aa = 2;
 		}
 
+		[Serializable]
 		class AllCapsNameConverter : IMapNamingStrategy
 		{
 			public string OnPack(string name, MapDefinition definition)
@@ -63,16 +70,19 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			}
 		}
 
+		[Serializable]
 		class PropertyMap
 		{
 			public int A { get; set; }
 		}
 
+		[Serializable]
 		class CircularA
 		{
 			public CircularB B;
 		}
 
+		[Serializable]
 		class CircularB
 		{
 			public CircularA A;

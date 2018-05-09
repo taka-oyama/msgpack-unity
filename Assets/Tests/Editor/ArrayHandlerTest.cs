@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using NUnit.Framework;
 using System.Text;
+using System;
 
 namespace SouthPointe.Serialization.MessagePack.Tests
 {
@@ -8,6 +9,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 	{
 		#region Pack
 
+		[Serializable]
 		struct MapWithNullable
 		{
 			public int? a;
@@ -123,6 +125,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 
 		#region Unpack
 
+		[Serializable]
 		struct Map
 		{
 			public int a;

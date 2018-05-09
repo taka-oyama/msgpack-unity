@@ -7,6 +7,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 {
 	public class JsonConverterTest : TestBase
 	{
+		[Serializable]
 		class Map
 		{
 			public int? a = 1;

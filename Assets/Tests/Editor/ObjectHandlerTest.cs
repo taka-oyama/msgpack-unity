@@ -7,6 +7,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 {
 	public class ObjectHandlerTest : TestBase
 	{
+		[Serializable]
 		struct StructMap
 		{
 			public int a;

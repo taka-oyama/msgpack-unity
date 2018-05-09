@@ -22,9 +22,15 @@ namespace SouthPointe.Serialization.MessagePack
 		internal MapDefinition(SerializationContext context, Type type)
 		{
 			this.Type = type;
+
+			if(!SerializableExists(type))
+			{
+				throw new CustomAttributeFormatException(type + " does not have System.SerializableAttribute defined");
+			}
+
 			this.FieldInfos = new Dictionary<string, FieldInfo>();
 			foreach(FieldInfo info in type.GetFields(context.MapOptions.FieldFlags)) {
-				if(!AttributesExist(info, typeof(NonSerializedAttribute))) {
+				if(SerializableExists(info.FieldType) && !AttributesExist(info, typeof(NonSerializedAttribute))) {
 					FieldInfos[info.Name] = info;
 				}
 			}
@@ -47,6 +53,11 @@ namespace SouthPointe.Serialization.MessagePack
 					Callbacks[callbackType] = methodsWithCallbacks.ToArray();
 				}
 			}
+		}
+
+		bool SerializableExists(Type type)
+		{
+			return type.GetCustomAttributes(typeof(SerializableAttribute), false).Length > 0;
 		}
 
 		bool AttributesExist(MemberInfo info, Type attributeType)

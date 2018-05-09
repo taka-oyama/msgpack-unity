@@ -1,17 +1,34 @@
-﻿using NUnit.Framework;
+﻿using System;
+using System.Reflection;
+using NUnit.Framework;
 using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack.Tests
 {
 	public class SerializationAttributeTest : TestBase
 	{
-		class MapTemp { public int? a; }
-		class MapActual { [NonSerialized] public int? a; }
-		class MapWithSerializing { public int a; [OnSerializing] void T1() { a = 1; } }
-		class MapWithDeserializing { public int a; [OnDeserializing] void T1() { a = 3; } }
-		class MapWithSerialized { public int a; [OnSerialized] void T1() { a = 2; } }
-		class MapWithDeserialized { public int a; [OnDeserialized] void T1() { a = 4; } }
-		class MapWithSerializings { public int a, b; [OnSerializing] void T1() { a = 1; } [OnSerializing] void T2() { b = 2; } }
+		class MapNonSerializable { public int a; }
+		[Serializable] class MapTemp { public int? a; }
+		[Serializable] class MapActual {[NonSerialized] public int? a; }
+		[Serializable] class MapWithSerializing { public int a;[OnSerializing] void T1() { a = 1; } }
+		[Serializable] class MapWithDeserializing { public int a;[OnDeserializing] void T1() { a = 3; } }
+		[Serializable] class MapWithSerialized { public int a;[OnSerialized] void T1() { a = 2; } }
+		[Serializable] class MapWithDeserialized { public int a;[OnDeserialized] void T1() { a = 4; } }
+		[Serializable] class MapWithSerializings { public int a, b;[OnSerializing] void T1() { a = 1; }[OnSerializing] void T2() { b = 2; } }
+
+
+		[Test]
+		public void PackNonSerializable()
+		{
+			Assert.Throws<CustomAttributeFormatException>(() => Unpack<MapNonSerializable>(ReadFile("Maps/MapSkippable")));
+		}
+
+		[Test]
+		public void UnpackNonSerializable()
+		{
+			var map = new MapNonSerializable() { a = 1 };
+			Assert.Throws<CustomAttributeFormatException>(() => Pack(map));
+		}
 
 		[Test]
 		public void PackNonSerialize()
