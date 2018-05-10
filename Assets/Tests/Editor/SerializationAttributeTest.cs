@@ -16,6 +16,11 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		[Serializable] class MapWithDeserialized { public int a;[OnDeserialized] void T1() { a = 4; } }
 		[Serializable] class MapWithSerializings { public int a, b;[OnSerializing] void T1() { a = 1; }[OnSerializing] void T2() { b = 2; } }
 
+		[Serializable] class MapWithEnum
+		{
+			public enum MyEnum { A, B }
+			public MyEnum a = MyEnum.B;
+		}
 
 		[Test]
 		public void PackNonSerializable()
@@ -93,5 +98,22 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			Assert.AreEqual(1, mapAfter.a); // overwritten by callback
 			Assert.AreEqual(2, mapAfter.b); // overwritten by callback
 		}
+
+		[Test]
+		public void PackMapWithEnum()
+		{
+			byte[] bytes = Pack(new MapWithEnum());
+			Assert.AreEqual(4, bytes.Length);
+			Assert.AreEqual(Format.FixMapMin + 1, bytes[0]);
+		}
+
+		[Test]
+		public void UnpackMapWithEnum()
+		{
+			byte[] bytes = Pack(new MapWithEnum());
+			var data = Unpack<MapWithEnum>(bytes);
+			Assert.AreEqual(data.a, MapWithEnum.MyEnum.B);
+		}
+
 	}
 }
