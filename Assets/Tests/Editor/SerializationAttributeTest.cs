@@ -26,7 +26,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void PackNonSerializableDisabled()
 		{
 			var context = new SerializationContext();
-			context.MapOptions.RequireSerializableAttribute = true;
+			context.MapOptions.RequireSerializableAttribute = false;
 			var data = ReadFile("Maps/MapSkippable");
 			Assert.Throws<CustomAttributeFormatException>(() => Unpack<MapNonSerializable>(data, context));
 		}
@@ -35,7 +35,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void UnpackNonSerializableDisabled()
 		{
 			var context = new SerializationContext();
-			context.MapOptions.RequireSerializableAttribute = true;
+			context.MapOptions.RequireSerializableAttribute = false;
 			var map = new MapNonSerializable() { a = 1 };
 			Assert.Throws<CustomAttributeFormatException>(() => Pack(map, context));
 		}
@@ -44,7 +44,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void PackNonSerializableEnabled()
 		{
 			var context = new SerializationContext();
-			context.MapOptions.RequireSerializableAttribute = false;
+			context.MapOptions.RequireSerializableAttribute = true;
 			var data = ReadFile("Maps/MapSkippable");
 			Assert.DoesNotThrow(() => Unpack<MapNonSerializable>(data, context));
 		}
@@ -53,7 +53,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void UnpackNonSerializableEnabled()
 		{
 			var context = new SerializationContext();
-			context.MapOptions.RequireSerializableAttribute = false;
+			context.MapOptions.RequireSerializableAttribute = true;
 			var map = new MapNonSerializable() { a = 1 };
 			Assert.DoesNotThrow(() => Pack(map, context));
 		}
