@@ -1,9 +1,17 @@
 # Changelog
 
-## 2.2.2 (2018-05-09)
+## 2.3.0 (2018-05-10)
+
+### Added
+- Added file `CamelCaseNamingStrategy` for out of the box compatibility with PHP
+
+### Changed
+- The Formatter now requires that you add `System.Serializable` attribute to the class in order to serialize (you can force it to serialize without the attribute by setting `SerializationContext.MapOptions.RequireSerializableAttribute` to false)
 
 ### Fixed
 - Fixed a case where circular referenced Maps were causing apps to crash
+- Fixed a bug where multi-byte strings were not being packed correctly
+- Rename `SerializationContext.JsonOptions.valueSeparator` to pascal case (`ValueSeparator`)
 
 ## 2.2.1 (2018-05-08)
 

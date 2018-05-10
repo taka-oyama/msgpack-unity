@@ -4,7 +4,6 @@
 	{
 		public bool PrettyPrint = false;
 		public string IndentationString = "    ";
-
 		public string ValueSeparator = "\n";
 	}
 }
