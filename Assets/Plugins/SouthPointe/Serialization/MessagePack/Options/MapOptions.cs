@@ -14,6 +14,8 @@ namespace SouthPointe.Serialization.MessagePack
 		/// </summary>
 		public bool AllowEmptyArrayOnUnpack = true;
 
+		public bool RequireSerializableAttribute = true;
+
 		public IMapNamingStrategy NamingStrategy = new DefaultNamingStrategy();
 
 		public BindingFlags FieldFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetField | BindingFlags.SetField;

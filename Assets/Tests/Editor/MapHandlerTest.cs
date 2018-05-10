@@ -56,7 +56,6 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			public int aa = 2;
 		}
 
-		[Serializable]
 		class AllCapsNameConverter : IMapNamingStrategy
 		{
 			public string OnPack(string name, MapDefinition definition)

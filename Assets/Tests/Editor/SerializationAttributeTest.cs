@@ -23,16 +23,39 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		}
 
 		[Test]
-		public void PackNonSerializable()
+		public void PackNonSerializableDisabled()
 		{
-			Assert.Throws<CustomAttributeFormatException>(() => Unpack<MapNonSerializable>(ReadFile("Maps/MapSkippable")));
+			var context = new SerializationContext();
+			context.MapOptions.RequireSerializableAttribute = true;
+			var data = ReadFile("Maps/MapSkippable");
+			Assert.Throws<CustomAttributeFormatException>(() => Unpack<MapNonSerializable>(data, context));
 		}
 
 		[Test]
-		public void UnpackNonSerializable()
+		public void UnpackNonSerializableDisabled()
 		{
+			var context = new SerializationContext();
+			context.MapOptions.RequireSerializableAttribute = true;
 			var map = new MapNonSerializable() { a = 1 };
-			Assert.Throws<CustomAttributeFormatException>(() => Pack(map));
+			Assert.Throws<CustomAttributeFormatException>(() => Pack(map, context));
+		}
+
+		[Test]
+		public void PackNonSerializableEnabled()
+		{
+			var context = new SerializationContext();
+			context.MapOptions.RequireSerializableAttribute = false;
+			var data = ReadFile("Maps/MapSkippable");
+			Assert.DoesNotThrow(() => Unpack<MapNonSerializable>(data, context));
+		}
+
+		[Test]
+		public void UnpackNonSerializableEnabled()
+		{
+			var context = new SerializationContext();
+			context.MapOptions.RequireSerializableAttribute = false;
+			var map = new MapNonSerializable() { a = 1 };
+			Assert.DoesNotThrow(() => Pack(map, context));
 		}
 
 		[Test]
