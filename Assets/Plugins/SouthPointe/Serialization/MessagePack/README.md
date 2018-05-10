@@ -22,9 +22,12 @@ This is a MessagePack (aka MsgPack) serialization library written in C# specific
 - [Download the latest .unitypackage in the releases section](https://github.com/taka-oyama/msgpack-unity/releases)
 - Goto menu bar and choose **Assets > Import Package > Custom Package... > (Select the downloaded package)**
 
-## Usage
+## Requirements
 
 * This library is under the namespace `SouthPointe.Serialization.MessagePack`
+* All classes that are used for serialization needs to have the `[System.Serializable]` attribute (you can disable the attribute requirement by setting `SerializationContext.MapOptions.RequireSerializableAttribute` to `false`)
+
+## Usage
 
 Basic Usage for Serializing/Deserializing
 
@@ -48,7 +51,6 @@ int[] result = formatter.Deserialize<int[]>(bytes, context);
 Change options
 
 ```cs
-
 SerializationContext context = new SerializationContext();
 context.DateTimeOptions.PackingFormat = DateTimePackingFormat.Epoch;
 
@@ -59,6 +61,7 @@ byte[] bytes = new MessagePackFormatter().Serialize(DateTime.Now); // DateTime s
 Serialize to and Deserialize from snake cased maps
 
 ```cs
+[System.Serializable]
 public class Map
 {
     public int fooBar = 1;
@@ -74,6 +77,7 @@ formatter.Serialize(new Map()); // serialized as  { foo_bar: 1 }
 Using Attributes
 
 ```cs
+[System.Serializable]
 public class MapWithCallbacks
 {
     public int a = 1;
@@ -130,6 +134,7 @@ You can debug your serialized binary by converting it to JSON by using `MessageP
 
 
 ```cs
+[System.Serializable]
 public class Map
 {
     public int foo = 1;
