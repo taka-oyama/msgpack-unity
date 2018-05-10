@@ -118,14 +118,14 @@ namespace SouthPointe.Serialization.MessagePack
 				return;
 			}
 
-			Append("[").PrettyAppend(context.JsonOptions.valueSeparator);
+			Append("[").PrettyAppend(context.JsonOptions.ValueSeparator);
 			indentationSize += 1;
 			for(int i = 0; i < size; i++) {
 				Indent().AppendStream();
 				if(i < size - 1) {
 					Append(",");
 				}
-				PrettyAppend(context.JsonOptions.valueSeparator);
+				PrettyAppend(context.JsonOptions.ValueSeparator);
 			}
 			indentationSize -= 1;
 			Indent().Append("]");
@@ -140,14 +140,14 @@ namespace SouthPointe.Serialization.MessagePack
 				return;
 			}
 
-			Append("{").PrettyAppend(context.JsonOptions.valueSeparator);
+			Append("{").PrettyAppend(context.JsonOptions.ValueSeparator);
 			indentationSize += 1;
 			for(int i = 0; i < size; i++) {
 				Indent().AppendStream().Append(":").PrettyAppend(" ").AppendStream();
 				if(i < size - 1) {
 					Append(",");
 				}
-				PrettyAppend(context.JsonOptions.valueSeparator);
+				PrettyAppend(context.JsonOptions.ValueSeparator);
 			}
 			indentationSize -= 1;
 			Indent().Append("}");
