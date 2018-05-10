@@ -24,10 +24,11 @@ This is a MessagePack (aka MsgPack) serialization library written in C# specific
 
 ## Requirements
 
-* This library is under the namespace `SouthPointe.Serialization.MessagePack`
 * All classes that are used for serialization needs to have the `[System.Serializable]` attribute (you can disable the attribute requirement by setting `SerializationContext.MapOptions.RequireSerializableAttribute` to `false`)
 
 ## Usage
+
+* This library is under the namespace `SouthPointe.Serialization.MessagePack`
 
 Basic Usage for Serializing/Deserializing
 
