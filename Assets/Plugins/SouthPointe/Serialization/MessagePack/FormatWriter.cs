@@ -157,24 +157,26 @@ namespace SouthPointe.Serialization.MessagePack
 				return;
 			}
 
-			if(str.Length <= 31) {
-				WriteFormat((byte)(Format.FixStrMin | (byte)str.Length));
+			byte[] stringAsBytes = Encoding.UTF8.GetBytes(str);
+			int length = stringAsBytes.Length;
+
+			if(length <= 31) {
+				WriteFormat((byte)(Format.FixStrMin | (byte)length));
 			}
-			else if(str.Length <= byte.MaxValue) {
+			else if(length <= byte.MaxValue) {
 				WriteFormat(Format.Str8);
-				WriteUInt8((byte)str.Length);
+				WriteUInt8((byte)length);
 			}
-			else if(str.Length <= ushort.MaxValue) {
+			else if(length <= ushort.MaxValue) {
 				WriteFormat(Format.Str16);
-				WriteUInt16((ushort)str.Length);
+				WriteUInt16((ushort)length);
 			}
 			else {
 				WriteFormat(Format.Str32);
-				WriteUInt32((uint)str.Length);
+				WriteUInt32((uint)length);
 			}
-
-			byte[] stringAsBytes = Encoding.UTF8.GetBytes(str);
-			stream.Write(stringAsBytes, 0, stringAsBytes.Length);
+			
+			stream.Write(stringAsBytes, 0, length);
 		}
 
 		public void Write(byte[] bytes)

@@ -93,6 +93,15 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			// Omitted because the filesize is too big
 		}
 
+		[Test]
+		public void PackStrWithMultiByteString()
+		{
+			string value = "あいうえお";
+			byte[] data = Pack<string>(value);
+			Assert.AreEqual(Format.FixStrMin + 15, data[0]);
+			Assert.AreEqual(16, data.Length);
+		}
+
 		#endregion
 
 
@@ -157,6 +166,15 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		public void UnpackStr32Max()
 		{
 			// Omitted because the filesize is too big
+		}
+
+		[Test]
+		public void UnpackStrWithMultiByteString()
+		{
+			string value = "あいうえお";
+			byte[] data = Pack<string>(value);
+			string result = Unpack<string>(data);
+			Assert.AreEqual(value, result);
 		}
 
 		#endregion
