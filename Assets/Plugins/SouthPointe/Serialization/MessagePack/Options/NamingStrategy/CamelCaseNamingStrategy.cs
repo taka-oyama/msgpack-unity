@@ -15,8 +15,7 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public string OnUnpack(string name, MapDefinition definition)
 		{
-			string str = textInfo.ToTitleCase(name).Replace("_", "");
-			return char.ToUpperInvariant(str[0]) + str.Substring(1);
+			return char.ToUpperInvariant(name[0]) + name.Substring(1);
 		}
 	}
 }
