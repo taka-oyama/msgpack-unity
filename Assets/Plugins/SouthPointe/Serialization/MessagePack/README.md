@@ -107,7 +107,7 @@ byte[] bytes = formatter.Serialize(map);
 Add A Custom Type Handler
 
 ```cs
-using MessagePack;
+using SouthPointe.Serialization.MessagePack;
 
 public class MyCustomClassHandler : ITypeHandler
 {
