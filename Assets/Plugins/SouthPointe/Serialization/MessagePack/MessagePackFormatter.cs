@@ -33,8 +33,27 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public object Deserialize(Type type, Stream stream)
 		{
-			FormatReader reader = new FormatReader(stream);
-			return Context.TypeHandlers.Get(type).Read(reader.ReadFormat(), reader);
+			try {
+				FormatReader reader = new FormatReader(stream);
+				return Context.TypeHandlers.Get(type).Read(reader.ReadFormat(), reader);
+			}
+			catch(FormatException exception) {
+				if(stream.CanSeek) {
+					MemoryStream partial = new MemoryStream((int)stream.Position);
+					byte[] buffer = new byte[1024 * 16];
+					stream.Position = 0;
+					int remainingBytes = partial.Capacity;
+					while(remainingBytes > 0) {
+						int bytesRead = stream.Read(buffer, 0, buffer.Length);
+						partial.Write(buffer, 0, bytesRead);
+						remainingBytes -= bytesRead;
+					}
+					partial.Position = 0;
+					exception.Source = JsonConverter.Encode(partial);
+					partial.Close();
+				}
+				throw;
+			}
 		}
 
 		public byte[] Serialize<T>(T obj)

@@ -149,3 +149,20 @@ string json = formatter.AsJson(bytes);
 
 Debug.Log(json); // {"foo":1,"bar":[1,2]}
 ```
+
+If you ever get an error while deserializing, you can make debugging easier by checking `exception.Source`
+to see the decoded content up to when the error was thrown.
+
+```cs
+try {
+    MessagePackFormatter formatter = new MessagePackFormatter();
+    SomeMap map = formatter.Deserialize<SomeMap>(someData);    
+    // do something with map
+}
+catch(FormatException exception) {
+    Debug.Log(exception.Source);
+    throw;
+}
+
+```
+
