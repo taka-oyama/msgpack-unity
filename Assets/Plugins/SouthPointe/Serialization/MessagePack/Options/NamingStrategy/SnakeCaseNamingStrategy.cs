@@ -30,8 +30,7 @@ namespace SouthPointe.Serialization.MessagePack
 		{
 			StringBuilder sb = new StringBuilder();
 
-			bool capitalizeNext = false;
-
+			bool capitalizeNext = true;
 			for(int i = 0; i < name.Length; i++) {
 				if(name[i] == '_') {
 					capitalizeNext = true;
@@ -44,6 +43,7 @@ namespace SouthPointe.Serialization.MessagePack
 					sb.Append(name[i]);
 				}
 			}
+
 			return sb.ToString();
 		}
 	}
