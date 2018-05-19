@@ -4,6 +4,7 @@
 
 ### Added
 - Added better errors for deserialization when it fails to parse correctly
+- Tests for naming strategies
 
 ### Changed
 - Renamed some files internally for readability
