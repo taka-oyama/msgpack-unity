@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack.Tests
 {
-	public class EnumHandlerTest : TestBase
+	public class DynamicEnumHandlerTest : TestBase
 	{
 		#region Pack
 

@@ -5,7 +5,7 @@ using System;
 
 namespace SouthPointe.Serialization.MessagePack.Tests
 {
-	public class ArrayHandlerTest : TestBase
+	public class DynamicArrayHandlerTest : TestBase
 	{
 		#region Pack
 

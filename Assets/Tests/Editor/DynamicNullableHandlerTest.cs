@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack.Tests
 {
-	public class NullableHandlerTest : TestBase
+	public class DynamicNullableHandlerTest : TestBase
 	{
 		enum MyEnum
 		{

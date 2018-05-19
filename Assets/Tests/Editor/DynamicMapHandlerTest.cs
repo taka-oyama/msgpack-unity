@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack.Tests
 {
-	public class MapHandlerTest : TestBase
+	public class DynamicMapHandlerTest : TestBase
 	{
 		#region Declarations
 
@@ -75,6 +75,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			public int A { get; set; }
 		}
 
+		#pragma warning disable 0649
 		[Serializable]
 		class CircularA
 		{
@@ -86,6 +87,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		{
 			public CircularA A;
 		}
+		#pragma warning restore 0649
 
 		#endregion
 

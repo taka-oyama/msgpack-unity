@@ -6,7 +6,7 @@ using System;
 
 namespace SouthPointe.Serialization.MessagePack.Tests
 {
-	public class ListHandlerTest : TestBase
+	public class DynamicListHandlerTest : TestBase
 	{
 		#region Pack
 
