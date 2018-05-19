@@ -5,13 +5,13 @@ using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack
 {
-	public class ListHandler : ITypeHandler
+	public class DynamicListHandler : ITypeHandler
 	{
 		readonly SerializationContext context;
 		readonly Type innerType;
 		readonly ITypeHandler innerTypeHandler;
 
-		public ListHandler(SerializationContext context, Type type)
+		public DynamicListHandler(SerializationContext context, Type type)
 		{
 			this.context = context;
 			this.innerType = type.GetGenericArguments()[0];

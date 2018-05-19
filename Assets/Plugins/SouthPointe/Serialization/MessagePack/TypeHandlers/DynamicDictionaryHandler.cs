@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack
 {
-	public class DictionaryHandler : ITypeHandler
+	public class DynamicDictionaryHandler : ITypeHandler
 	{
 		readonly Type type;
 		readonly ITypeHandler keyHandler;
 		readonly ITypeHandler valueHandler;
 
-		public DictionaryHandler(SerializationContext context, Type type)
+		public DynamicDictionaryHandler(SerializationContext context, Type type)
 		{
 			Type[] innerTypes = type.GetGenericArguments();
 			this.type = type;

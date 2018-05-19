@@ -96,22 +96,22 @@ namespace SouthPointe.Serialization.MessagePack
 				return;
 			}
 			if(type.IsEnum) {
-				AddIfNotExist(type, new EnumHandler(context, type));
+				AddIfNotExist(type, new DynamicEnumHandler(context, type));
 			}
 			else if(type.IsNullable()) {
-				AddIfNotExist(type, new NullableHandler(context, type));
+				AddIfNotExist(type, new DynamicNullableHandler(context, type));
 			}
 			else if(type.IsArray) {
-				AddIfNotExist(type, new ArrayHandler(context, type));
+				AddIfNotExist(type, new DynamicArrayHandler(context, type));
 			}
 			else if(typeof(IList).IsAssignableFrom(type)) {
-				AddIfNotExist(type, new ListHandler(context, type));
+				AddIfNotExist(type, new DynamicListHandler(context, type));
 			}
 			else if(typeof(IDictionary).IsAssignableFrom(type)) {
-				AddIfNotExist(type, new DictionaryHandler(context, type));
+				AddIfNotExist(type, new DynamicDictionaryHandler(context, type));
 			}
 			else if(type.IsClass || type.IsValueType) {
-				AddIfNotExist(type, new MapHandler(context, GetLazyMapDefinition(type)));
+				AddIfNotExist(type, new DynamicMapHandler(context, GetLazyMapDefinition(type)));
 			}
 			else {
 				throw new FormatException("No TypeHandler found for type: " + type);

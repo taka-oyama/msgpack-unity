@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack
 {
-	public class EnumHandler : ITypeHandler
+	public class DynamicEnumHandler : ITypeHandler
 	{
 		readonly SerializationContext context;
 		readonly Type type;
 		ITypeHandler intHandler;
 		ITypeHandler stringHandler;
 
-		public EnumHandler(SerializationContext context, Type type)
+		public DynamicEnumHandler(SerializationContext context, Type type)
 		{
 			this.context = context;
 			this.type = type;

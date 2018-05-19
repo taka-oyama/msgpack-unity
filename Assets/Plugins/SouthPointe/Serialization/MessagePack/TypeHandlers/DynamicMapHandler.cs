@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack
 {
-	public class MapHandler : ITypeHandler
+	public class DynamicMapHandler : ITypeHandler
 	{
 		readonly SerializationContext context;
 		readonly Lazy<MapDefinition> definition;
@@ -13,7 +13,7 @@ namespace SouthPointe.Serialization.MessagePack
 		readonly IMapNamingStrategy nameConverter;
 		readonly static object[] callbackParameters = new object[0];
 
-		public MapHandler(SerializationContext context, Lazy<MapDefinition> definition)
+		public DynamicMapHandler(SerializationContext context, Lazy<MapDefinition> definition)
 		{
 			this.context = context;
 			this.definition = definition;

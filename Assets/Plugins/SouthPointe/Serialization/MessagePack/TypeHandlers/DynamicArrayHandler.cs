@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack
 {
-	public class ArrayHandler : ITypeHandler
+	public class DynamicArrayHandler : ITypeHandler
 	{
 		readonly SerializationContext context;
 		readonly Type elementType;
 		readonly ITypeHandler elementTypeHandler;
 
-		public ArrayHandler(SerializationContext context, Type type)
+		public DynamicArrayHandler(SerializationContext context, Type type)
 		{
 			this.context = context;
 			this.elementType = type.GetElementType();

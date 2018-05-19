@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack
 {
-	public class NullableHandler : ITypeHandler
+	public class DynamicNullableHandler : ITypeHandler
 	{
 		readonly ITypeHandler underlyingTypeHandler;
 
-		public NullableHandler(SerializationContext context, Type type)
+		public DynamicNullableHandler(SerializationContext context, Type type)
 		{
 			Type underlyingType = Nullable.GetUnderlyingType(type);
 			this.underlyingTypeHandler = context.TypeHandlers.Get(underlyingType);
