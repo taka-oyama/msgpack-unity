@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.3.1 (2018-05-19)
+
+### Added
+- Added better errors for deserialization when it fails to parse correctly
+
+### Changed
+- Renamed some files internally for readability
+- Refactored JsonCoverter for readability
+
 ## 2.3.0 (2018-05-10)
 
 ### Added
