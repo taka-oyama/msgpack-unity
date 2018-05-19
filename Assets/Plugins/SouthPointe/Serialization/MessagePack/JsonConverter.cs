@@ -87,11 +87,17 @@ namespace SouthPointe.Serialization.MessagePack
 			return this;
 		}
 
-		JsonConverter PrettyAppend(string str)
+		JsonConverter AppendIfPretty(string str)
 		{
 			if(context.JsonOptions.PrettyPrint) {
 				Append(str);
 			}
+			return this;
+		}
+
+		JsonConverter ValueSeparator()
+		{
+			AppendIfPretty(context.JsonOptions.ValueSeparator);
 			return this;
 		}
 
@@ -112,20 +118,18 @@ namespace SouthPointe.Serialization.MessagePack
 		void ReadArray(Format format)
 		{
 			int size = reader.ReadArrayLength(format);
-
 			if(size == 0) {
 				Append("[]");
 				return;
 			}
-
-			Append("[").PrettyAppend(context.JsonOptions.ValueSeparator);
+			Append("[").ValueSeparator();
 			indentationSize += 1;
 			for(int i = 0; i < size; i++) {
 				Indent().AppendStream();
 				if(i < size - 1) {
 					Append(",");
 				}
-				PrettyAppend(context.JsonOptions.ValueSeparator);
+				ValueSeparator();
 			}
 			indentationSize -= 1;
 			Indent().Append("]");
@@ -134,20 +138,18 @@ namespace SouthPointe.Serialization.MessagePack
 		void ReadMap(Format format)
 		{
 			int size = reader.ReadMapLength(format);
-
 			if(size == 0) {
 				Append("{}");
 				return;
 			}
-
-			Append("{").PrettyAppend(context.JsonOptions.ValueSeparator);
+			Append("{").ValueSeparator();
 			indentationSize += 1;
 			for(int i = 0; i < size; i++) {
-				Indent().AppendStream().Append(":").PrettyAppend(" ").AppendStream();
+				Indent().AppendStream().Append(":").AppendIfPretty(" ").AppendStream();
 				if(i < size - 1) {
 					Append(",");
 				}
-				PrettyAppend(context.JsonOptions.ValueSeparator);
+				ValueSeparator();
 			}
 			indentationSize -= 1;
 			Indent().Append("}");
