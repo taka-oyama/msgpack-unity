@@ -41,6 +41,18 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		}
 
 		[Test]
+		public void ConvertNull()
+		{
+			Assert.IsNull(AsJson(null));
+		}
+
+		[Test]
+		public void ConvertEmpty()
+		{
+			Assert.IsNull(AsJson(new byte[0]));
+		}
+
+		[Test]
 		public void ArrayAsJson()
 		{
 			var array = new int[] { 1, 2, 3 };

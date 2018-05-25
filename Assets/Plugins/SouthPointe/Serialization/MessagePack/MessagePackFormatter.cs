@@ -83,7 +83,7 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public string AsJson(byte[] data)
 		{
-			if(data == null) {
+			if(data == null || data.Length == 0) {
 				return null;
 			}
 			return AsJson(new MemoryStream(data));
