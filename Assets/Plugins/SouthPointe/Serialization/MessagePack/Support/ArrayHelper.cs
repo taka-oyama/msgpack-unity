@@ -1,16 +1,19 @@
 ﻿using System;
 using UnityEngine;
 
-public static class ArrayHelper
+namespace SouthPointe.Serialization.MessagePack
 {
-	public static void ResizeAccordingly(ref byte[] buffer, int length)
+	static class ArrayHelper
 	{
-		if(buffer.Length < length) {
-			int newSize = buffer.Length;
-			while(newSize < length) {
-				newSize *= 2;
+		internal static void AdjustSize(ref byte[] bytes, int length)
+		{
+			if(bytes.Length < length) {
+				int newSize = bytes.Length;
+				while(newSize < length) {
+					newSize *= 2;
+				}
+				Array.Resize(ref bytes, newSize);
 			}
-			Array.Resize(ref buffer, newSize);
 		}
 	}
 }
