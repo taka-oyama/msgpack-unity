@@ -131,9 +131,9 @@ namespace SouthPointe.Serialization.MessagePack
 			}
 		}
 
-		public void Write(float f)
+		public void Write(float value)
 		{
-			byte[] bytes = BitConverter.GetBytes(f);
+			byte[] bytes = BitConverter.GetBytes(value);
 			if(BitConverter.IsLittleEndian) {
 				Array.Reverse(bytes);
 			}
@@ -141,9 +141,9 @@ namespace SouthPointe.Serialization.MessagePack
 			stream.Write(bytes, 0, 4);
 		}
 
-		public void Write(double f)
+		public void Write(double value)
 		{
-			byte[] bytes = BitConverter.GetBytes(f);
+			byte[] bytes = BitConverter.GetBytes(value);
 			if(BitConverter.IsLittleEndian) {
 				Array.Reverse(bytes);
 			}
@@ -151,14 +151,14 @@ namespace SouthPointe.Serialization.MessagePack
 			stream.Write(bytes, 0, 8);
 		}
 
-		public void Write(string str)
+		public void Write(string value)
 		{
-			if(str == null) {
+			if(value == null) {
 				WriteNil();
 				return;
 			}
 
-			int length = Encoding.UTF8.GetByteCount(str);
+			int length = Encoding.UTF8.GetByteCount(value);
 
 			if(length <= 31) {
 				WriteFormat((byte)(Format.FixStrMin | (byte)length));
@@ -177,7 +177,7 @@ namespace SouthPointe.Serialization.MessagePack
 			}
 
 			ArrayHelper.AdjustSize(ref dynamicBuffer, length);
-			Encoding.UTF8.GetBytes(str, 0, str.Length, dynamicBuffer, 0);
+			Encoding.UTF8.GetBytes(value, 0, value.Length, dynamicBuffer, 0);
 			stream.Write(dynamicBuffer, 0, length);
 		}
 
@@ -284,91 +284,91 @@ namespace SouthPointe.Serialization.MessagePack
 			stream.WriteByte((byte)extType);
 		}
 
-		public void WritePositiveFixInt(byte i)
+		public void WritePositiveFixInt(byte value)
 		{
-			if(i >= 0 || i <= sbyte.MaxValue) {
-				stream.WriteByte((byte)(i | Format.PositiveFixIntMin));
+			if(value >= 0 || value <= sbyte.MaxValue) {
+				stream.WriteByte((byte)(value | Format.PositiveFixIntMin));
 			}
 			else {
-				throw new OverflowException(i + " is out of range for PositiveFixInt");
+				throw new OverflowException(value + " is out of range for PositiveFixInt");
 			}
 		}
 
-		public void WriteUInt8(byte i)
+		public void WriteUInt8(byte value)
 		{
-			stream.WriteByte(i);
+			stream.WriteByte(value);
 		}
 
-		public void WriteUInt16(ushort i)
+		public void WriteUInt16(ushort value)
 		{
-			staticBuffer[0] = (byte)(i >> 8);
-			staticBuffer[1] = (byte)i;
+			staticBuffer[0] = (byte)(value >> 8);
+			staticBuffer[1] = (byte)(value);
 			stream.Write(staticBuffer, 0, 2);
 		}
 
-		public void WriteUInt32(uint i)
+		public void WriteUInt32(uint value)
 		{
-			staticBuffer[0] = (byte)(i >> 24);
-			staticBuffer[1] = (byte)(i >> 16);
-			staticBuffer[2] = (byte)(i >> 8);
-			staticBuffer[3] = (byte)i;
+			staticBuffer[0] = (byte)(value >> 24);
+			staticBuffer[1] = (byte)(value >> 16);
+			staticBuffer[2] = (byte)(value >> 8);
+			staticBuffer[3] = (byte)(value);
 			stream.Write(staticBuffer, 0, 4);
 		}
 
-		public void WriteUInt64(ulong i)
+		public void WriteUInt64(ulong value)
 		{
-			staticBuffer[0] = (byte)(i >> 56);
-			staticBuffer[1] = (byte)(i >> 48);
-			staticBuffer[2] = (byte)(i >> 40);
-			staticBuffer[3] = (byte)(i >> 32);
-			staticBuffer[4] = (byte)(i >> 24);
-			staticBuffer[5] = (byte)(i >> 16);
-			staticBuffer[6] = (byte)(i >> 8);
-			staticBuffer[7] = (byte)i;
+			staticBuffer[0] = (byte)(value >> 56);
+			staticBuffer[1] = (byte)(value >> 48);
+			staticBuffer[2] = (byte)(value >> 40);
+			staticBuffer[3] = (byte)(value >> 32);
+			staticBuffer[4] = (byte)(value >> 24);
+			staticBuffer[5] = (byte)(value >> 16);
+			staticBuffer[6] = (byte)(value >> 8);
+			staticBuffer[7] = (byte)(value);
 			stream.Write(staticBuffer, 0, 8);
 		}
 
-		public void WriteNegativeFixInt(sbyte i)
+		public void WriteNegativeFixInt(sbyte value)
 		{
-			if(i >= -32 && i <= -1) {
-				stream.WriteByte((byte)((byte)i | Format.NegativeFixIntMin));
+			if(value >= -32 && value <= -1) {
+				stream.WriteByte((byte)((byte)value | Format.NegativeFixIntMin));
 			}
 			else {
-				throw new OverflowException(i + " is out of range for NegativeFixInt");
+				throw new OverflowException(value + " is out of range for NegativeFixInt");
 			}
 		}
 
-		public void WriteInt8(sbyte i)
+		public void WriteInt8(sbyte value)
 		{
-			stream.WriteByte((byte)i);
+			stream.WriteByte((byte)value);
 		}
 
-		public void WriteInt16(short i)
+		public void WriteInt16(short value)
 		{
-			staticBuffer[0] = (byte)(i >> 8);
-			staticBuffer[1] = (byte)i;
+			staticBuffer[0] = (byte)(value >> 8);
+			staticBuffer[1] = (byte)(value);
 			stream.Write(staticBuffer, 0, 2);
 		}
 
-		public void WriteInt32(int i)
+		public void WriteInt32(int value)
 		{
-			staticBuffer[0] = (byte)(i >> 24);
-			staticBuffer[1] = (byte)(i >> 16);
-			staticBuffer[2] = (byte)(i >> 8);
-			staticBuffer[3] = (byte)i;
+			staticBuffer[0] = (byte)(value >> 24);
+			staticBuffer[1] = (byte)(value >> 16);
+			staticBuffer[2] = (byte)(value >> 8);
+			staticBuffer[3] = (byte)(value);
 			stream.Write(staticBuffer, 0, 4);
 		}
 
-		public void WriteInt64(long i)
+		public void WriteInt64(long value)
 		{
-			staticBuffer[0] = (byte)(i >> 56);
-			staticBuffer[1] = (byte)(i >> 48);
-			staticBuffer[2] = (byte)(i >> 40);
-			staticBuffer[3] = (byte)(i >> 32);
-			staticBuffer[4] = (byte)(i >> 24);
-			staticBuffer[5] = (byte)(i >> 16);
-			staticBuffer[6] = (byte)(i >> 8);
-			staticBuffer[7] = (byte)i;
+			staticBuffer[0] = (byte)(value >> 56);
+			staticBuffer[1] = (byte)(value >> 48);
+			staticBuffer[2] = (byte)(value >> 40);
+			staticBuffer[3] = (byte)(value >> 32);
+			staticBuffer[4] = (byte)(value >> 24);
+			staticBuffer[5] = (byte)(value >> 16);
+			staticBuffer[6] = (byte)(value >> 8);
+			staticBuffer[7] = (byte)(value);
 			stream.Write(staticBuffer, 0, 8);
 		}
 
