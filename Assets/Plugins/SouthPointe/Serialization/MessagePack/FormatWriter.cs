@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
 using UnityEngine;
 
@@ -290,7 +289,7 @@ namespace SouthPointe.Serialization.MessagePack
 				stream.WriteByte((byte)(value | Format.PositiveFixIntMin));
 			}
 			else {
-				throw new OverflowException(value + " is out of range for PositiveFixInt");
+				throw new FormatException(value + " is out of range for PositiveFixInt");
 			}
 		}
 
@@ -334,7 +333,7 @@ namespace SouthPointe.Serialization.MessagePack
 				stream.WriteByte((byte)((byte)value | Format.NegativeFixIntMin));
 			}
 			else {
-				throw new OverflowException(value + " is out of range for NegativeFixInt");
+				throw new FormatException(value + " is out of range for NegativeFixInt");
 			}
 		}
 

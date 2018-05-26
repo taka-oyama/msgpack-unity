@@ -47,182 +47,182 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		#region Unpack
 
 		[Test]
-		public void Float64Zero()
+		public void UnpackFloat64Zero()
 		{
 			double value = Unpack<double>(ReadFile("Floats/Float64Zero"));
 			Assert.AreEqual(0.0, value);
 		}
 
 		[Test]
-		public void Float64Min()
+		public void UnpackFloat64Min()
 		{
 			double value = Unpack<double>(ReadFile("Floats/Float64Min"));
 			Assert.AreEqual(double.MinValue, value);
 		}
 
 		[Test]
-		public void Float64Max()
+		public void UnpackFloat64Max()
 		{
 			double value = Unpack<double>(ReadFile("Floats/Float64Max"));
 			Assert.AreEqual(double.MaxValue, value);
 		}
 
 		[Test]
-		public void Float32ZeroAsDouble()
+		public void UnpackFloat32ZeroAsDouble()
 		{
 			float value = Unpack<float>(ReadFile("Floats/Float32Zero"));
 			Assert.AreEqual(0f, value);
 		}
 
 		[Test]
-		public void Float32MinAsDouble()
+		public void UnpackFloat32MinAsDouble()
 		{
 			float value = Unpack<float>(ReadFile("Floats/Float32Min"));
 			Assert.AreEqual(float.MinValue, value);
 		}
 
 		[Test]
-		public void Float32MaxAsDouble()
+		public void UnpackFloat32MaxAsDouble()
 		{
 			float value = Unpack<float>(ReadFile("Floats/Float32Max"));
 			Assert.AreEqual(float.MaxValue, value);
 		}
 
 		[Test]
-		public void PositiveFixIntAsDouble()
+		public void UnpackPositiveFixIntAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/PositiveFixIntMin"));
 			Assert.AreEqual(0, value);
 		}
 
 		[Test]
-		public void PositiveFixIntMaxAsDouble()
+		public void UnpackPositiveFixIntMaxAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/PositiveFixIntMax"));
 			Assert.AreEqual(sbyte.MaxValue, value);
 		}
 
 		[Test]
-		public void UInt8MinAsDouble()
+		public void UnpackUInt8MinAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/UInt8Min"));
 			Assert.AreEqual(sbyte.MaxValue + 1, value);
 		}
 
 		[Test]
-		public void UInt8MaxAsDouble()
+		public void UnpackUInt8MaxAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/UInt8Max"));
 			Assert.AreEqual(byte.MaxValue, value);
 		}
 
 		[Test]
-		public void UInt16MinAsDouble()
+		public void UnpackUInt16MinAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/UInt16Min"));
 			Assert.AreEqual(byte.MaxValue + 1, value);
 		}
 
 		[Test]
-		public void UInt16MaxAsDouble()
+		public void UnpackUInt16MaxAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/UInt16Max"));
 			Assert.AreEqual(ushort.MaxValue, value);
 		}
 
 		[Test]
-		public void UInt32MinAsDouble()
+		public void UnpackUInt32MinAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/UInt32Min"));
 			Assert.AreEqual(ushort.MaxValue + 1, value);
 		}
 
 		[Test]
-		public void UInt32MaxAsDouble()
+		public void UnpackUInt32MaxAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/UInt32Max"));
 			Assert.AreEqual(uint.MaxValue, value);
 		}
 
 		[Test]
-		public void UInt64MinAsDouble()
+		public void UnpackUInt64MinAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/UInt64Min"));
 			Assert.AreEqual((long)uint.MaxValue + 1, value);
 		}
 
 		[Test]
-		public void UInt64MaxAsDouble()
+		public void UnpackUInt64MaxAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/UInt64Max"));
 			Assert.AreEqual(ulong.MaxValue, value);
 		}
 
 		[Test]
-		public void NegativeFixIntMinAsDouble()
+		public void UnpackNegativeFixIntMinAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/NegativeFixIntMin"));
 			Assert.AreEqual(-32, value);
 		}
 
 		[Test]
-		public void NegativeFixIntMaxAsDouble()
+		public void UnpackNegativeFixIntMaxAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/NegativeFixIntMax"));
 			Assert.AreEqual(-1, value);
 		}
 
 		[Test]
-		public void Int8MinAsDouble()
+		public void UnpackInt8MinAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/Int8Min"));
 			Assert.AreEqual(sbyte.MinValue, value);
 		}
 
 		[Test]
-		public void Int8MaxAsDouble()
+		public void UnpackInt8MaxAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/Int8Max"));
 			Assert.AreEqual(-33, value);
 		}
 
 		[Test]
-		public void Int16MinAsDouble()
+		public void UnpackInt16MinAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/Int16Min"));
 			Assert.AreEqual(short.MinValue, value);
 		}
 
 		[Test]
-		public void Int16MaxAsDouble()
+		public void UnpackInt16MaxAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/Int16Max"));
 			Assert.AreEqual(sbyte.MinValue - 1, value);
 		}
 
 		[Test]
-		public void Int32MinAsDouble()
+		public void UnpackInt32MinAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/Int32Min"));
 			Assert.AreEqual(int.MinValue, value);
 		}
 
 		[Test]
-		public void Int32MaxAsDouble()
+		public void UnpackInt32MaxAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/Int32Max"));
 			Assert.AreEqual(short.MinValue - 1, value);
 		}
 
 		[Test]
-		public void Int64MinAsDouble()
+		public void UnpackInt64MinAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/Int64Min"));
 			Assert.AreEqual(long.MinValue, value);
 		}
 
 		[Test]
-		public void Int64MaxAsDouble()
+		public void UnpackInt64MaxAsDouble()
 		{
 			double value = Unpack<double>(ReadFile("Ints/Int64Max"));
 			Assert.AreEqual((long)int.MinValue - 1, value);
