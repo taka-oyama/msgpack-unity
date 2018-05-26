@@ -9,6 +9,7 @@ namespace SouthPointe.Serialization.MessagePack
 	{
 		readonly Stream stream;
 		readonly byte[] staticBuffer = new byte[9];
+		byte[] dynamicBuffer = new byte[64];
 
 		public FormatWriter(Stream stream)
 		{
@@ -157,8 +158,7 @@ namespace SouthPointe.Serialization.MessagePack
 				return;
 			}
 
-			byte[] stringAsBytes = Encoding.UTF8.GetBytes(str);
-			int length = stringAsBytes.Length;
+			int length = Encoding.UTF8.GetByteCount(str);
 
 			if(length <= 31) {
 				WriteFormat((byte)(Format.FixStrMin | (byte)length));
@@ -175,8 +175,10 @@ namespace SouthPointe.Serialization.MessagePack
 				WriteFormat(Format.Str32);
 				WriteUInt32((uint)length);
 			}
-			
-			stream.Write(stringAsBytes, 0, length);
+
+			BufferHelper.ResizeAccordingly(ref dynamicBuffer, length);
+			Encoding.UTF8.GetBytes(str, 0, str.Length, dynamicBuffer, 0);
+			stream.Write(dynamicBuffer, 0, length);
 		}
 
 		public void Write(byte[] bytes)

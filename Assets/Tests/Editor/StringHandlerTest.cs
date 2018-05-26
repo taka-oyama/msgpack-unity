@@ -102,6 +102,20 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			Assert.AreEqual(16, data.Length);
 		}
 
+		[Test]
+		public void PackMultipleTimes()
+		{
+			var formatter = new MessagePackFormatter();
+			string value1 = new String('A', 65);
+			string value2 = new String('B', 5);
+			byte[] data1 = formatter.Serialize(value1);
+			byte[] data2 = formatter.Serialize(value2);
+			string result1 = formatter.Deserialize<string>(data1);
+			string result2 = formatter.Deserialize<string>(data2);
+			Assert.AreEqual(value1, result1);
+			Assert.AreEqual(value2, result2);
+		}
+
 		#endregion
 
 
