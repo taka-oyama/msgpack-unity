@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public static class BufferHelper
+public static class ArrayHelper
 {
 	public static void ResizeAccordingly(ref byte[] buffer, int length)
 	{

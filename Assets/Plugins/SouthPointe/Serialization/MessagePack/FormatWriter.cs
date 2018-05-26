@@ -176,7 +176,7 @@ namespace SouthPointe.Serialization.MessagePack
 				WriteUInt32((uint)length);
 			}
 
-			BufferHelper.ResizeAccordingly(ref dynamicBuffer, length);
+			ArrayHelper.ResizeAccordingly(ref dynamicBuffer, length);
 			Encoding.UTF8.GetBytes(str, 0, str.Length, dynamicBuffer, 0);
 			stream.Write(dynamicBuffer, 0, length);
 		}

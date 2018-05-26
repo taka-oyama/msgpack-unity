@@ -251,13 +251,7 @@ namespace SouthPointe.Serialization.MessagePack
 
 		string ReadStringOfLength(int length)
 		{
-			if(dynamicBuffer.Length < length) {
-				int newSize = dynamicBuffer.Length;
-				while(newSize < length) {
-					newSize *= 2;
-				}
-				Array.Resize(ref dynamicBuffer, newSize);
-			}
+			ArrayHelper.ResizeAccordingly(ref dynamicBuffer, length);
 			stream.Read(dynamicBuffer, 0, length);
 			return Encoding.UTF8.GetString(dynamicBuffer, 0, length);
 		}
