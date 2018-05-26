@@ -8,7 +8,7 @@ namespace SouthPointe.Serialization.MessagePack
 	public class FormatReader
 	{
 		readonly Stream stream;
-		byte[] staticBuffer = new byte[8];
+		readonly byte[] staticBuffer = new byte[8];
 		byte[] dynamicBuffer = new byte[64];
 
 		internal long Position { get { return stream.Position; } }
