@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack
 {
-	public static class Extension
+	static class CustomExtensions
 	{
-		public static bool IsNullable(this Type type)
+		internal static bool IsNullable(this Type type)
 		{
 			if(type.IsValueType) {
 				if(Nullable.GetUnderlyingType(type) != null) {
