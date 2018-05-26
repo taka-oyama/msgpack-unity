@@ -132,22 +132,16 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public void Write(float value)
 		{
-			byte[] bytes = BitConverter.GetBytes(value);
-			if(BitConverter.IsLittleEndian) {
-				Array.Reverse(bytes);
-			}
 			WriteFormat(Format.Float32);
-			stream.Write(bytes, 0, 4);
+			Float32Bits.GetBytes(value, staticBuffer);
+			stream.Write(staticBuffer, 0, 4);
 		}
 
 		public void Write(double value)
 		{
-			byte[] bytes = BitConverter.GetBytes(value);
-			if(BitConverter.IsLittleEndian) {
-				Array.Reverse(bytes);
-			}
 			WriteFormat(Format.Float64);
-			stream.Write(bytes, 0, 8);
+			Float64Bits.GetBytes(value, staticBuffer);
+			stream.Write(staticBuffer, 0, 8);
 		}
 
 		public void Write(string value)

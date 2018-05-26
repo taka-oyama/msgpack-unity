@@ -98,10 +98,7 @@ namespace SouthPointe.Serialization.MessagePack
 		public float ReadFloat32()
 		{
 			if(stream.Read(staticBuffer, 0, 4) == 4) {
-				if(BitConverter.IsLittleEndian) {
-					Array.Reverse(staticBuffer);
-				}
-				return BitConverter.ToSingle(staticBuffer, staticBuffer.Length - 4);
+				return Float32Bits.ToSingle(staticBuffer);
 			}
 			throw new FormatException();
 		}
@@ -109,10 +106,7 @@ namespace SouthPointe.Serialization.MessagePack
 		public double ReadFloat64()
 		{
 			if(stream.Read(staticBuffer, 0, 8) == 8) {
-				if(BitConverter.IsLittleEndian) {
-					Array.Reverse(staticBuffer);
-				}
-				return BitConverter.ToDouble(staticBuffer, 0);
+				return Float64Bits.ToDouble(staticBuffer);
 			}
 			throw new FormatException();
 		}
