@@ -8,46 +8,47 @@ namespace SouthPointe.Serialization.MessagePack
 	public class DynamicMapHandler : ITypeHandler
 	{
 		readonly SerializationContext context;
-		readonly Lazy<MapDefinition> definition;
+		readonly Lazy<MapDefinition> lazyDefinition;
 		readonly ITypeHandler nameHandler;
 		readonly IMapNamingStrategy nameConverter;
 		readonly static object[] callbackParameters = new object[0];
 
-		public DynamicMapHandler(SerializationContext context, Lazy<MapDefinition> definition)
+		public DynamicMapHandler(SerializationContext context, Lazy<MapDefinition> lazyDefinition)
 		{
 			this.context = context;
-			this.definition = definition;
+			this.lazyDefinition = lazyDefinition;
 			this.nameHandler = context.TypeHandlers.Get<string>();
 			this.nameConverter = context.MapOptions.NamingStrategy;
 		}
 
 		public object Read(Format format, FormatReader reader)
 		{
+			MapDefinition definition = lazyDefinition.Value;
 			if(format.IsMapFamily) {
-				object obj = Activator.CreateInstance(definition.Value.Type);
-				InvokeCallback<OnDeserializingAttribute>(obj);
+				object obj = Activator.CreateInstance(definition.Type);
+				InvokeCallback<OnDeserializingAttribute>(obj, definition);
 				int size = reader.ReadMapLength(format);
 				while(size > 0) {
 					string name = (string)nameHandler.Read(reader.ReadFormat(), reader);
-					name = nameConverter.OnUnpack(name, definition.Value);
+					name = nameConverter.OnUnpack(name, definition);
 
-					if(definition.Value.FieldHandlers.ContainsKey(name)) {
-						object value = definition.Value.FieldHandlers[name].Read(reader.ReadFormat(), reader);
-						definition.Value.FieldInfos[name].SetValue(obj, value);
+					if(definition.FieldHandlers.ContainsKey(name)) {
+						object value = definition.FieldHandlers[name].Read(reader.ReadFormat(), reader);
+						definition.FieldInfos[name].SetValue(obj, value);
 					}
 					else if(context.MapOptions.IgnoreUnknownFieldOnUnpack) {
 						reader.Skip();
 					}
 					else {
-						throw new MissingFieldException(name + " does not exist for type: " + definition.Value.Type);
+						throw new MissingFieldException(name + " does not exist for type: " + definition.Type);
 					}
 					size = size - 1;
 				}
-				InvokeCallback<OnDeserializedAttribute>(obj);
+				InvokeCallback<OnDeserializedAttribute>(obj, definition);
 				return obj;
 			}
 			if(format.IsEmptyArray && context.MapOptions.AllowEmptyArrayOnUnpack) {
-				return Activator.CreateInstance(definition.Value.Type);
+				return Activator.CreateInstance(definition.Type);
 			}
 			if(format.IsNil) {
 				return null;
@@ -61,27 +62,28 @@ namespace SouthPointe.Serialization.MessagePack
 				writer.WriteNil();
 				return;
 			}
-			InvokeCallback<OnSerializingAttribute>(obj);
-			writer.WriteMapHeader(DetermineSize(obj));
-			foreach(KeyValuePair<string, FieldInfo> kv in definition.Value.FieldInfos) {
+			MapDefinition definition = lazyDefinition.Value;
+			InvokeCallback<OnSerializingAttribute>(obj, definition);
+			writer.WriteMapHeader(DetermineSize(obj, definition));
+			foreach(KeyValuePair<string, FieldInfo> kv in definition.FieldInfos) {
 				object value = kv.Value.GetValue(obj);
 				if(context.MapOptions.IgnoreNullOnPack && value == null) {
 					continue;
 				}
-				string name = nameConverter.OnPack(kv.Key, definition.Value);
+				string name = nameConverter.OnPack(kv.Key, definition);
 				nameHandler.Write(name, writer);
-				definition.Value.FieldHandlers[kv.Key].Write(value, writer);
+				definition.FieldHandlers[kv.Key].Write(value, writer);
 			}
-			InvokeCallback<OnSerializedAttribute>(obj);
+			InvokeCallback<OnSerializedAttribute>(obj, definition);
 		}
 
-		int DetermineSize(object obj)
+		int DetermineSize(object obj, MapDefinition definition)
 		{
 			if(!context.MapOptions.IgnoreNullOnPack) {
-				return definition.Value.FieldInfos.Count;
+				return definition.FieldInfos.Count;
 			}
 			int count = 0;
-			foreach(FieldInfo info in definition.Value.FieldInfos.Values) {
+			foreach(FieldInfo info in definition.FieldInfos.Values) {
 				if(info.GetValue(obj) != null) {
 					count += 1;
 				}
@@ -89,11 +91,11 @@ namespace SouthPointe.Serialization.MessagePack
 			return count;
 		}
 
-		void InvokeCallback<T>(object obj) where T : Attribute
+		void InvokeCallback<T>(object obj, MapDefinition definition) where T : Attribute
 		{
 			Type attributeType = typeof(T);
-			if(definition.Value.Callbacks.ContainsKey(attributeType)) {
-				foreach(MethodInfo methodInfo in definition.Value.Callbacks[attributeType]) {
+			if(definition.Callbacks.ContainsKey(attributeType)) {
+				foreach(MethodInfo methodInfo in definition.Callbacks[attributeType]) {
 					methodInfo.Invoke(obj, callbackParameters);
 				}
 			}
