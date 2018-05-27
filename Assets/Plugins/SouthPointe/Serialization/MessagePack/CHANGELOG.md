@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.3.2 (2018-05-27)
+
+### Added
+- Added custom menu to make it easier to export package
+
+### Changed
+- Refactored internal code for better readability
+- String now allocates less memory when packing
+- Floats and doubles now allocate less memory when packing/unpacking
+
 ## 2.3.1 (2018-05-19)
 
 ### Added
