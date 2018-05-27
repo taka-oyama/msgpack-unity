@@ -8,8 +8,7 @@ namespace SouthPointe.Serialization.MessagePack
 	public class FormatReader
 	{
 		readonly Stream stream;
-		readonly byte[] staticBuffer = new byte[8];
-		byte[] dynamicBuffer = new byte[64];
+		byte[] buffer = new byte[64];
 
 		internal long Position { get { return stream.Position; } }
 
@@ -39,24 +38,24 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public ushort ReadUInt16()
 		{
-			if(stream.Read(staticBuffer, 0, 2) == 2) {
-				return (ushort)((staticBuffer[0] << 8) | staticBuffer[1]);
+			if(stream.Read(buffer, 0, 2) == 2) {
+				return (ushort)((buffer[0] << 8) | buffer[1]);
 			}
 			throw new FormatException();
 		}
 
 		public uint ReadUInt32()
 		{
-			if(stream.Read(staticBuffer, 0, 4) == 4) {
-				return ((uint)staticBuffer[0] << 24) | ((uint)staticBuffer[1] << 16) | ((uint)staticBuffer[2] << 8) | (uint)staticBuffer[3];
+			if(stream.Read(buffer, 0, 4) == 4) {
+				return ((uint)buffer[0] << 24) | ((uint)buffer[1] << 16) | ((uint)buffer[2] << 8) | (uint)buffer[3];
 			}
 			throw new FormatException();
 		}
 
 		public ulong ReadUInt64()
 		{
-			if(stream.Read(staticBuffer, 0, 8) == 8) {
-				return ((ulong)staticBuffer[0] << 56) | ((ulong)staticBuffer[1] << 48) | ((ulong)staticBuffer[2] << 40) | ((ulong)staticBuffer[3] << 32) | ((ulong)staticBuffer[4] << 24) | ((ulong)staticBuffer[5] << 16) | ((ulong)staticBuffer[6] << 8) | (ulong)staticBuffer[7];
+			if(stream.Read(buffer, 0, 8) == 8) {
+				return ((ulong)buffer[0] << 56) | ((ulong)buffer[1] << 48) | ((ulong)buffer[2] << 40) | ((ulong)buffer[3] << 32) | ((ulong)buffer[4] << 24) | ((ulong)buffer[5] << 16) | ((ulong)buffer[6] << 8) | (ulong)buffer[7];
 			}
 			throw new FormatException();
 		}
@@ -73,40 +72,40 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public short ReadInt16()
 		{
-			if(stream.Read(staticBuffer, 0, 2) == 2) {
-				return (short)((staticBuffer[0] << 8) | staticBuffer[1]);
+			if(stream.Read(buffer, 0, 2) == 2) {
+				return (short)((buffer[0] << 8) | buffer[1]);
 			}
 			throw new FormatException();
 		}
 
 		public int ReadInt32()
 		{
-			if(stream.Read(staticBuffer, 0, 4) == 4) {
-				return (staticBuffer[0] << 24) | (staticBuffer[1] << 16) | (staticBuffer[2] << 8) | staticBuffer[3];
+			if(stream.Read(buffer, 0, 4) == 4) {
+				return (buffer[0] << 24) | (buffer[1] << 16) | (buffer[2] << 8) | buffer[3];
 			}
 			throw new FormatException();
 		}
 
 		public long ReadInt64()
 		{
-			if(stream.Read(staticBuffer, 0, 8) == 8) {
-				return ((long)staticBuffer[0] << 56) | ((long)staticBuffer[1] << 48) | ((long)staticBuffer[2] << 40) | ((long)staticBuffer[3] << 32) | ((long)staticBuffer[4] << 24) | ((long)staticBuffer[5] << 16) | ((long)staticBuffer[6] << 8) | (long)staticBuffer[7];
+			if(stream.Read(buffer, 0, 8) == 8) {
+				return ((long)buffer[0] << 56) | ((long)buffer[1] << 48) | ((long)buffer[2] << 40) | ((long)buffer[3] << 32) | ((long)buffer[4] << 24) | ((long)buffer[5] << 16) | ((long)buffer[6] << 8) | (long)buffer[7];
 			}
 			throw new FormatException();
 		}
 
 		public float ReadFloat32()
 		{
-			if(stream.Read(staticBuffer, 0, 4) == 4) {
-				return Float32Bits.ToSingle(staticBuffer);
+			if(stream.Read(buffer, 0, 4) == 4) {
+				return Float32Bits.ToSingle(buffer);
 			}
 			throw new FormatException();
 		}
 
 		public double ReadFloat64()
 		{
-			if(stream.Read(staticBuffer, 0, 8) == 8) {
-				return Float64Bits.ToDouble(staticBuffer);
+			if(stream.Read(buffer, 0, 8) == 8) {
+				return Float64Bits.ToDouble(buffer);
 			}
 			throw new FormatException();
 		}
@@ -237,7 +236,8 @@ namespace SouthPointe.Serialization.MessagePack
 			else {
 				while(offset > 0) {
 					int length = offset > int.MaxValue ? int.MaxValue : (int)offset;
-					stream.Read(dynamicBuffer, 0, length);
+					ArrayHelper.AdjustSize(ref buffer, length);
+					stream.Read(buffer, 0, length);
 					offset -= int.MaxValue;
 				}
 			}
@@ -245,16 +245,16 @@ namespace SouthPointe.Serialization.MessagePack
 
 		string ReadStringOfLength(int length)
 		{
-			ArrayHelper.AdjustSize(ref dynamicBuffer, length);
-			stream.Read(dynamicBuffer, 0, length);
-			return Encoding.UTF8.GetString(dynamicBuffer, 0, length);
+			ArrayHelper.AdjustSize(ref buffer, length);
+			stream.Read(buffer, 0, length);
+			return Encoding.UTF8.GetString(buffer, 0, length);
 		}
 
 		internal byte[] ReadBytesOfLength(int length)
 		{
-			byte[] buffer = new byte[length];
-			stream.Read(buffer, 0, length);
-			return buffer;
+			byte[] bytes = new byte[length];
+			stream.Read(bytes, 0, length);
+			return bytes;
 		}
 	}
 }

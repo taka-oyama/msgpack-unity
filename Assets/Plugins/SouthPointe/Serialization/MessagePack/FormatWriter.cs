@@ -7,8 +7,7 @@ namespace SouthPointe.Serialization.MessagePack
 	public class FormatWriter
 	{
 		readonly Stream stream;
-		readonly byte[] staticBuffer = new byte[9];
-		byte[] dynamicBuffer = new byte[64];
+		byte[] buffer = new byte[64];
 
 		public FormatWriter(Stream stream)
 		{
@@ -133,15 +132,15 @@ namespace SouthPointe.Serialization.MessagePack
 		public void Write(float value)
 		{
 			WriteFormat(Format.Float32);
-			Float32Bits.GetBytes(value, staticBuffer);
-			stream.Write(staticBuffer, 0, 4);
+			Float32Bits.GetBytes(value, buffer);
+			stream.Write(buffer, 0, 4);
 		}
 
 		public void Write(double value)
 		{
 			WriteFormat(Format.Float64);
-			Float64Bits.GetBytes(value, staticBuffer);
-			stream.Write(staticBuffer, 0, 8);
+			Float64Bits.GetBytes(value, buffer);
+			stream.Write(buffer, 0, 8);
 		}
 
 		public void Write(string value)
@@ -169,9 +168,9 @@ namespace SouthPointe.Serialization.MessagePack
 				WriteUInt32((uint)length);
 			}
 
-			ArrayHelper.AdjustSize(ref dynamicBuffer, length);
-			Encoding.UTF8.GetBytes(value, 0, value.Length, dynamicBuffer, 0);
-			stream.Write(dynamicBuffer, 0, length);
+			ArrayHelper.AdjustSize(ref buffer, length);
+			Encoding.UTF8.GetBytes(value, 0, value.Length, buffer, 0);
+			stream.Write(buffer, 0, length);
 		}
 
 		public void Write(byte[] bytes)
@@ -294,31 +293,31 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public void WriteUInt16(ushort value)
 		{
-			staticBuffer[0] = (byte)(value >> 8);
-			staticBuffer[1] = (byte)(value);
-			stream.Write(staticBuffer, 0, 2);
+			buffer[0] = (byte)(value >> 8);
+			buffer[1] = (byte)(value);
+			stream.Write(buffer, 0, 2);
 		}
 
 		public void WriteUInt32(uint value)
 		{
-			staticBuffer[0] = (byte)(value >> 24);
-			staticBuffer[1] = (byte)(value >> 16);
-			staticBuffer[2] = (byte)(value >> 8);
-			staticBuffer[3] = (byte)(value);
-			stream.Write(staticBuffer, 0, 4);
+			buffer[0] = (byte)(value >> 24);
+			buffer[1] = (byte)(value >> 16);
+			buffer[2] = (byte)(value >> 8);
+			buffer[3] = (byte)(value);
+			stream.Write(buffer, 0, 4);
 		}
 
 		public void WriteUInt64(ulong value)
 		{
-			staticBuffer[0] = (byte)(value >> 56);
-			staticBuffer[1] = (byte)(value >> 48);
-			staticBuffer[2] = (byte)(value >> 40);
-			staticBuffer[3] = (byte)(value >> 32);
-			staticBuffer[4] = (byte)(value >> 24);
-			staticBuffer[5] = (byte)(value >> 16);
-			staticBuffer[6] = (byte)(value >> 8);
-			staticBuffer[7] = (byte)(value);
-			stream.Write(staticBuffer, 0, 8);
+			buffer[0] = (byte)(value >> 56);
+			buffer[1] = (byte)(value >> 48);
+			buffer[2] = (byte)(value >> 40);
+			buffer[3] = (byte)(value >> 32);
+			buffer[4] = (byte)(value >> 24);
+			buffer[5] = (byte)(value >> 16);
+			buffer[6] = (byte)(value >> 8);
+			buffer[7] = (byte)(value);
+			stream.Write(buffer, 0, 8);
 		}
 
 		public void WriteNegativeFixInt(sbyte value)
@@ -338,31 +337,31 @@ namespace SouthPointe.Serialization.MessagePack
 
 		public void WriteInt16(short value)
 		{
-			staticBuffer[0] = (byte)(value >> 8);
-			staticBuffer[1] = (byte)(value);
-			stream.Write(staticBuffer, 0, 2);
+			buffer[0] = (byte)(value >> 8);
+			buffer[1] = (byte)(value);
+			stream.Write(buffer, 0, 2);
 		}
 
 		public void WriteInt32(int value)
 		{
-			staticBuffer[0] = (byte)(value >> 24);
-			staticBuffer[1] = (byte)(value >> 16);
-			staticBuffer[2] = (byte)(value >> 8);
-			staticBuffer[3] = (byte)(value);
-			stream.Write(staticBuffer, 0, 4);
+			buffer[0] = (byte)(value >> 24);
+			buffer[1] = (byte)(value >> 16);
+			buffer[2] = (byte)(value >> 8);
+			buffer[3] = (byte)(value);
+			stream.Write(buffer, 0, 4);
 		}
 
 		public void WriteInt64(long value)
 		{
-			staticBuffer[0] = (byte)(value >> 56);
-			staticBuffer[1] = (byte)(value >> 48);
-			staticBuffer[2] = (byte)(value >> 40);
-			staticBuffer[3] = (byte)(value >> 32);
-			staticBuffer[4] = (byte)(value >> 24);
-			staticBuffer[5] = (byte)(value >> 16);
-			staticBuffer[6] = (byte)(value >> 8);
-			staticBuffer[7] = (byte)(value);
-			stream.Write(staticBuffer, 0, 8);
+			buffer[0] = (byte)(value >> 56);
+			buffer[1] = (byte)(value >> 48);
+			buffer[2] = (byte)(value >> 40);
+			buffer[3] = (byte)(value >> 32);
+			buffer[4] = (byte)(value >> 24);
+			buffer[5] = (byte)(value >> 16);
+			buffer[6] = (byte)(value >> 8);
+			buffer[7] = (byte)(value);
+			stream.Write(buffer, 0, 8);
 		}
 
 		public void WriteRawByte(byte value)
