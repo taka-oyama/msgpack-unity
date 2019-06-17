@@ -8,7 +8,7 @@ This is a MessagePack (aka MsgPack) serialization library written in C# specific
 
 ## Features
 
-- Implements the latest [specification](https://github.com/msgpack/msgpack/blob/master/spec.md) (as of 2018)
+- Implements the latest [specification](https://github.com/msgpack/msgpack/blob/master/spec.md) (as of June 2019)
 - Compatible with .NET 3.5 scripting runtime
 - Compatible with other MessagePack libraries written in other languages such as PHP/Ruby/Javascript
 - Works with all types out of the box (as long as it has a default constructor)
