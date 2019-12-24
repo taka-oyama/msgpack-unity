@@ -216,10 +216,21 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		}
 
 		[Test]
-		public void PackPropertyMap()
+		public void PackPropertyMapWithIgnoreAsTrue()
 		{
 			var value = new PropertyMap { A = 1 };
 			MemoryStream stream = new MemoryStream(Pack(value));
+			Assert.AreEqual(Format.FixMapMin, stream.ReadByte());
+			Assert.AreEqual(1, stream.Length);
+		}
+
+		[Test]
+		public void PackPropertyMap()
+		{
+			var context = new SerializationContext();
+			context.MapOptions.IgnoreAutoPropertyValues = false;
+			var value = new PropertyMap { A = 1 };
+			MemoryStream stream = new MemoryStream(Pack(value, context));
 			Assert.AreEqual(Format.FixMapMin + 1, stream.ReadByte());
 			Assert.AreEqual(Format.FixStrMin + 18, stream.ReadByte());
 			byte[] buffer = new byte[18];
@@ -330,12 +341,23 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		}
 
 		[Test]
-		public void UnpackPropertyMap()
+		public void UnpackPropertyMapWithIgnoreAsTrue()
 		{
 			var value = new PropertyMap { A = 1 };
 			byte[] data = Pack(value);
 			var result = Unpack<PropertyMap>(data);
-			Assert.AreEqual(result.A, value.A);
+			Assert.AreEqual(0, result.A);
+		}
+
+		[Test]
+		public void UnpackPropertyMap()
+		{
+			var context = new SerializationContext();
+			context.MapOptions.IgnoreAutoPropertyValues = false;
+			var value = new PropertyMap { A = 1 };
+			byte[] data = Pack(value, context);
+			var result = Unpack<PropertyMap>(data, context);
+			Assert.AreEqual(value.A, result.A);
 		}
 
 		[Test]

@@ -15,6 +15,13 @@ namespace SouthPointe.Serialization.MessagePack
 		public bool RequireSerializableAttribute = true;
 
 		/// <summary>
+		/// Setting this to false will force auto property values to be serialized as
+		/// something like "<{property_name}>k__BackingField: {value}"
+		/// Defaults to true.
+		/// </summary>
+		public bool IgnoreAutoPropertyValues = true;
+
+		/// <summary>
 		/// This will skip all the field values which are null to reduce the size
 		/// of the resulting bytes.
 		/// Defaults to true.

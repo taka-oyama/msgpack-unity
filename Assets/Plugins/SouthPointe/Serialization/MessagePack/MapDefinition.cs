@@ -30,7 +30,7 @@ namespace SouthPointe.Serialization.MessagePack
 
 			this.FieldInfos = new Dictionary<string, FieldInfo>();
 			foreach(FieldInfo info in type.GetFields(context.MapOptions.FieldFlags)) {
-				if(IsSerializable(context, info.FieldType) && !AttributesExist(info, typeof(NonSerializedAttribute))) {
+				if(IsFieldSerializable(context, info)) {
 					FieldInfos[info.Name] = info;
 				}
 			}
@@ -66,6 +66,17 @@ namespace SouthPointe.Serialization.MessagePack
 		bool AttributesExist(MemberInfo info, Type attributeType)
 		{
 			return info.GetCustomAttributes(attributeType, true).Length > 0;
+		}
+
+		bool IsFieldSerializable(SerializationContext context, FieldInfo info)
+		{
+			if(AttributesExist(info, typeof(NonSerializedAttribute))) {
+				return false;
+			}
+			if(context.MapOptions.IgnoreAutoPropertyValues && info.Name.StartsWith("<")) {
+				return false;
+			}
+			return IsSerializable(context, info.FieldType);
 		}
 	}
 }
