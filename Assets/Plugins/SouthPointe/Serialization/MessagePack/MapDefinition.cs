@@ -58,9 +58,9 @@ namespace SouthPointe.Serialization.MessagePack
 		bool IsSerializable(SerializationContext context, Type type)
 		{
 			if(context.MapOptions.RequireSerializableAttribute) {
-				return true;
+				return type.IsSerializable;
 			}
-			return type.IsSerializable;
+			return true;
 		}
 
 		bool AttributesExist(MemberInfo info, Type attributeType)

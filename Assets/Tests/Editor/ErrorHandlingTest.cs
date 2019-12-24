@@ -8,6 +8,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 {
 	public class ErrorHandlingTest : TestBase
 	{
+		[Serializable]
 		class DummyMap
 		{
 			public int abc = 1;
