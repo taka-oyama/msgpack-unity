@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.4.0 (2019-12-24)
+
+### Fixed
+- `MapOptions.RequireSerializableAttribute` was returning true when it shouldn't have.
+
+### Added
+- Added an option to ignore auto-property values in MapOptions. Due to this option, the auto-properties are no longer serialized unless specified.
+
 ## 2.3.2 (2018-05-27)
 
 ### Added
