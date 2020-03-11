@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.4.1 (2020-03-11)
+
+### Fixed
+- Fixed bug where Serializing Unity secific types like Vector3 would not be serialized in Map.
+
 ## 2.4.0 (2019-12-24)
 
 ### Fixed
