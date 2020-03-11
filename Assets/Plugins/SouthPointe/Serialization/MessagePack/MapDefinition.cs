@@ -9,6 +9,15 @@ namespace SouthPointe.Serialization.MessagePack
 	{
 		const BindingFlags MethodFlags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.InvokeMethod;
 
+		static readonly Type[] serializableUnityTypes = {
+			typeof(Color), typeof(Color32),
+			typeof(Vector2), typeof(Vector3), typeof(Vector4),
+			typeof(Quaternion),
+			#if UNITY_2017_2_OR_NEWER
+			typeof(Vector2Int), typeof(Vector3Int),
+			#endif
+		};
+
 		static readonly Type[] callbackTypes = {
 			typeof(OnDeserializingAttribute), typeof(OnDeserializedAttribute),
 			typeof(OnSerializingAttribute), typeof(OnSerializedAttribute),
@@ -57,10 +66,15 @@ namespace SouthPointe.Serialization.MessagePack
 
 		bool IsSerializable(SerializationContext context, Type type)
 		{
-			if(context.MapOptions.RequireSerializableAttribute) {
-				return type.IsSerializable;
+			if(!context.MapOptions.RequireSerializableAttribute) {
+				return true;
 			}
-			return true;
+
+			if(Array.IndexOf(serializableUnityTypes, type) != -1) {
+				return true;
+			}
+
+			return type.IsSerializable;
 		}
 
 		bool AttributesExist(MemberInfo info, Type attributeType)

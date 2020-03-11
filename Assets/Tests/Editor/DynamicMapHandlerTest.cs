@@ -44,6 +44,19 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		}
 
 		[Serializable]
+		class UnityTypesMap
+		{
+			public Color a;
+			public Color32 b;
+			public Vector2 c;
+			public Vector3 d;
+			public Vector4 e;
+			public Quaternion f;
+			public Vector2Int g;
+			public Vector3Int h;
+		}
+
+		[Serializable]
 		class MixedMap
 		{
 			public ClassMap inner = null;
@@ -123,6 +136,59 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			byte[] data = Pack<PrivateClassMap>(map);
 			PrivateClassMap result = Unpack<PrivateClassMap>(data);
 			Assert.AreEqual(map.A, result.A);
+		}
+
+		[Test]
+		public void PackClassWithUnityTypesFields()
+		{
+			UnityTypesMap map = new UnityTypesMap();
+			map.a = new Color();
+			map.b = new Color32();
+			map.c = new Vector2(1f, 1f);
+			map.d = new Vector3(1f, 2f, 3f);
+			map.e = new Vector4(1f, 2f, 3f, 4f);
+			map.f = new Quaternion(1f, 2f, 3f, 4f);
+			map.g = new Vector2Int(1, 1);
+			map.h = new Vector3Int(1, 1, 1);
+
+			byte[] data = Pack<UnityTypesMap>(map);
+			UnityTypesMap result = Unpack<UnityTypesMap>(data);
+			Assert.AreEqual(map.a, result.a);
+			Assert.AreEqual(map.b, result.b);
+			Assert.AreEqual(map.c, result.c);
+			Assert.AreEqual(map.d, result.d);
+			Assert.AreEqual(map.e, result.e);
+			Assert.AreEqual(map.f, result.f);
+			Assert.AreEqual(map.g, result.g);
+			Assert.AreEqual(map.h, result.h);
+		}
+
+		[Test]
+		public void PackClassWithUnityTypesFieldsWithOutSerializable()
+		{
+			SerializationContext context = new SerializationContext();
+			context.MapOptions.RequireSerializableAttribute = false;
+
+			UnityTypesMap map = new UnityTypesMap();
+			map.a = new Color();
+			map.b = new Color32();
+			map.c = new Vector2(1f, 1f);
+			map.d = new Vector3(1f, 2f, 3f);
+			map.e = new Vector4(1f, 2f, 3f, 4f);
+			map.f = new Quaternion(1f, 2f, 3f, 4f);
+			map.g = new Vector2Int(1, 1);
+			map.h = new Vector3Int(1, 1, 1);
+
+			byte[] data = Pack<UnityTypesMap>(map, context);
+			UnityTypesMap result = Unpack<UnityTypesMap>(data, context);
+			Assert.AreEqual(map.a, result.a);
+			Assert.AreEqual(map.b, result.b);
+			Assert.AreEqual(map.c, result.c);
+			Assert.AreEqual(map.d, result.d);
+			Assert.AreEqual(map.e, result.e);
+			Assert.AreEqual(map.f, result.f);
+			Assert.AreEqual(map.g, result.g);
+			Assert.AreEqual(map.h, result.h);
 		}
 
 		[Test]
