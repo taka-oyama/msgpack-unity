@@ -28,7 +28,7 @@ namespace SouthPointe.Serialization.MessagePack
 		public readonly Dictionary<string, ITypeHandler> FieldHandlers;
 		public readonly Dictionary<Type, MethodInfo[]> Callbacks;
 
-		internal MapDefinition(SerializationContext context, Type type)
+		public MapDefinition(SerializationContext context, Type type)
 		{
 			this.Type = type;
 
