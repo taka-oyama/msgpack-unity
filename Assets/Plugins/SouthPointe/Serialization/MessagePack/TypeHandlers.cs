@@ -128,10 +128,12 @@ namespace SouthPointe.Serialization.MessagePack
 		Lazy<MapDefinition> GetLazyMapDefinition(Type type)
 		{
 			return new Lazy<MapDefinition>(() => {
-				if(!mapDefinitions.ContainsKey(type)) {
-					mapDefinitions[type] = new MapDefinition(context, type);
+				lock(mapDefinitions) {
+					if(!mapDefinitions.ContainsKey(type)) {
+						mapDefinitions[type] = new MapDefinition(context, type);
+					}
+					return mapDefinitions[type];
 				}
-				return mapDefinitions[type];
 			});
 		}
 	}
