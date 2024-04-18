@@ -10,5 +10,10 @@
 		/// Defaults to `Extension` format.
 		/// </summary>
 		public DateTimePackingFormat PackingFormat = DateTimePackingFormat.Extension;
+
+		/// <summary>
+		/// The zone conversion for DateTime format.
+		/// </summary>
+		public DateTimeZoneConversion ZoneConversion = DateTimeZoneConversion.Local;
 	}
 }

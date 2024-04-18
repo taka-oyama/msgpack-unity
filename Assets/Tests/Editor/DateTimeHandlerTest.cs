@@ -61,6 +61,7 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			DateTime value = DateTime.Parse("2018-01-01T12:00:00.1234567+09:00");
 			byte[] data = Pack(value, context);
 			DateTime result = Unpack<DateTime>(data);
+			Debug.Log(result.Kind);
 			Assert.AreEqual(Format.Str8, data[0]);
 			Assert.AreEqual(33, data[1]);
 			Assert.AreEqual(35, data.Length);
@@ -79,6 +80,73 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			Assert.AreEqual(Format.Float64, data[0]);
 			Assert.AreEqual(9, data.Length);
 			Assert.AreEqual(value.ToString("o"), result.ToString("o"));
+		}
+
+		[Test]
+		public void ConvertToUniversalFromExt()
+		{
+			var context = new SerializationContext();
+			context.DateTimeOptions.ZoneConversion = DateTimeZoneConversion.Universal;
+			var value = DateTime.Parse("2018-01-01T12:00:00+09:00");
+			byte[] data = Pack(value, context);
+			DateTime result = Unpack<DateTime>(data, context);
+			Assert.AreEqual("2018-01-01T03:00:00.0000000Z", result.ToString("o"));
+		}
+
+		[Test]
+		public void ConvertToUniversalFromString()
+		{
+			var context = new SerializationContext();
+			context.DateTimeOptions.PackingFormat = DateTimePackingFormat.String;
+			context.DateTimeOptions.ZoneConversion = DateTimeZoneConversion.Universal;
+			var value = DateTime.Parse("2018-01-01T12:00:00+09:00");
+			byte[] data = Pack(value, context);
+			DateTime result = Unpack<DateTime>(data, context);
+			Assert.AreEqual("2018-01-01T03:00:00.0000000Z", result.ToString("o"));
+		}
+
+		[Test]
+		public void ConvertToUniversalFromEpoch()
+		{
+			var context = new SerializationContext();
+			context.DateTimeOptions.PackingFormat = DateTimePackingFormat.Epoch;
+			context.DateTimeOptions.ZoneConversion = DateTimeZoneConversion.Universal;
+			var value = DateTime.Parse("2018-01-01T12:00:00+09:00");
+			byte[] data = Pack(value, context);
+			DateTime result = Unpack<DateTime>(data, context);
+			Assert.AreEqual("2018-01-01T03:00:00.0000000Z", result.ToString("o"));
+		}
+
+		[Test]
+		public void ConvertToLocalFromExt()
+		{
+			var context = new SerializationContext();
+			var value = DateTime.Parse("2018-01-01T03:00:00Z");
+			byte[] data = Pack(value, context);
+			DateTime result = Unpack<DateTime>(data, context);
+			Assert.AreEqual("2018-01-01T12:00:00.0000000+09:00", result.ToString("o"));
+		}
+
+		[Test]
+		public void ConvertToLocalFromString()
+		{
+			var context = new SerializationContext();
+			context.DateTimeOptions.PackingFormat = DateTimePackingFormat.String;
+			var value = DateTime.Parse("2018-01-01T03:00:00Z");
+			byte[] data = Pack(value, context);
+			DateTime result = Unpack<DateTime>(data, context);
+			Assert.AreEqual("2018-01-01T12:00:00.0000000+09:00", result.ToString("o"));
+		}
+
+		[Test]
+		public void ConvertToLocalFromEpoch()
+		{
+			var context = new SerializationContext();
+			context.DateTimeOptions.PackingFormat = DateTimePackingFormat.Epoch;
+			var value = DateTime.Parse("2018-01-01T03:00:00Z");
+			byte[] data = Pack(value, context);
+			DateTime result = Unpack<DateTime>(data, context);
+			Assert.AreEqual("2018-01-01T12:00:00.0000000+09:00", result.ToString("o"));
 		}
 
 		#endregion

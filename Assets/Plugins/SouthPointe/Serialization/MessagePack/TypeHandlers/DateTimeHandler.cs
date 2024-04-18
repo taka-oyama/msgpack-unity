@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack
@@ -27,14 +28,14 @@ namespace SouthPointe.Serialization.MessagePack
 				}
 			}
 			if(format.IsStringFamily) {
-				stringHandler = stringHandler ?? context.TypeHandlers.Get<string>();
+				stringHandler ??= context.TypeHandlers.Get<string>();
 				string dateTimeStr = (string)stringHandler.Read(format, reader);
-				return DateTime.Parse(dateTimeStr);
+				return ParseStringWithZone(dateTimeStr);
 			}
 			if(format.IsFloatFamily || format.IsIntFamily) {
-				doubleHandler = doubleHandler ?? context.TypeHandlers.Get<double>();
+				doubleHandler ??= context.TypeHandlers.Get<double>();
 				double seconds = (double)doubleHandler.Read(format, reader);
-				return epoch.AddSeconds(seconds).ToLocalTime();
+				return ConvertToZone(epoch.AddSeconds(seconds));
 			}
 			throw new FormatException(this, format, reader);
 		}
@@ -43,18 +44,21 @@ namespace SouthPointe.Serialization.MessagePack
 		{
 			// Timestamp 32
 			if(length == 4) {
-				return epoch.AddSeconds(reader.ReadUInt32()).ToLocalTime();
+				DateTime value = epoch.AddSeconds(reader.ReadUInt32());
+				return ConvertToZone(value);
 			}
 			// Timestamp 64
 			if(length == 8) {
 				byte[] buffer = reader.ReadBytesOfLength(8);
 				uint nanoseconds = ((uint)buffer[0] << 22) | ((uint)buffer[1] << 14) | ((uint)buffer[2] << 6) | (uint)buffer[3] >> 2;
 				ulong seconds = ((ulong)(buffer[3] & 0x3) << 32) | ((ulong)buffer[4] << 24) | ((ulong)buffer[5] << 16) | ((ulong)buffer[6] << 8) | (ulong)buffer[7];
-				return epoch.AddTicks(nanoseconds / 100).AddSeconds(seconds).ToLocalTime();
+				DateTime value = epoch.AddTicks(nanoseconds / 100).AddSeconds(seconds);
+				return ConvertToZone(value);
 			}
 			// Timestamp 96
 			if(length == 12) {
-				return epoch.AddTicks(reader.ReadUInt32() / 100).AddSeconds(reader.ReadInt64()).ToLocalTime();
+				DateTime value = epoch.AddTicks(reader.ReadUInt32() / 100).AddSeconds(reader.ReadInt64());
+				return ConvertToZone(value);
 			}
 			throw new FormatException();
 		}
@@ -78,6 +82,26 @@ namespace SouthPointe.Serialization.MessagePack
 				default:
 					throw new FormatException();
 			}
+		}
+
+		private DateTime ParseStringWithZone(string str)
+		{
+			return context.DateTimeOptions.ZoneConversion switch
+            {
+                DateTimeZoneConversion.Universal => DateTime.Parse(str, CultureInfo.CurrentCulture, DateTimeStyles.AdjustToUniversal),
+                DateTimeZoneConversion.Local => DateTime.Parse(str),
+                _ => throw new NotImplementedException(),
+            };
+		}
+
+		private DateTime ConvertToZone(DateTime dt)
+		{
+			return context.DateTimeOptions.ZoneConversion switch
+            {
+                DateTimeZoneConversion.Universal => dt.Kind == DateTimeKind.Utc ? dt : dt.ToUniversalTime(),
+                DateTimeZoneConversion.Local => dt.Kind == DateTimeKind.Local ? dt : dt.ToLocalTime(),
+                _ => throw new NotImplementedException(),
+            };
 		}
 	}
 }
