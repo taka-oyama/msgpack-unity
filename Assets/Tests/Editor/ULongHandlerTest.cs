@@ -193,63 +193,17 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 		}
 
 		[Test]
-		public void UnpackNegativeFixIntMinAsUInt()
+		public void UnpackUInt64MinStringAsULong()
 		{
-			Assert.Throws<FormatException>(() => Unpack<uint>(ReadFile("Ints/NegativeFixIntMin")));
+			ulong value = Unpack<ulong>(ReadFile("Ints/UInt64MinAsString"));
+			Assert.AreEqual(ulong.MinValue, value);
 		}
 
 		[Test]
-		public void UnpackNegativeFixIntMaxAsUInt()
+		public void UnpackUInt64MaxStringAsULong()
 		{
-			Assert.Throws<FormatException>(() => Unpack<uint>(ReadFile("Ints/NegativeFixIntMax")));
-		}
-
-		[Test]
-		public void UnpackInt8MinAsUInt()
-		{
-			Assert.Throws<FormatException>(() => Unpack<uint>(ReadFile("Ints/Int8Min")));
-		}
-
-		[Test]
-		public void UnpackInt8MaxAsUInt()
-		{
-			Assert.Throws<FormatException>(() => Unpack<uint>(ReadFile("Ints/Int8Max")));
-		}
-
-		[Test]
-		public void UnpackInt16MinAsUInt()
-		{
-			Assert.Throws<FormatException>(() => Unpack<uint>(ReadFile("Ints/Int16Min")));
-		}
-
-		[Test]
-		public void UnpackInt16MaxAsUInt()
-		{
-			Assert.Throws<FormatException>(() => Unpack<uint>(ReadFile("Ints/Int16Max")));
-		}
-
-		[Test]
-		public void UnpackInt32MinAsUInt()
-		{
-			Assert.Throws<FormatException>(() => Unpack<uint>(ReadFile("Ints/Int32Min")));
-		}
-
-		[Test]
-		public void UnpackInt32MaxAsUInt()
-		{
-			Assert.Throws<FormatException>(() => Unpack<uint>(ReadFile("Ints/Int32Max")));
-		}
-
-		[Test]
-		public void UnpackInt64MinAsUInt()
-		{
-			Assert.Throws<FormatException>(() => Unpack<uint>(ReadFile("Ints/Int64Min")));
-		}
-
-		[Test]
-		public void UnpackInt64MaxAsUInt()
-		{
-			Assert.Throws<FormatException>(() => Unpack<uint>(ReadFile("Ints/Int64Max")));
+			ulong value = Unpack<ulong>(ReadFile("Ints/UInt64MaxAsString"));
+			Assert.AreEqual(ulong.MaxValue, value);
 		}
 
 		#endregion
