@@ -105,6 +105,7 @@ namespace SouthPointe.Serialization.MessagePack
 					{
 						<= 1 => ConvertToZone(DateTime.MinValue),
 						>= 9999 => ConvertToZone(DateTime.MaxValue),
+						null => throw e,
 						_ => throw e,
 					};
 				}
@@ -119,7 +120,9 @@ namespace SouthPointe.Serialization.MessagePack
 			var captures = regex.Match(e.Message).Groups["year"].Captures;
 			if(captures.Count != 0) {
 				string yearAsString = regex.Match(e.Message).Groups["year"].Captures[0].Value;
-				return int.Parse(yearAsString);
+				if (int.TryParse(yearAsString, out int year)) {
+					return year;
+				}
 			}
 			return null;
 		}
