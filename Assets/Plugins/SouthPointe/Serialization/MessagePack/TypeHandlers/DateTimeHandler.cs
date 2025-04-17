@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace SouthPointe.Serialization.MessagePack
@@ -86,12 +87,41 @@ namespace SouthPointe.Serialization.MessagePack
 
 		private DateTime ParseStringWithZone(string str)
 		{
-			return context.DateTimeOptions.ZoneConversion switch
-            {
-                DateTimeZoneConversion.Universal => DateTime.Parse(str, CultureInfo.CurrentCulture, DateTimeStyles.AdjustToUniversal),
-                DateTimeZoneConversion.Local => DateTime.Parse(str),
-                _ => throw new NotImplementedException(),
-            };
+			DateTimeOptions options = context.DateTimeOptions;
+
+			DateTimeStyles styles = options.ZoneConversion switch
+			{
+				DateTimeZoneConversion.Universal => DateTimeStyles.AdjustToUniversal,
+				DateTimeZoneConversion.Local => DateTimeStyles.None,
+				_ => throw new NotImplementedException(),
+			};
+
+			try {
+				return ConvertToZone(DateTime.Parse(str, options.Culture, styles));
+			} 
+			catch (System.FormatException e) {
+				if(options.OutOfBoundsHandling == DateTimeOutOfBoundsHandling.Clamp) {
+					return FindYearInException(e) switch
+					{
+						<= 1 => ConvertToZone(DateTime.MinValue),
+						>= 9999 => ConvertToZone(DateTime.MaxValue),
+						_ => throw e,
+					};
+				}
+				throw;
+			}			
+
+		}
+
+		private int? FindYearInException(System.FormatException e)
+		{
+			Regex regex = new (@"(?<year>\d+)-\d{2}-\d{2}", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+			var captures = regex.Match(e.Message).Groups["year"].Captures;
+			if(captures.Count != 0) {
+				string yearAsString = regex.Match(e.Message).Groups["year"].Captures[0].Value;
+				return int.Parse(yearAsString);
+			}
+			return null;
 		}
 
 		private DateTime ConvertToZone(DateTime dt)

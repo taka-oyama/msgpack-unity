@@ -1,4 +1,6 @@
-﻿namespace SouthPointe.Serialization.MessagePack
+﻿using System.Globalization;
+
+namespace SouthPointe.Serialization.MessagePack
 {
 	public class DateTimeOptions
 	{
@@ -15,5 +17,17 @@
 		/// The zone conversion for DateTime format.
 		/// </summary>
 		public DateTimeZoneConversion ZoneConversion = DateTimeZoneConversion.Local;
+
+		/// <summary>
+		/// The culture info for DateTime format.
+		/// This is used when parsing DateTime from string.
+		/// </summary>
+		public CultureInfo Culture = CultureInfo.CurrentCulture;
+		
+		/// <summary>
+		/// The out of bounds handling for DateTime format.
+		/// This is used when parsing DateTime from string.
+		/// </summary>
+		public DateTimeOutOfBoundsHandling OutOfBoundsHandling = DateTimeOutOfBoundsHandling.Throw;
 	}
 }
