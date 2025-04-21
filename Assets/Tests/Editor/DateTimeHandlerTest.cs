@@ -61,11 +61,56 @@ namespace SouthPointe.Serialization.MessagePack.Tests
 			DateTime value = DateTime.Parse("2018-01-01T12:00:00.1234567+09:00");
 			byte[] data = Pack(value, context);
 			DateTime result = Unpack<DateTime>(data);
-			Debug.Log(result.Kind);
 			Assert.AreEqual(Format.Str8, data[0]);
 			Assert.AreEqual(33, data[1]);
 			Assert.AreEqual(35, data.Length);
 			Assert.AreEqual(value.ToString("o"), result.ToString("o"));
+		}
+
+		[Test]
+		public void FromString_OutOfBoundsHandling_Clamp_Lower()
+		{
+			var context = new SerializationContext();
+			context.DateTimeOptions.OutOfBoundsHandling = DateTimeOutOfBoundsHandling.Clamp;
+			string value = "0000-01-01T00:00:00+0900";
+			byte[] data = Pack(value, context);
+			DateTime result = Unpack<DateTime>(data, context);
+			Assert.AreEqual(184, data[0]);
+			Assert.AreEqual("0001-01-01T09:18:00.0000000+09:18", result.ToString("o"));
+		}
+
+		[Test]
+		public void FromString_OutOfBoundsHandling_Clamp_Upper()
+		{
+			var context = new SerializationContext();
+			context.DateTimeOptions.OutOfBoundsHandling = DateTimeOutOfBoundsHandling.Clamp;
+			string value = "10000-12-31T23:59:59.99999999-0900";
+			byte[] data = Pack(value, context);
+			DateTime result = Unpack<DateTime>(data, context);
+			Assert.AreEqual(Format.Str8, data[0]);
+			Assert.AreEqual("9999-12-31T23:59:59.9999999+09:00", result.ToString("o"));
+		}
+
+		[Test]
+		public void FromString_OutOfBoundsHandling_Clamp_Invalid_String()
+		{
+			var context = new SerializationContext();
+			context.DateTimeOptions.OutOfBoundsHandling = DateTimeOutOfBoundsHandling.Clamp;
+			string value = "February 31, 2018 12:00:00 AM";
+			byte[] data = Pack(value, context);
+			var e = Assert.Throws<System.FormatException>(() => Unpack<DateTime>(data, context));
+			Assert.AreEqual("String was not recognized as a valid DateTime.", e.Message);
+		}
+
+		[Test]
+		public void FromString_OutOfBoundsHandling_Throw()
+		{
+			var context = new SerializationContext();
+			context.DateTimeOptions.OutOfBoundsHandling = DateTimeOutOfBoundsHandling.Throw;
+			string value = "0000-01-01T00:00:00+0900";
+			byte[] data = Pack(value, context);
+			var e = Assert.Throws<System.FormatException>(() => Unpack<DateTime>(data, context));
+			Assert.AreEqual("The DateTime represented by the string is not supported in calendar 0000-01-01T00:00:00+0900.", e.Message);
 		}
 
 		[Test]
